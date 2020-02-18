@@ -1,0 +1,199 @@
+@keyframes slideInRight {
+  0% {
+    left: -1em; }
+  100% {
+    left: 0; } }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes bounceInUp {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 400px, 0); }
+  40% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0); }
+  65% {
+    transform: translate3d(0, 10px, 0); }
+  80% {
+    transform: translate3d(0, -5px, 0); }
+  to {
+    transform: translate3d(0, 0, 0); } }
+
+@keyframes typingLoader {
+  0%, 60%, 100% {
+    opacity: 0.4; }
+  30% {
+    opacity: 1; } }
+
+.message-item-wrapper {
+  color: #555;
+  max-width: 100%;
+  margin-bottom: 1em;
+  min-height: 1.4em; }
+  .message-item-wrapper.bot .typing-loader {
+    width: 70px;
+    transition: all 0.3s;
+    opacity: 1;
+    position: relative;
+    animation-name: slideInLeft;
+    animation-duration: 300ms; }
+  .message-item-wrapper.bot .message {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0); }
+  .message-item-wrapper.bot .progress {
+    opacity: 0;
+    transition: all 0.8s;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between; }
+    .message-item-wrapper.bot .progress p {
+      font-size: 14px; }
+  .message-item-wrapper.bot.loaded .typing-loader {
+    width: 70px;
+    position: absolute;
+    opacity: 0;
+    transform: translateY(2em); }
+  .message-item-wrapper.bot.loaded .message {
+    position: relative;
+    opacity: 1;
+    transform: scale(1); }
+  .message-item-wrapper.bot.loaded .progress {
+    opacity: 1;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    padding: 1em;
+    transition: none; }
+    @media screen and (max-width: 468px) {
+      .message-item-wrapper.bot.loaded .progress p {
+        font-size: 10px; } }
+    @media screen and (min-width: 469px) {
+      .message-item-wrapper.bot.loaded .progress p {
+        font-size: 1em; } }
+    .message-item-wrapper.bot.loaded .progress .circle {
+      background-color: grey;
+      border: 1px solid #152439;
+      border-radius: 20px;
+      margin: 2px; }
+      @media screen and (max-width: 468px) {
+        .message-item-wrapper.bot.loaded .progress .circle {
+          height: 10px;
+          width: 10px; } }
+      @media screen and (min-width: 469px) {
+        .message-item-wrapper.bot.loaded .progress .circle {
+          height: 15px;
+          width: 15px; } }
+  .message-item-wrapper.user .typing-loader {
+    width: 70px;
+    transition: all 0.3s;
+    opacity: 1;
+    position: relative;
+    animation-name: slideInRight;
+    animation-duration: 300ms; }
+  .message-item-wrapper.user .message {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0);
+    font-weight: 100;
+    background-color: white; }
+  .message-item-wrapper.user.loaded .typing-loader {
+    width: 40px;
+    position: absolute;
+    opacity: 0;
+    transform: translateY(2em); }
+  .message-item-wrapper.user.loaded .message {
+    position: relative;
+    opacity: 1;
+    transform: scale(1); }
+  .message-item-wrapper.user .typing-loader {
+    display: block; }
+  .message-item-wrapper.agency {
+    align-self: flex-end; }
+    .message-item-wrapper.agency .typing-loader {
+      width: 70px;
+      transition: all 0.3s;
+      opacity: 1;
+      position: relative;
+      animation-name: slideInRight;
+      animation-duration: 300ms; }
+    .message-item-wrapper.agency .message {
+      background-color: #fdffd0;
+      color: #152439;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.agency .message.notbolt {
+        background-color: #fdffd0;
+        color: #152439; }
+    .message-item-wrapper.agency.loaded .typing-loader {
+      width: 40px;
+      position: absolute;
+      opacity: 0;
+      transform: translateY(2em); }
+    .message-item-wrapper.agency.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.agency .typing-loader {
+      display: block; }
+  .message-item-wrapper.landlord {
+    align-self: flex-end; }
+    .message-item-wrapper.landlord .message {
+      background-color: #daffda;
+      color: #152439;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.landlord .message.notbolt {
+        background-color: #daffda;
+        color: #152439; }
+    .message-item-wrapper.landlord.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.landlord .typing-loader {
+      display: none; }
+  .message-item-wrapper.contractor {
+    align-self: flex-end; }
+    .message-item-wrapper.contractor .typing-loader {
+      width: 70px;
+      transition: all 0.3s;
+      opacity: 1;
+      position: relative;
+      animation-name: slideInRight;
+      animation-duration: 300ms; }
+    .message-item-wrapper.contractor .message {
+      background-color: #ffeaf9;
+      color: #152439;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.contractor .message.notbolt {
+        background-color: #ffeaf9;
+        color: #152439; }
+    .message-item-wrapper.contractor.loaded .typing-loader {
+      width: 40px;
+      position: absolute;
+      opacity: 0;
+      transform: translateY(2em); }
+    .message-item-wrapper.contractor.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.contractor .typing-loader {
+      display: block; }
+
+.avatar {
+  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px; }

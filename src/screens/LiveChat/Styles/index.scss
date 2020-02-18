@@ -1,0 +1,35 @@
+@import "Fonts.scss";
+@import "Constants.scss";
+@import "Animations.scss";
+@import "Common.scss";
+@import "Loader.scss";
+@import "Select.scss";
+@import "App.scss";
+
+@import "MessageList.scss";
+@import "MessageItem.scss";
+@import "MessageInput.scss";
+@import "Cards.scss";
+
+body {
+  margin: 0;
+  padding: 0;
+  font-family: "Graphik", sans-serif;
+  line-height: 1.4;
+  * {
+    -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
+    -webkit-touch-callout: none;
+    -webkit-user-select: none;
+    -moz-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+  }
+  input,
+  textarea {
+    -webkit-touch-callout: default;
+    -webkit-user-select: text;
+    -moz-user-select: text;
+    -ms-user-select: text;
+    user-select: text;
+  }
+}

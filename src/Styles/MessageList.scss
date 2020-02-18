@@ -1,0 +1,41 @@
+@import "Animations.scss";
+@import "Constants.scss";
+
+.message-list-wrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  min-height: calc(100vh - 10em);
+  @media screen and (min-width: 469px) {
+    margin-bottom: 4em;
+  }
+  .lastimage {
+    width: 80%;
+    height: 100%;
+    @media screen and (max-width: 468px) {
+      width: 100%;
+    }
+  }
+  .card-static-wrapper {
+    animation-name: fadeIn;
+    animation-duration: $animationDuration;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    height: 12em;
+    margin-top: -0.5em;
+    margin-left: -1em;
+    width: 100vw;
+    &::-webkit-scrollbar {
+      display: none;
+    }
+    img {
+      height: 100%;
+    }
+  }
+  .preload-image {
+    display: none;
+  }
+}

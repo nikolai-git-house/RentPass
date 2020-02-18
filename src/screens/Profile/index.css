@@ -1,0 +1,106 @@
+#home-container {
+  width: 100% !important; }
+
+.block-content {
+  box-shadow: none !important; }
+
+.personal_profile {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  margin-bottom: 40px;
+  background-color: #ecedee;
+  width: 100%;
+  height: 100px;
+  padding-top: 30px;
+  padding-left: 10%;
+  border: none;
+  font-weight: 400; }
+  .personal_profile p {
+    margin: 0px !important;
+    line-height: 1.2;
+    font-size: 20px; }
+
+.personal-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 10px 0px;
+  background-color: white;
+  border-radius: 20px; }
+  .personal-view .row_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: flex-start;
+    width: 100%;
+    padding-left: 10%;
+    margin-bottom: 10px; }
+    .personal-view .row_item p {
+      padding-left: 10px;
+      margin-bottom: 0px; }
+
+.renting-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: flex-start;
+  padding-left: 40px;
+  padding-right: 40px; }
+  .renting-view .row_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    margin-bottom: 10px; }
+    .renting-view .row_item p {
+      margin-left: 5px;
+      margin-bottom: 0px; }
+  .renting-view a {
+    width: 100%; }
+  .renting-view button {
+    background-color: #ecedee;
+    width: 100%;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer; }
+  .renting-view button:hover {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); }
+
+.my-iframe {
+  height: -webkit-fill-available; }
+
+.feed {
+  width: 100%;
+  height: 50px;
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  margin-top: 5px;
+  margin-bottom: 5px;
+  padding-left: 10px; }
+  .feed p {
+    margin-bottom: 0px !important;
+    font-weight: 300;
+    line-height: 1em; }
+  .feed .avatar {
+    box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+    border-radius: 20px; }
+
+@media only screen and (max-width: 768px) {
+  .renting-view {
+    padding: 0px 20px; }
+  .content {
+    padding: 0.8em !important; } }

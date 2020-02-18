@@ -1,0 +1,26 @@
+p {
+  margin-bottom: 10px;
+}
+.ticket {
+  height: 45px;
+  border: 1px solid;
+  cursor: pointer;
+  div {
+    p {
+      margin-bottom: 0px !important;
+      line-height: 1 !important;
+    }
+  }
+  p {
+    margin-bottom: 0px !important;
+  }
+}
+.block-content {
+  margin-bottom: 5px !important;
+  box-shadow: none !important;
+  border-radius: 10px;
+  padding: 1em !important;
+  p {
+    margin-bottom: 0px !important;
+  }
+}

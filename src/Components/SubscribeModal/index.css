@@ -1,0 +1,55 @@
+.modal-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center; }
+  .modal-panel .service-text {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin-bottom: 5px;
+    align-items: center; }
+  .modal-panel .description-text {
+    text-align: center;
+    margin: 10px; }
+    .modal-panel .description-text h3 {
+      color: grey;
+      margin-bottom: 0px; }
+    .modal-panel .description-text p {
+      font-style: italic;
+      color: grey; }
+  .modal-panel .email {
+    width: 90%; }
+  .modal-panel .price-text_standard {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start; }
+    .modal-panel .price-text_standard .pound {
+      color: #68e893;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 0px; }
+    .modal-panel .price-text_standard .number {
+      color: #68e893;
+      font-size: 50px;
+      font-weight: 600;
+      margin-bottom: -12px; }
+    .modal-panel .price-text_standard .pcm {
+      color: grey;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 0px; }
+  .modal-panel .price-text_hmo {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center; }
+
+.my-footer {
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: center;
+  padding: 1rem; }

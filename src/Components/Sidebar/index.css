@@ -1,0 +1,18 @@
+.simplebar-scroll-content {
+  overflow-y: hidden !important; }
+
+.simplebar-content {
+  overflow-x: hidden !important; }
+  .simplebar-content .my-bg-header {
+    background-color: #a9ffc6; }
+
+#sidebar .content-header {
+  padding-left: 2rem !important;
+  padding-right: 2rem !important; }
+
+.nav-main-link .nav-main-link-icon {
+  color: #152439 !important; }
+
+.page-header-dark #page-header .btn-dual,
+.sidebar-dark #sidebar .btn-dual {
+  color: #152439 !important; }

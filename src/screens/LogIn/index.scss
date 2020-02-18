@@ -1,0 +1,47 @@
+a {
+  color: white;
+}
+a:hover {
+  color: white;
+}
+.bg-image {
+  background-image: url("../../assets/media/photos/landing_image.jpeg") !important;
+}
+.bg-opacity {
+  background-color: rgba(0, 0, 0, 0.75) !important;
+}
+.btn-hero-primary {
+  background-color: #a9ffc6 !important;
+  color: #152439 !important;
+}
+.card-content {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  height: 150px;
+  background-color: #ecedee;
+  margin-bottom: 20px;
+  p {
+    font-size: 25px;
+    font-weight: "500";
+    margin-bottom: 10px;
+  }
+  button {
+    background-color: white;
+    padding-left: 20px;
+    padding-right: 20px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    margin-bottom: 10px;
+    color: black;
+    font-size: 20px;
+    border: none;
+    cursor: pointer;
+    border-radius: 5px;
+  }
+  button:hover {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2);
+  }
+}

@@ -1,0 +1,113 @@
+.message-select-container {
+  width: 100%;
+  border-top: 1px solid rgba(255, 255, 255, 0.4);
+  padding-top: 1em;
+  position: relative; }
+  .message-select-container .select-category {
+    padding: 10px;
+    color: #fff;
+    text-align: center;
+    font-weight: 500; }
+  .message-select-container .select-wrapper {
+    height: 42vh;
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    flex-wrap: nowrap;
+    overflow-x: hidden;
+    overflow-y: scroll;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    transition: margin-bottom 400ms; }
+    .message-select-container .select-wrapper.popular {
+      height: 32vh; }
+    .message-select-container .select-wrapper::-webkit-scrollbar {
+      display: none; }
+    .message-select-container .select-wrapper.active {
+      margin-bottom: 70px; }
+    .message-select-container .select-wrapper .option-wrapper {
+      background-color: #ffffff;
+      border-radius: 8px;
+      overflow: hidden;
+      flex: 0;
+      opacity: 0;
+      max-height: 40vh;
+      position: absolute;
+      width: 100%;
+      transition: height 0.15s ease-in, top 0.15s ease-in;
+      display: none;
+      height: 3.4em; }
+      .message-select-container .select-wrapper .option-wrapper.display-all, .message-select-container .select-wrapper .option-wrapper.active {
+        opacity: 1;
+        display: flex;
+        flex-direction: column; }
+      .message-select-container .select-wrapper .option-wrapper.display-all {
+        margin-bottom: 1em; }
+        .message-select-container .select-wrapper .option-wrapper.display-all .option-values {
+          display: none; }
+      .message-select-container .select-wrapper .option-wrapper.active {
+        top: 0 !important;
+        height: 40vh; }
+        .message-select-container .select-wrapper .option-wrapper.active .option-values {
+          display: flex; }
+        .message-select-container .select-wrapper .option-wrapper.active .option-header .chevron img {
+          transform: scaleY(-1); }
+      .message-select-container .select-wrapper .option-wrapper .option-header {
+        padding: 1em;
+        display: flex;
+        align-items: center;
+        cursor: pointer; }
+        .message-select-container .select-wrapper .option-wrapper .option-header .option-header-name {
+          flex: 1;
+          font-weight: 600; }
+        .message-select-container .select-wrapper .option-wrapper .option-header .chevron img {
+          transition: transform 0.3s;
+          transform: scaleY(1); }
+      .message-select-container .select-wrapper .option-wrapper .option-values {
+        padding-bottom: 0.5em;
+        flex: 1;
+        overflow-x: hidden;
+        overflow-y: scroll;
+        display: flex;
+        flex-direction: column;
+        flex-wrap: nowrap;
+        -webkit-overflow-scrolling: touch;
+        -ms-overflow-style: -ms-autohiding-scrollbar; }
+        .message-select-container .select-wrapper .option-wrapper .option-values::-webkit-scrollbar {
+          display: none; }
+        .message-select-container .select-wrapper .option-wrapper .option-values .value {
+          flex: 0 0 auto;
+          padding: 0.5em 1em;
+          display: flex;
+          align-items: center; }
+          .message-select-container .select-wrapper .option-wrapper .option-values .value:first-child {
+            padding-top: 0; }
+          .message-select-container .select-wrapper .option-wrapper .option-values .value .value-name {
+            flex: 1; }
+          .message-select-container .select-wrapper .option-wrapper .option-values .value .check {
+            transition: transform 0.15s;
+            transform: scale(0); }
+          .message-select-container .select-wrapper .option-wrapper .option-values .value.checked {
+            color: #fff;
+            font-weight: 600; }
+            .message-select-container .select-wrapper .option-wrapper .option-values .value.checked .check {
+              transform: scale(1); }
+      .message-select-container .select-wrapper .option-wrapper .values-overlay {
+        position: absolute;
+        left: 0;
+        right: 0;
+        bottom: 0;
+        height: 3em;
+        background: linear-gradient(rgba(255, 255, 255, 0.3), white);
+        border-radius: 18px;
+        pointer-events: none; }
+
+.button-wrapper {
+  display: flex;
+  margin-top: 1em;
+  animation-name: fadeIn;
+  animation-duration: 700ms;
+  position: absolute;
+  width: 100%;
+  bottom: 0;
+  z-index: 100; }

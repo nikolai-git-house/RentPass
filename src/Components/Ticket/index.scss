@@ -1,0 +1,11 @@
+.ticket-content {
+  height: 500;
+  display: flex;
+  flex-direction: column;
+  p {
+    color: #152439;
+  }
+  > *:last-child {
+    margin-bottom: 40px;
+  }
+}

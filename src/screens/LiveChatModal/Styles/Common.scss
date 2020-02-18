@@ -1,0 +1,9 @@
+@import "Constants.scss";
+
+.message{
+	padding: 1em;
+	border-radius: 14px;
+	background-color: $white;
+	box-shadow: $box-shadow;
+	transition: all $animationDuration;
+}

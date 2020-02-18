@@ -1,0 +1,43 @@
+.tenant-thumb {
+  width: 220px;
+  height: 220px;
+  margin: 20px;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  box-shadow: 0 0 6px rgba(0, 0, 0, 0.6);
+  border-radius: 10px;
+  cursor: pointer; }
+  .tenant-thumb .avatar-img {
+    width: 100%;
+    height: 100%; }
+  .tenant-thumb .caption-bar {
+    background: black;
+    display: flex;
+    text-align: center;
+    margin-top: auto;
+    height: 80px;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    opacity: 0.8; }
+    .tenant-thumb .caption-bar p {
+      color: white; }
+    .tenant-thumb .caption-bar .name {
+      font-size: 15px;
+      margin-bottom: 0px; }
+    .tenant-thumb .caption-bar .address {
+      font-size: 13px; }
+    .tenant-thumb .caption-bar .pending {
+      font-size: 13px;
+      color: #ffc06e; }
+    .tenant-thumb .caption-bar .active {
+      font-size: 13px;
+      color: #a4ff66; }
+
+@media (max-width: 767px) {
+  .tenant-thumb {
+    width: 157px;
+    height: 157px;
+    margin: 10px; } }

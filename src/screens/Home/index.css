@@ -1,0 +1,90 @@
+#home-container {
+  width: 100% !important;
+  position: fixed;
+  justify-content: center;
+  align-items: flex-start;
+  height: 100%;
+  top: 72px; }
+
+.block-content {
+  box-shadow: none !important; }
+
+.home-view {
+  width: 100%;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  padding: 0px !important;
+  margin-top: 50px; }
+  .home-view .row_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 30px;
+    padding-right: 30px;
+    margin-bottom: 10px; }
+    .home-view .row_item .description {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start; }
+      .home-view .row_item .description p {
+        margin-left: 5px;
+        margin-bottom: 0px; }
+  .home-view .pack_item {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    width: 100%;
+    padding-left: 40px;
+    padding-right: 40px;
+    margin-top: 20px;
+    margin-bottom: 20px; }
+    .home-view .pack_item .description {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start; }
+      .home-view .pack_item .description p {
+        margin-left: 5px;
+        margin-bottom: 0px;
+        font-weight: "400"; }
+    .home-view .pack_item button {
+      background-color: #ecedee;
+      width: 30%;
+      border: none;
+      border-radius: 10px;
+      font-size: 20px;
+      color: black;
+      text-align: center;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      cursor: pointer; }
+    .home-view .pack_item button:hover {
+      box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); }
+  .home-view a {
+    width: 100%; }
+  .home-view button {
+    background-color: #ecedee;
+    width: 90%;
+    border: none;
+    border-radius: 5px;
+    font-size: 20px;
+    color: black;
+    text-align: center;
+    margin-top: 10px;
+    padding-top: 5px;
+    padding-bottom: 5px;
+    cursor: pointer; }
+  .home-view button:hover {
+    box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); }
+
+@media only screen and (max-width: 768px) {
+  .content {
+    padding: 0.8em !important; }
+  #home-container {
+    position: relative; } }

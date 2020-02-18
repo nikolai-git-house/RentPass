@@ -1,0 +1,70 @@
+@keyframes slideInRight {
+  0% {
+    left: -1em; }
+  100% {
+    left: 0; } }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes bounceInUp {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 400px, 0); }
+  40% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0); }
+  65% {
+    transform: translate3d(0, 10px, 0); }
+  80% {
+    transform: translate3d(0, -5px, 0); }
+  to {
+    transform: translate3d(0, 0, 0); } }
+
+@keyframes typingLoader {
+  0%, 60%, 100% {
+    opacity: 0.4; }
+  30% {
+    opacity: 1; } }
+
+.message-list-wrapper {
+  position: relative;
+  display: flex;
+  align-items: flex-start;
+  flex-direction: column;
+  min-height: calc(100vh - 10em); }
+  @media screen and (min-width: 469px) {
+    .message-list-wrapper {
+      margin-bottom: 4em; } }
+  .message-list-wrapper .lastimage {
+    width: 80%;
+    height: 100%; }
+    @media screen and (max-width: 468px) {
+      .message-list-wrapper .lastimage {
+        width: 100%; } }
+  .message-list-wrapper .card-static-wrapper {
+    animation-name: fadeIn;
+    animation-duration: 400ms;
+    overflow-x: scroll;
+    overflow-y: hidden;
+    -webkit-overflow-scrolling: touch;
+    -ms-overflow-style: -ms-autohiding-scrollbar;
+    height: 12em;
+    margin-top: -0.5em;
+    margin-left: -1em;
+    width: 100vw; }
+    .message-list-wrapper .card-static-wrapper::-webkit-scrollbar {
+      display: none; }
+    .message-list-wrapper .card-static-wrapper img {
+      height: 100%; }
+  .message-list-wrapper .preload-image {
+    display: none; }

@@ -1,0 +1,58 @@
+@media (min-width: 768px) {
+  .content {
+    width: 100%;
+    margin: 0 auto;
+    padding: 1.75rem 2.75rem 1px;
+    overflow-x: visible;
+  }
+  #page-container {
+    display: flex !important;
+    flex-direction: column;
+    align-items: flex-start;
+    // background-image: url("../../images/top_bg.png");
+    // background-position: top right;
+    // background-repeat: no-repeat;
+    // background-size: 300px;
+    padding-left: 0 !important;
+  }
+}
+#page-header .content-header {
+  padding-left: 0;
+}
+@media (min-width: 1200px) {
+  #page-container.main-content-narrow > #page-header .content-header {
+    max-width: none !important;
+  }
+}
+.badge {
+  padding-top: 0.5rem !important;
+  padding-bottom: 0.5rem !important;
+  padding-left: 0.8rem !important;
+  padding-right: 0.8rem !important;
+}
+
+.ReactModal__Content {
+  position: absolute;
+  top: 50% !important;
+  left: 50% !important;
+  right: 10% !important;
+  bottom: 10% !important;
+  border: 1px solid rgb(204, 204, 204) !important;
+  background: rgb(255, 255, 255) !important;
+  overflow: auto !important;
+  border-radius: 4px !important;
+  outline: none !important;
+  padding: 20px !important;
+  transform: translate(-50%, -50%) !important;
+  height: fit-content;
+}
+@media (min-width: 768px) {
+  .ReactModal__Content {
+    width: 50%;
+  }
+}
+@media (max-width: 767px) {
+  .ReactModal__Content {
+    width: 90%;
+  }
+}

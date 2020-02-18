@@ -1,0 +1,80 @@
+@keyframes slideInRight {
+  0% {
+    left: -1em; }
+  100% {
+    left: 0; } }
+
+@keyframes fadeIn {
+  0% {
+    opacity: 0; }
+  100% {
+    opacity: 1; } }
+
+@keyframes bounceInUp {
+  from,
+  60%,
+  75%,
+  90%,
+  to {
+    animation-timing-function: cubic-bezier(0.215, 0.61, 0.355, 1); }
+  from {
+    opacity: 0;
+    transform: translate3d(0, 400px, 0); }
+  40% {
+    opacity: 1;
+    transform: translate3d(0, -20px, 0); }
+  65% {
+    transform: translate3d(0, 10px, 0); }
+  80% {
+    transform: translate3d(0, -5px, 0); }
+  to {
+    transform: translate3d(0, 0, 0); } }
+
+@keyframes typingLoader {
+  0%, 60%, 100% {
+    opacity: 0.4; }
+  30% {
+    opacity: 1; } }
+
+.message-item-wrapper {
+  color: #555;
+  max-width: 100%;
+  margin-bottom: 1em;
+  min-height: 1.4em; }
+  .message-item-wrapper.agency {
+    align-self: flex-end; }
+    .message-item-wrapper.agency .message {
+      background-color: #152439;
+      color: #ffffff;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.agency .message.notbolt {
+        background-color: #152439;
+        color: #ffffff; }
+    .message-item-wrapper.agency.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.agency .typing-loader {
+      display: block; }
+  .message-item-wrapper.landlord {
+    align-self: flex-end; }
+    .message-item-wrapper.landlord .message {
+      background-color: #152439;
+      color: #ffffff;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.landlord .message.notbolt {
+        background-color: #152439;
+        color: #ffffff; }
+    .message-item-wrapper.landlord.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.landlord .typing-loader {
+      display: none; }
+
+.avatar {
+  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin-right: 5px; }

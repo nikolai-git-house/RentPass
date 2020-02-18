@@ -1,0 +1,66 @@
+.modal-panel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  .service-text {
+    display: flex;
+    flex-direction: row;
+    width: 90%;
+    margin-bottom: 5px;
+    align-items: center;
+  }
+  .description-text {
+    text-align: center;
+    margin: 10px;
+    h3 {
+      color: grey;
+      margin-bottom: 0px;
+    }
+    p {
+      font-style: italic;
+      color: grey;
+    }
+  }
+  .email {
+    width: 90%;
+  }
+  .price-text_standard {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: flex-start;
+    .pound {
+      color: #68e893;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 0px;
+    }
+    .number {
+      color: #68e893;
+      font-size: 50px;
+      font-weight: 600;
+      margin-bottom: -12px;
+    }
+    .pcm {
+      color: grey;
+      font-size: 30px;
+      font-weight: 600;
+      margin-bottom: 0px;
+    }
+  }
+  .price-text_hmo {
+    display: flex;
+    flex-direction: row;
+    align-items: flex-end;
+    justify-content: center;
+  }
+}
+.my-footer {
+  display: flex;
+  -ms-flex-align: center;
+  align-items: center;
+  -ms-flex-pack: end;
+  justify-content: center;
+  padding: 1rem;
+}

@@ -1,0 +1,92 @@
+@import "Constants.scss";
+
+.cards-container{
+	hr{
+		border: 1px solid #ffffff66;
+		margin: 0;
+	}
+	position: relative;
+	.cards-inner-container{
+		width: 100vw;
+		margin: 0 -1em 0 -1em;
+		overflow-y: hidden;
+		overflow-x: scroll;
+		display: flex;
+		flex-wrap: nowrap;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		padding: 1em 0 70px 0;
+		.card-wrapper {
+			box-shadow: 0 8px 26px 0 rgba(0, 0, 0, 0.32);
+			margin-left: 1em;
+			&:last-child{
+				margin-right: 1em;
+			}
+			flex: 0 0 auto;
+			height: 10em;
+			width: 14.5em;
+			border-radius: 18px;
+			background-color: $white;
+			position: relative;
+			display: flex;
+			img{
+				border-radius: 18px;
+				top: 0;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+			}
+			.overflow{
+				top: 0;
+				position: absolute;
+				width: 100%;
+				height: 100%;
+				background: linear-gradient(rgba(0, 0, 0, 0.1), rgba(0, 0, 0, 0.6));
+				border-radius: 18px;
+			}
+			.card-inner{
+				flex: 1 1;
+				display: flex;
+				flex-direction: column;
+				align-items: center;
+				justify-content: center;
+				color: $white;
+				text-shadow: 0 2px 4px rgba(0, 0, 0, 0.4);
+				z-index: 100;
+				.card-name{
+					font-size: 1.2em;
+					font-weight: 600;
+					margin-bottom: 10px;
+				}
+				color: rgba(255, 255, 255, 0.8);
+				&.selected{
+					color: white;
+				}
+				.card-description{
+
+				}
+				.card-button{
+					margin-top: 12px;
+					border: 2px solid $white;
+					padding: 0.1em 1em 0.2em 1em;
+					border-radius: 50px;
+					text-shadow: none;
+					width: 3.2em;
+					text-align: center;
+					&.selected{
+						width: 4em;
+						background: $primary;
+						border-color: $primary;
+					}
+				}
+			}
+		}
+		.padding-adjust{
+			padding: 0.5em;
+		}
+	}
+
+}

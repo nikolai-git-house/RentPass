@@ -1,0 +1,60 @@
+@import "Animations.scss";
+@import "Constants.scss";
+
+.message-item-wrapper {
+  color: $text;
+  max-width: 100%;
+  margin-bottom: 1em;
+  min-height: 1.4em;
+  &.agency {
+    align-self: flex-end;
+    .message {
+      background-color: $black;
+      color: $white;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0);
+      &.notbolt {
+        background-color: $black;
+        color: $white;
+      }
+    }
+    &.loaded {
+      .message {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .typing-loader {
+      display: block;
+    }
+  }
+  &.landlord {
+    align-self: flex-end;
+    .message {
+      background-color: $black;
+      color: $white;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0);
+      &.notbolt {
+        background-color: $black;
+        color: $white;
+      }
+    }
+    &.loaded {
+      .message {
+        opacity: 1;
+        transform: scale(1);
+      }
+    }
+    .typing-loader {
+      display: none;
+    }
+  }
+}
+.avatar {
+  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px;
+  margin-right: 5px;
+}

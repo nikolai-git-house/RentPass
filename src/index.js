@@ -8,7 +8,7 @@ import * as serviceWorker from "./serviceWorker";
 import "./assets/styles/dashmix.min.css";
 import store from "./redux";
 ReactDOM.render(
-  <Router basename="/home">
+  <Router basename="/myhome">
     <Provider store={store}>
       <App />
     </Provider>

@@ -76,7 +76,7 @@
     "start": "npm-run-all -p watch-css start-js",
     "build-js": "node scripts/build.js",
     "build": "npm-run-all build-css build-js",
-    "build-eco": "npm run build && rm -rf ../ecosystem/public/home && cp -R build ../ecosystem/public/home",
+    "build-eco": "npm-run-all build-css build-js && rm -rf ../../public/myhome && cp -a ./build ../../public/myhome",
     "test": "node scripts/test.js --env=jsdom"
   },
   "jest": {

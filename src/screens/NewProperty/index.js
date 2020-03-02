@@ -66,10 +66,7 @@ class NewProperty extends React.Component {
       <div
         id="property-container "
         className="row no-gutters flex-md-10-auto"
-        style={{
-          position: "fixed",
-          top: 72
-        }}
+
       >
         {property && (
           <PropertyThumbnail

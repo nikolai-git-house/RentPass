@@ -26,9 +26,9 @@ class LogIn extends React.PureComponent {
     this.onChangeHandler.bind(this);
   }
   componentDidMount() {
-    let uid = localStorage.getItem("rentkey_uid");
-    let profile = localStorage.getItem("rentkey_profile");
-    let brand_data = localStorage.getItem("rentkey_brand_data");
+    let uid = localStorage.getItem("uid");
+    let profile = localStorage.getItem("profile");
+    let brand_data = localStorage.getItem("brand");
     let users = localStorage.getItem("rentkey_users");
     if (uid) {
       this.props.dispatch(saveUID(uid));
@@ -40,6 +40,8 @@ class LogIn extends React.PureComponent {
       console.log("profile", profile);
       console.log("brand_data", JSON.parse(brand_data));
       console.log("users", JSON.parse(users));
+    } else {
+      window.location = "/login"
     }
   }
   componentWillUnmount() {

@@ -136,15 +136,14 @@ class Tickets extends React.Component {
       <div id="page-container">
         <div
           className="row no-gutters flex-md-10-auto"
-          style={{ position: "fixed", width: "100%", height: "100%", top: 62 }}
+          style={{ width: "100%", height: "100%" }}
         >
           <div
             className="row no-gutters flex-md-10-auto"
             style={{
-              position: "fixed",
               width: "100%",
               height: "100%",
-              top: 70
+              marginTop: 20
             }}
           >
             <div

@@ -12,8 +12,8 @@ const App = () => (
   <React.Fragment>
     <CommonHeader />
     <Switch>
-      <Route exact path="/" component={LogIn} />
-      <Route exact path="/signup" component={SignUp} />
+      {/* <Route exact path="/" component={LogIn} /> */}
+      {/* <Route exact path="/signup" component={SignUp} /> */}
       <Route exact path="/authreminder" component={AuthReminder} />
       <Route component={AppTemplate} />
     </Switch>

@@ -24,6 +24,7 @@ class Housemates extends React.Component {
   async componentDidMount() {
     const { uid, profile, brand, housemates } = this.props;
     console.log("uid in Housemates", uid);
+    console.log(profile)
     if (!uid) this.props.history.push("/");
     else {
       const { property_id, phonenumber } = profile;
@@ -31,6 +32,7 @@ class Housemates extends React.Component {
       //let housemates = await Firebase.getPropertyMembersById(groupId, brand.name);
       //this.setState({ housemates, loading: false });
       let _this = this;
+      if (!property_id) return
       this.unsubscribeHousemates = Firebase.firestore()
         .collection(brand.name)
         .doc("data")

@@ -25,12 +25,39 @@ class Header extends React.Component {
     const { profile, brand, logout, history } = this.props;
     const { menuVisible } = this.state;
     console.log("history", history);
+    let username = "";
+    let logo = "";
+    if (profile) {
+      username = profile.firstname;
+      logo = brand.logo;
+    }
+
     return (
       <header id="page-header" className="page-header-glass">
+        <div id="top-menu">
+          <img src={logo} />
+          <ul>
+            <li className="active">
+              <a onClick={() => { window.location = "/community/" }}>Community</a>
+            </li>
+            <li>
+              <a onClick={() => { window.location = "/concierge/" }}>Concierge</a>
+            </li>
+            <li >
+              <a onClick={() => { window.location = "/myhome/" }}>My Home</a>
+            </li>
+          </ul>
+          <button
+            className="btn btn-light text-center"
+            onClick={logout}
+          >
+            <i className="fas fa-sign-out-alt" />Sign Out
+          </button>
+        </div>
         <div className="content-header">
           <div className="heading">
             <a className="link-fx font-w600 font-size-lg text-white" href="/">
-              <span className="smini-hidden">
+              <span className="smini-hidden mobile-show">
                 <span className="text-white-75">
                   <img src={brand.logo} style={{ width: 150 }} alt="logo" />
                 </span>
@@ -38,6 +65,15 @@ class Header extends React.Component {
             </a>
 
             <ul className={menuVisible ? "show" : "hide"}>
+              <li className="nav-main-item mobile-show">
+                <a className="nav-main-link" onClick={() => { window.location = "/community/" }}>Community</a>
+              </li>
+              <li className="nav-main-item mobile-show">
+                <a className="nav-main-link" onClick={() => { window.location = "/concierge/" }}>Concierge</a>
+              </li>
+              <li className="nav-main-item mobile-show">
+                <a className="nav-main-link" onClick={() => { window.location = "/myhome/" }}>My Home</a>
+              </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/profile" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">My Profile</span>
@@ -90,7 +126,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Shop</span>
                 </NavLink>
               </li>
-              <button onClick={logout} type="button" className="btn">
+              <button onClick={logout} type="button" className="btn mobile-show">
                 <i className="si si-logout" />
                 <p style={{ color: "black", width: 100, marginLeft: 5 }}>
                   Logout

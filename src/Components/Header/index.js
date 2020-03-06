@@ -6,6 +6,8 @@ import "./index.css";
 import logoImg from "../../assets/media/logo.png";
 import burgerImg from "../../assets/media/icons/burger.png";
 const poker_chip = require("../../assets/media/icons/wallet.png");
+const nav_live_coin_img = require("../../images/nav_live_coin.png");
+const resp_live_coin_img = require("../../images/resp_live_coin.png");
 
 class Header extends React.Component {
   constructor(props) {
@@ -27,9 +29,11 @@ class Header extends React.Component {
     console.log("history", history);
     let username = "";
     let logo = "";
+    let tokens = 0;
     if (profile) {
       username = profile.firstname;
       logo = brand.logo;
+      tokens = profile.tokens ? profile.tokens : 0;
     }
 
     return (
@@ -37,22 +41,47 @@ class Header extends React.Component {
         <div id="top-menu">
           <img src={logo} />
           <ul>
-            <li className="active">
+            <li>
               <a onClick={() => { window.location = "/community/" }}>Community</a>
             </li>
             <li>
               <a onClick={() => { window.location = "/concierge/" }}>Concierge</a>
             </li>
-            <li >
+            <li className="active">
               <a onClick={() => { window.location = "/myhome/" }}>My Home</a>
             </li>
           </ul>
-          <button
-            className="btn btn-light text-center"
-            onClick={logout}
-          >
-            <i className="fas fa-sign-out-alt" />Sign Out
-          </button>
+          <div className="nav-token-counter-wrapper mr-2">
+            <p>{tokens}</p>
+            <img src={nav_live_coin_img} alt="coin" />
+          </div>
+          <div className="dropdown d-inline-block">
+            <button
+              type="button"
+              className="btn top-btn"
+              id="page-header-notifications-dropdown"
+              data-toggle="dropdown"
+              aria-haspopup="true"
+              aria-expanded="false"
+            >
+              <i className="fas fa-user" />
+              <span className="badge  badge-pill">{username}</span>
+            </button>
+            <div
+              className="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+              aria-labelledby="page-header-notifications-dropdown"
+            >
+              <div className="p-2 border-top">
+                <button
+                  className="btn btn-light btn-block text-center"
+                  onClick={logout}
+                >
+                  <i className="fa fa-sign-out-alt" />
+                  &nbsp;&nbsp;&nbsp;Sign Out
+                </button>
+              </div>
+            </div>
+          </div>
         </div>
         <div className="content-header">
           <div className="heading">

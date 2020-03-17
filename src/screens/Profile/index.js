@@ -87,7 +87,7 @@ class Profile extends React.Component {
       <div id="home-container" className="row no-gutters flex-md-10-auto">
         <div
           className="col-md-5 col-lg-5 col-xl-5"
-          style={{ padding: 15, overflow: "scroll" }}
+          style={{ padding: 15, overflow: "auto" }}
         >
           <div className="content">
             <div className="personal_profile">

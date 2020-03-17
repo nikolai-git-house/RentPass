@@ -23,17 +23,25 @@ class Header extends React.Component {
   click = () => {
     this.setState({ menuVisible: false });
   };
+  signOut = () => {
+    localStorage.removeItem("uid");
+    localStorage.removeItem("profile");
+    localStorage.removeItem("brand");
+    window.location = "/login"
+  }
   render() {
     const { profile, brand, logout, history } = this.props;
     const { menuVisible } = this.state;
-    console.log("history", history);
+
     let username = "";
     let logo = "";
     let tokens = 0;
+    let isRenter = false;
     if (profile) {
       username = profile.firstname;
       logo = brand.logo;
       tokens = profile.tokens ? profile.tokens : 0;
+      isRenter = profile.renter_owner === "Renter"
     }
 
     return (
@@ -74,7 +82,7 @@ class Header extends React.Component {
               <div className="p-2 border-top">
                 <button
                   className="btn btn-light btn-block text-center"
-                  onClick={logout}
+                  onClick={this.signOut}
                 >
                   <i className="fa fa-sign-out-alt" />
                   &nbsp;&nbsp;&nbsp;Sign Out
@@ -103,11 +111,13 @@ class Header extends React.Component {
               <li className="nav-main-item mobile-show">
                 <a className="nav-main-link" onClick={() => { window.location = "/myhome/" }}>My Home</a>
               </li>
-              <li className="nav-main-item" onClick={this.click}>
-                <NavLink to="/profile" className={classnames("nav-main-link")}>
-                  <span className="nav-main-link-name">My Profile</span>
-                </NavLink>
-              </li>
+              {isRenter && (
+                <li className="nav-main-item" onClick={this.click}>
+                  <NavLink to="/profile" className={classnames("nav-main-link")}>
+                    <span className="nav-main-link-name">Rent ID</span>
+                  </NavLink>
+                </li>
+              )}
               {/* <li className="nav-main-item">
                 <NavLink to="/home" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">My Home</span>
@@ -118,7 +128,7 @@ class Header extends React.Component {
                   to="/housemates"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">My Housemates</span>
+                  <span className="nav-main-link-name">Housemates</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
@@ -126,35 +136,37 @@ class Header extends React.Component {
                   to="/newproperty"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">My Properties</span>
+                  <span className="nav-main-link-name">{isRenter ? 'Properties' : 'Property Profile'}</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item" onClick={this.click}>
-                <NavLink
-                  to="/referencing"
-                  className={classnames("nav-main-link")}
-                >
-                  <span className="nav-main-link-name">Referencing</span>
-                </NavLink>
-              </li>
+              {isRenter && (
+                <li className="nav-main-item" onClick={this.click}>
+                  <NavLink
+                    to="/referencing"
+                    className={classnames("nav-main-link")}
+                  >
+                    <span className="nav-main-link-name">Rent Reference</span>
+                  </NavLink>
+                </li>
+              )}
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink
                   to="/concierge"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">Concierge</span>
+                  <span className="nav-main-link-name">Home Concierge</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/tickets" className={classnames("nav-main-link")}>
-                  <span className="nav-main-link-name">Tickets</span>
+                  <span className="nav-main-link-name">Home Tickets</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item" onClick={this.click}>
+              {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/shop" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">Shop</span>
                 </NavLink>
-              </li>
+              </li> */}
               <button onClick={logout} type="button" className="btn mobile-show">
                 <i className="si si-logout" />
                 <p style={{ color: "black", width: 100, marginLeft: 5 }}>

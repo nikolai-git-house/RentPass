@@ -194,10 +194,10 @@ class Firebase {
       let storageRef = this.storage().ref(`/avatars/${uid}.png`);
       storageRef
         .putString(content, "base64")
-        .then(function(snap) {
+        .then(function (snap) {
           storageRef
             .getDownloadURL()
-            .then(function(url) {
+            .then(function (url) {
               resolve(url);
             })
             .catch(error => {
@@ -205,7 +205,7 @@ class Firebase {
               console.log(error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           reject(error);
         });
     });
@@ -226,10 +226,10 @@ class Firebase {
       let storageRef = this.storage().ref(`/property_logo/${imageName}.png`);
       storageRef
         .putString(content, "base64")
-        .then(function(snap) {
+        .then(function (snap) {
           storageRef
             .getDownloadURL()
-            .then(function(url) {
+            .then(function (url) {
               resolve(url);
             })
             .catch(error => {
@@ -237,7 +237,7 @@ class Firebase {
               console.log(error.message);
             });
         })
-        .catch(function(error) {
+        .catch(function (error) {
           reject(error);
         });
     });
@@ -518,6 +518,23 @@ class Firebase {
         .firestore()
         .collection("landlord")
         .add(profile)
+        .then(res => {
+          resolve(res);
+        })
+        .catch(err => {
+          reject(err);
+        });
+    });
+  };
+  static updateProfileRole = (brand, uid, role) => {
+    return new Promise((resolve, reject) => {
+      firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user")
+        .doc(uid)
+        .update({ renter_owner: role })
         .then(res => {
           resolve(res);
         })
@@ -854,19 +871,19 @@ class Firebase {
     let storageRef = this.storage().ref(`/brand_logo/${imagename}`);
     storageRef
       .putString(content, "base64")
-      .then(function(snap) {
+      .then(function (snap) {
         storageRef
           .getDownloadURL()
-          .then(function(url) {
+          .then(function (url) {
             Firebase.addBrandUrl(imagename, url);
             callback(url);
           })
-          .catch(function(error) {
+          .catch(function (error) {
             callback("error");
             console.log(error.message);
           });
       })
-      .catch(function(error) {
+      .catch(function (error) {
         callback(error.message);
       });
   }

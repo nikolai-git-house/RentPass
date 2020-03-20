@@ -4,6 +4,7 @@ import ReactHtmlParser from "react-html-parser";
 import loadImage from "blueimp-load-image";
 import "./index.css";
 import Firebase from "../../firebasehelper";
+import { saveProfile } from '../../redux/actions'
 const phone_img = require("../../assets/media/icons/personal_profile/phone.png");
 const age_img = require("../../assets/media/icons/personal_profile/user.png");
 const profession_img = require("../../assets/media/icons/personal_profile/suitcase.png");
@@ -35,6 +36,23 @@ class Profile extends React.Component {
     const { profile } = nextProps;
     this.setState({ profile });
   }
+
+  onChangeRole = async (role) => {
+    const { dispatch, profile, brand, uid } = this.props;
+    const newRole = role ? 'Renter' : 'Homeowner';
+    if (newRole === profile.renter_owner) return;
+    try {
+      await Firebase.updateProfileRole(brand.name, uid, newRole)
+      const newProfile = { ...profile }
+      newProfile.renter_owner = newRole
+      dispatch(saveProfile(newProfile))
+      localStorage.setItem("profile", JSON.stringify(newProfile))
+    } catch (e) {
+      console.log(e)
+    }
+
+  }
+
   startTrial = () => {
     this.props.history.push("properties");
   };
@@ -47,7 +65,7 @@ class Profile extends React.Component {
     let _this = this;
     if (e.target.files && e.target.files[0]) {
       var content = e.target.files[0];
-      loadImage.parseMetaData(content, function(data) {
+      loadImage.parseMetaData(content, function (data) {
         //default image orientation
         var orientation = 0;
         if (data.exif) {
@@ -55,7 +73,7 @@ class Profile extends React.Component {
         }
         loadImage(
           content,
-          async function(canvas) {
+          async function (canvas) {
             var base64data = canvas.toDataURL("image/png");
             var img_src = base64data.replace(/^data\:image\/\w+\;base64\,/, "");
             _this.setState({ content: img_src });
@@ -99,7 +117,7 @@ class Profile extends React.Component {
                   marginRight: 10,
                   backgroundImage: `url(${
                     img_content ? img_content : avatar_url
-                  })`,
+                    })`,
                   backgroundRepeat: "no-repeat",
                   backgroundPosition: "center",
                   backgroundSize: "contain"
@@ -141,6 +159,14 @@ class Profile extends React.Component {
                 accept="image/*"
                 onChange={this.selectedFile}
               />
+              {/* <div className="row_item">
+                <button className={`btn btn-switch ${profile.renter_owner === 'Renter' ? 'active' : ''}`} onClick={() => this.onChangeRole(true)}>
+                  Renter
+                </button>
+                <button className={`btn btn-switch ${profile.renter_owner !== 'Renter' ? 'active' : ''}`} style={{ marginLeft: -20 }} onClick={() => this.onChangeRole(false)}>
+                  Homeowner
+                </button>
+              </div> */}
             </div>
           </div>
         </div>

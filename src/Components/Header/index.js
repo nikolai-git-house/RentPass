@@ -58,6 +58,9 @@ class Header extends React.Component {
             <li className="active">
               <a onClick={() => { window.location = "/myhome/" }}>My Home</a>
             </li>
+            <li>
+              <a onClick={() => { window.location = "/profile" }}>My Profile</a>
+            </li>
           </ul>
           <div className="nav-token-counter-wrapper mr-2">
             <p>{tokens}</p>
@@ -110,6 +113,9 @@ class Header extends React.Component {
               </li>
               <li className="nav-main-item mobile-show">
                 <a className="nav-main-link" onClick={() => { window.location = "/myhome/" }}>My Home</a>
+              </li>
+              <li className="nav-main-item mobile-show">
+                <a className="nav-main-link" onClick={() => { window.location = "/profile" }}>My Profile</a>
               </li>
               {isRenter && (
                 <li className="nav-main-item" onClick={this.click}>

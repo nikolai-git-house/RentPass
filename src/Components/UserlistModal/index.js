@@ -47,7 +47,7 @@ class UserlistModal extends React.Component {
         <div className="modal-dialog" role="document">
           <div className="modal-content">
             <div className="modal-header">
-              <h5 className="modal-title">Add tenant</h5>
+              <h5 className="modal-title">Add Housemate</h5>
               <button
                 type="button"
                 className="close"

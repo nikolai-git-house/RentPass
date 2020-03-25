@@ -105,7 +105,7 @@ class AddTenant extends React.PureComponent {
         onRequestClose={toggleModal}
       >
         <div className="modal-header">
-          <h5 className="modal-title">Add Tenants</h5>
+          <h5 className="modal-title">Add Housemates</h5>
           <button type="button" className="close" onClick={toggleModal}>
             <span aria-hidden="true">&times;</span>
           </button>

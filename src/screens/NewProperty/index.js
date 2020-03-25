@@ -63,7 +63,7 @@ class NewProperty extends React.Component {
   render() {
     const { addproperty_visible, property } = this.state;
     return (
-      <div>
+      <div id="housemates-container">
         {property && (
           <PropertyThumbnail
             property={property}

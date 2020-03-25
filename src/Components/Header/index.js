@@ -45,7 +45,7 @@ class Header extends React.Component {
     }
 
     return (
-      <header id="page-header" className="page-header-glass">
+      <header id="page-header">
         <div id="top-menu">
           <img src={logo} />
           <ul>
@@ -96,13 +96,24 @@ class Header extends React.Component {
         </div>
         <div className="content-header">
           <div className="heading">
-            <a className="link-fx font-w600 font-size-lg text-white" href="/">
-              <span className="smini-hidden mobile-show">
-                <span className="text-white-75">
-                  <img src={brand.logo} style={{ width: 150 }} alt="logo" />
-                </span>
-              </span>
-            </a>
+            <button
+              className="header-logo"
+              style={{
+                backgroundImage: logo ? `url(${logo})` : `url(${logoImg})`,
+                // backgroundImage: `url(${default_logo})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "contain",
+                backgroundColor: "transparent",
+                border: "none",
+
+                cursor: "pointer",
+                width: 180,
+                height: 60
+              }}
+            >
+              {/* <img src={logo ? logo : default_logo} height="60px" alt="logo" /> */}
+            </button>
 
             <ul className={menuVisible ? "show" : "hide"}>
               <li className="nav-main-item mobile-show">
@@ -131,18 +142,18 @@ class Header extends React.Component {
               </li> */}
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink
-                  to="/housemates"
+                  to="/newproperty"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">Housemates</span>
+                  <span className="nav-main-link-name">{isRenter ? 'My Properties' : 'Property Profile'}</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink
-                  to="/newproperty"
+                  to="/housemates"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">{isRenter ? 'Properties' : 'Property Profile'}</span>
+                  <span className="nav-main-link-name">Housemates</span>
                 </NavLink>
               </li>
               {isRenter && (
@@ -180,11 +191,15 @@ class Header extends React.Component {
                 </p>
               </button>
             </ul>
+            <div className={`nav-token-counter-wrapper margin_img ${menuVisible ? "hide" : "show"}`}>
+              <p className="small">{tokens}</p>
+              <img src={nav_live_coin_img} style={{ width: "28px", height: "28px" }} />
+            </div>
             <button
               className={`burger ${menuVisible ? "hide" : "show"}`}
               onClick={this.toggleMenu}
             >
-              <img src={burgerImg} width="30" alt="burger" />
+              <img className="img-burger" src={burgerImg} width="30" alt="burger" />
             </button>
           </div>
         </div>

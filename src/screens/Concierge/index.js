@@ -23,7 +23,7 @@ class Concierge extends React.Component {
     brand_name = brand_name.replace(/\s/g, "");
     console.log("profile in render", profile);
     return (
-      <div id="concierge-container" className="row no-gutters flex-md-10-auto">
+      <div id="concierge-container">
         <iframe
           src={`https://aiconcierge.io/${brand_name}?uid=${uid}`}
           width="100%"

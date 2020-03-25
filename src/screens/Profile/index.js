@@ -31,6 +31,9 @@ class Profile extends React.Component {
     if (!uid) this.props.history.push("/");
     console.log("profile", profile);
     this.setState({ profile });
+    if (profile.renter_owner === 'Homeowner') {
+      this.props.history.push("/housemates");
+    }
   }
   componentWillReceiveProps(nextProps) {
     const { profile } = nextProps;

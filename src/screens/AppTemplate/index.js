@@ -30,7 +30,7 @@ class AppTemplate extends React.Component {
       this.props.dispatch(saveProfile(JSON.parse(profile)));
       this.props.dispatch(saveBrand(JSON.parse(brand_data)));
       this.props.dispatch(saveUsers(JSON.parse(users)));
-      this.props.history.push("/profile");
+      this.props.history.push("/newproperty");
       console.log("uid", uid);
       console.log("profile", profile);
       console.log("brand_data", JSON.parse(brand_data));

@@ -44,4 +44,6 @@
 
 @media (max-width: 767px) {
   .ReactModal__Content {
-    width: 90%; } }
+    width: 90%; }
+  #page-container.ticket {
+    margin-top: 60px; } }

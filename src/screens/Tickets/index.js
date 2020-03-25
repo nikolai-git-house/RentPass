@@ -5,7 +5,7 @@ import { getStringfromSeconds } from "../../functions";
 import LiveChat from "../LiveChat";
 import LiveChatModal from "../LiveChatModal";
 import "./index.css";
-const bolt_img = require("../../assets/media/icons/sun.png");
+const bolt_img = require("../../assets/media/icons/yellow-sun.png");
 function compare(a, b) {
   if (parseInt(a.time, 10) < parseInt(b.time, 10)) {
     return 1;
@@ -15,9 +15,9 @@ function compare(a, b) {
   }
   return 0;
 }
-window.mobilecheck = function() {
+window.mobilecheck = function () {
   var check = false;
-  (function(a) {
+  (function (a) {
     if (
       /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
         a
@@ -133,7 +133,7 @@ class Tickets extends React.Component {
     let { chatdiv_visible, ticket, tickets, loading, showModal } = this.state;
     console.log("tickets in render", tickets);
     return (
-      <div id="page-container">
+      <div id="page-container" className="ticket">
         <div
           className="row no-gutters flex-md-10-auto"
           style={{ width: "100%", height: "100%" }}
@@ -177,9 +177,7 @@ class Tickets extends React.Component {
                     style={{ marginBottom: 20 }}
                   />
                   <p style={{ textAlign: "center" }}>
-                    There are currently no live tickets against your properties.
-                    Tenants are able to run their property by submitting tickets
-                    through their concierge, once you've added them as a tenant.
+                    You can submit home requests through your concierge. We will source the best rated service people for you at the best rates.
                   </p>
                 </div>
               )}

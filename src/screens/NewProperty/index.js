@@ -63,11 +63,7 @@ class NewProperty extends React.Component {
   render() {
     const { addproperty_visible, property } = this.state;
     return (
-      <div
-        id="property-container "
-        className="row no-gutters flex-md-10-auto"
-
-      >
+      <div>
         {property && (
           <PropertyThumbnail
             property={property}
@@ -81,7 +77,7 @@ class NewProperty extends React.Component {
           toggleModal={() => this.toggleModal()}
         />
 
-        {property === "" && (
+        {!property && (
           <button
             type="button"
             className="btn btn-secondary"

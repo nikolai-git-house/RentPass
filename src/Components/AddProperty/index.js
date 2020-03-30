@@ -18,8 +18,10 @@ class AddProperty extends React.PureComponent {
   }
   onNext = (property_type, bedrooms, address) => {
     this.setState({ property_type, bedrooms, address });
-    if (property_type && bedrooms && address)
-      this.setState({ isOnOrder2: true });
+    if (property_type && bedrooms && address) {
+      this.setState({ property_type, bedrooms, address }, this.addProperty);
+    } 
+      // this.setState({ isOnOrder2: true });
     else alert("All fields are required.");
   };
   onAdd = (rental_type, img_content, price, content) => {
@@ -86,6 +88,7 @@ class AddProperty extends React.PureComponent {
         isOpen={showModal}
         contentLabel="modal"
         onRequestClose={toggleModal}
+        style={{ overlay: { zIndex: 10000 } }}
       >
         {!isOnOrder2 && (
           <Order1

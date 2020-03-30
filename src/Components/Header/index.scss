@@ -101,8 +101,13 @@
         color: black;
       }
       .nav-main-link {
+        &.bold {
+          font-weight: bold !important;
+        }
         .nav-main-link-icon {
           color: black;
+          width: 24px;
+          height: 24px;
         }
       }
     }

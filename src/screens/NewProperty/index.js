@@ -22,37 +22,38 @@ class NewProperty extends React.Component {
       this.setState({ property: res });
     });
   }
-  //   addProperty = async state => {
-  //     const { brand_id } = this.state;
-  //     this.setState({ adding: true });
-  //     const {
-  //       property_type,
-  //       rental_type,
-  //       price,
-  //       bedrooms,
-  //       property_address,
-  //       content
-  //     } = state;
-  //     const property = {
-  //       property_type: property_type.value,
-  //       rental_type: rental_type.value,
-  //       price,
-  //       brand: brand_id,
-  //       bedrooms,
-  //       property_address
-  //     };
-  //     console.log("property", property);
-  //     Firebase.addProperty(property, content)
-  //       .then(res => {
-  //         console.log("res", res);
-  //         this.setState({ adding: false });
-  //         if (res.length === 1) this.toggleModal("success");
-  //       })
-  //       .catch(err => {
-  //         alert(err);
-  //         this.setState({ adding: false });
-  //       });
-  //   };
+  addProperty = async state => {
+    const { uid } = this.props;
+    const { brand_id } = this.state;
+    this.setState({ adding: true });
+    const {
+      property_type,
+      rental_type,
+      price,
+      bedrooms,
+      property_address,
+      content
+    } = state;
+    const property = {
+      property_type: property_type.value,
+      // rental_type: rental_type.value,
+      price,
+      brand: brand_id,
+      bedrooms,
+      property_address
+    };
+    console.log("property", property);
+    Firebase.addProperty(uid, property, content)
+      .then(res => {
+        console.log("res", res);
+        this.setState({ adding: false });
+        if (res.length === 1) this.toggleModal("success");
+      })
+      .catch(err => {
+        alert(err);
+        this.setState({ adding: false });
+      });
+  };
   toggleModal = () => {
     const { addproperty_visible } = this.state;
     this.setState({ addproperty_visible: !addproperty_visible });

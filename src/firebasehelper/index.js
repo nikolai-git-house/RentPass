@@ -245,9 +245,10 @@ class Firebase {
   static addProperty(landlord_id, property, content) {
     const { property_address } = property;
     const { first_address_line } = property_address;
+    Object.keys(property).forEach(key => property[key] === undefined ? delete property[key] : {});
     return new Promise(async (resolve, reject) => {
       try {
-        let url = await this.addPropertyImage(first_address_line, content);
+        let url = ""//await this.addPropertyImage(first_address_line, content);
         property.url = url;
         property.landlord_id = landlord_id;
         firebase
@@ -264,6 +265,7 @@ class Firebase {
               });
           })
           .catch(err => {
+            console.log("error", err);
             reject(err);
           });
       } catch (error) {

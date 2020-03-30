@@ -176,7 +176,7 @@ class Tickets extends React.Component {
                     alt="support"
                     style={{ marginBottom: 20 }}
                   />
-                  <p style={{ textAlign: "center" }}>
+                  <p style={{ textAlign: "center", color: 'black' }}>
                     You can submit home requests through your concierge. We will source the best rated service people for you at the best rates.
                   </p>
                 </div>

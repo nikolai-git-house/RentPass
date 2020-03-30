@@ -18,6 +18,15 @@ window.addEventListener("message", data => {
   console.log("msg", msg);
 });
 
+function _calculateAge(birthday) { // birthday is a date
+  if (!birthday) return null
+  const [day, month, year] = birthday.split("/")
+  const birth = new Date(`${year}-${month}-${day}`)
+  var ageDifMs = Date.now() - birth.getTime();
+  var ageDate = new Date(ageDifMs); // miliseconds from epoch
+  return Math.abs(ageDate.getUTCFullYear() - 1970);
+}
+
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -143,7 +152,7 @@ class Profile extends React.Component {
               </div>
               <div className="row_item">
                 <img src={age_img} width="30" alt="age"></img>
-                <p>Age</p>
+                <p>Age: {_calculateAge(dob)}</p>
               </div>
               <div className="row_item">
                 <img src={profession_img} width="30" alt="profession"></img>

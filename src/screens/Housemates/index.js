@@ -165,7 +165,7 @@ class Housemates extends React.Component {
           onClick={() => this.toggleModal("add")}
           style={{ margin: 20 }}
         >
-          Add Housemate
+          Add Housemates
         </button>
       </div>
       // </div>

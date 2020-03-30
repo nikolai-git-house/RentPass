@@ -78,8 +78,12 @@
         width: 50px; }
     .content-header .heading ul a {
       color: black; }
+    .content-header .heading ul .nav-main-link.bold {
+      font-weight: bold !important; }
     .content-header .heading ul .nav-main-link .nav-main-link-icon {
-      color: black; }
+      color: black;
+      width: 24px;
+      height: 24px; }
 
 .nav-token-counter-wrapper {
   position: relative;

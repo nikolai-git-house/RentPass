@@ -5,10 +5,15 @@ import classnames from "classnames";
 import "./index.css";
 import logoImg from "../../assets/media/logo.png";
 import burgerImg from "../../assets/media/icons/burger.png";
+import HtmlParser from "react-html-parser";
 const poker_chip = require("../../assets/media/icons/wallet.png");
 const nav_live_coin_img = require("../../images/nav_live_coin.png");
 const resp_live_coin_img = require("../../images/resp_live_coin.png");
-
+const propertyProfileImg = require("../../images/Property_MyProperties.png")
+const homeConciergeImg = require("../../images/home concierge.png")
+const homeTicketsImg = require("../../images/Home Tickets.png")
+const housematesImg = require("../../images/Housemates.png")
+const rentIdImg = require("../../images/Rent ID.png")
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -117,20 +122,21 @@ class Header extends React.Component {
 
             <ul className={menuVisible ? "show" : "hide"}>
               <li className="nav-main-item mobile-show">
-                <a className="nav-main-link" onClick={() => { window.location = "/community/" }}>Community</a>
+                <a className="nav-main-link bold" onClick={() => { window.location = "/community/" }}>Community</a>
               </li>
               <li className="nav-main-item mobile-show">
-                <a className="nav-main-link" onClick={() => { window.location = "/concierge/" }}>Concierge</a>
+                <a className="nav-main-link bold" onClick={() => { window.location = "/concierge/" }}>Concierge</a>
               </li>
               <li className="nav-main-item mobile-show">
-                <a className="nav-main-link" onClick={() => { window.location = "/myhome/" }}>My Home</a>
+                <a className="nav-main-link bold" onClick={() => { window.location = "/myhome/" }}>My Home</a>
               </li>
               <li className="nav-main-item mobile-show">
-                <a className="nav-main-link" onClick={() => { window.location = "/profile" }}>My Profile</a>
+                <a className="nav-main-link bold" onClick={() => { window.location = "/profile" }}>My Profile</a>
               </li>
               {isRenter && (
                 <li className="nav-main-item" onClick={this.click}>
                   <NavLink to="/profile" className={classnames("nav-main-link")}>
+                    <img className="nav-main-link-icon" src={rentIdImg} />
                     <span className="nav-main-link-name">Rent ID</span>
                   </NavLink>
                 </li>
@@ -145,6 +151,7 @@ class Header extends React.Component {
                   to="/newproperty"
                   className={classnames("nav-main-link")}
                 >
+                  <img className="nav-main-link-icon" src={propertyProfileImg} />
                   <span className="nav-main-link-name">{isRenter ? 'My Properties' : 'Property Profile'}</span>
                 </NavLink>
               </li>
@@ -153,6 +160,7 @@ class Header extends React.Component {
                   to="/housemates"
                   className={classnames("nav-main-link")}
                 >
+                  <img className="nav-main-link-icon" src={housematesImg} />
                   <span className="nav-main-link-name">Housemates</span>
                 </NavLink>
               </li>
@@ -162,6 +170,7 @@ class Header extends React.Component {
                     to="/referencing"
                     className={classnames("nav-main-link")}
                   >
+                    <img className="nav-main-link-icon" src={rentIdImg} />
                     <span className="nav-main-link-name">Rent Reference</span>
                   </NavLink>
                 </li>
@@ -171,11 +180,13 @@ class Header extends React.Component {
                   to="/concierge"
                   className={classnames("nav-main-link")}
                 >
+                  <img className="nav-main-link-icon" src={homeConciergeImg} />
                   <span className="nav-main-link-name">Home Concierge</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/tickets" className={classnames("nav-main-link")}>
+                  <img className="nav-main-link-icon" src={homeTicketsImg} />
                   <span className="nav-main-link-name">Home Tickets</span>
                 </NavLink>
               </li>

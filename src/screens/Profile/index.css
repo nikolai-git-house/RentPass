@@ -1,5 +1,51 @@
-#home-container {
-  width: 100% !important; }
+#profile-container {
+  width: 100% !important;
+  flex: 1;
+  flex-direction: column;
+  align-items: flex-start; }
+  #profile-container .row {
+    width: 100%;
+    align-items: flex-start;
+    justify-content: center; }
+  #profile-container .view-controls {
+    flex-direction: row;
+    margin: 0 auto;
+    display: none; }
+    #profile-container .view-controls button {
+      background-color: #ecedee;
+      width: 100%;
+      border: none;
+      border-radius: 5px;
+      font-size: 16px;
+      color: black;
+      text-align: center;
+      margin-top: 10px;
+      padding-top: 5px;
+      padding-bottom: 5px;
+      cursor: pointer; }
+    #profile-container .view-controls button:hover {
+      box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); }
+    #profile-container .view-controls button.btn-switch {
+      height: 40px;
+      width: 120px;
+      background: #f3f3f3;
+      border-radius: 10px; }
+      #profile-container .view-controls button.btn-switch.active {
+        background: #fff;
+        height: 50px;
+        border-radius: 15px;
+        box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+        z-index: 1000; }
+
+@media only screen and (max-width: 768px) {
+  #profile-container {
+    top: 72px;
+    bottom: 0;
+    position: absolute; }
+    #profile-container .view-controls {
+      display: block; }
+    #profile-container .mobile-hide {
+      display: none; } }
 
 .block-content {
   box-shadow: none !important; }
@@ -77,8 +123,9 @@
   .renting-view button:hover {
     box-shadow: 0px 0px 3px rgba(0, 0, 0, 0.2); }
 
-.my-iframe {
-  height: -webkit-fill-available; }
+.rentbot-iframe {
+  height: 100%;
+  width: 100%; }
 
 .feed {
   width: 100%;

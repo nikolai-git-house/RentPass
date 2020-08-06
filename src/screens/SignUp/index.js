@@ -240,10 +240,11 @@ class SignUp extends React.Component {
     this.toggleUserInput();
   };
   register = async profile => {
-    let register_result = await Firebase.register(profile);
+    const newProfile = { ...profile, renter_owner: 'Renter' }
+    let register_result = await Firebase.register(newProfile);
     console.log("register_result", register_result);
     if (register_result) {
-      this.props.dispatch(saveProfile(profile));
+      this.props.dispatch(saveProfile(newProfile));
       this.props.dispatch(saveUID(register_result.id));
       this.props.history.push("/home");
     }

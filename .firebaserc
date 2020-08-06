@@ -1,0 +1,14 @@
+{
+  "projects": {
+    "default": "boltconcierge-2f0f9"
+  },
+  "targets": {
+    "boltconcierge-2f0f9": {
+      "hosting": {
+        "rentpass": [
+          "rentpass"
+        ]
+      }
+    }
+  }
+}

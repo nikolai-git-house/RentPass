@@ -21,12 +21,28 @@ class Properties extends React.Component {
       paymentModal_visible: false,
       subscribeModal_visible: false,
       successModal_visible: false,
-      property: {}
+      property: {},
     };
   }
   componentDidMount() {
-    const { uid } = this.props;
+    const { uid, saveRenters } = this.props;
     if (!uid) this.props.history.push("/");
+    let brand = localStorage.getItem("brand");
+
+    if (brand) {
+      let brandData = JSON.parse(brand);
+      Firebase.firestore()
+        .collection(brandData.name)
+        .doc("data")
+        .collection("user")
+        .onSnapshot((querySnapshot) => {
+          var tenants = [];
+          querySnapshot.forEach(function (doc) {
+            tenants.push(doc.data());
+          });
+          this.props.dispatch(saveRenters(tenants));
+        });
+    }
   }
   componentWillReceiveProps(nextProps) {
     console.log("nextProps.profile", nextProps.profile);
@@ -35,7 +51,7 @@ class Properties extends React.Component {
   getName(value) {
     return value ? "HMO" : "Standard";
   }
-  addProperty = async state => {
+  addProperty = async (state) => {
     this.setState({ adding: true });
     const { uid } = this.props;
     const {
@@ -44,7 +60,7 @@ class Properties extends React.Component {
       price,
       bedrooms,
       property_address,
-      content
+      content,
     } = state;
     const property = {
       property_type: property_type.value,
@@ -52,26 +68,26 @@ class Properties extends React.Component {
       subscription: 0,
       price,
       bedrooms,
-      property_address
+      property_address,
     };
 
     Firebase.addProperty(uid, property, content)
-      .then(res => {
+      .then((res) => {
         console.log("res", res);
         this.setState({ adding: false });
         if (res.length === 1) this.toggleModal("success");
       })
-      .catch(err => {
+      .catch((err) => {
         alert(err);
         this.setState({ adding: false });
       });
   };
-  toggleModal = type => {
+  toggleModal = (type) => {
     const {
       addproperty_visible,
       paymentModal_visible,
       subscribeModal_visible,
-      successModal_visible
+      successModal_visible,
     } = this.state;
     if (type === "add_property")
       this.setState({ addproperty_visible: !addproperty_visible });
@@ -82,14 +98,14 @@ class Properties extends React.Component {
     else if (type === "success")
       this.setState({ successModal_visible: !successModal_visible });
   };
-  subscribe = async property => {
+  subscribe = async (property) => {
     const { profile } = this.state;
     this.setState({ property: property });
     console.log("property_content", property);
     if (!profile.customer_id) this.toggleModal("payment_setup");
     else if (profile.customer_id) this.toggleModal("subscribe");
   };
-  requestPropertyTest = property => {
+  requestPropertyTest = (property) => {
     console.log("requestPropertyTest", property);
   };
   render() {
@@ -100,7 +116,7 @@ class Properties extends React.Component {
       addproperty_visible,
       paymentModal_visible,
       subscribeModal_visible,
-      successModal_visible
+      successModal_visible,
     } = this.state;
     if (uid) console.log("uid", uid);
     return (
@@ -112,7 +128,7 @@ class Properties extends React.Component {
         />
         <PaymentSetupModal
           showModal={paymentModal_visible}
-          toggleModal={setup => {
+          toggleModal={(setup) => {
             if (setup) {
               this.toggleModal("payment_setup");
               this.toggleModal("subscribe");
@@ -136,7 +152,7 @@ class Properties extends React.Component {
               flexDirection: "column",
               alignItems: "center",
               justifyContent: "center",
-              marginTop: 10
+              marginTop: 10,
             }}
           >
             <i className="fa fa-4x fa-sync fa-spin text-muted" />
@@ -152,6 +168,13 @@ class Properties extends React.Component {
                 key={index}
                 onSubscribe={() => this.subscribe(item)}
                 onRequestPropertyTest={() => this.requestPropertyTest(item)}
+                isActive={
+                  this.props.renters.filter(
+                    (obj) =>
+                      obj.property_id === item.id &&
+                      obj.property_status !== "pending"
+                  ).length > 0
+                }
               />
             );
           })}
@@ -194,17 +217,15 @@ class Properties extends React.Component {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
   return {
     uid: state.uid,
     profile: state.profile,
-    properties: state.properties
+    properties: state.properties,
+    renters: state.renters,
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(Properties);
+export default connect(mapStateToProps, mapDispatchToProps)(Properties);

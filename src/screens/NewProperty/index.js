@@ -9,18 +9,20 @@ class NewProperty extends React.Component {
     super(props);
     this.state = {
       addproperty_visible: false,
-      property: ""
+      property: "",
     };
   }
   async componentDidMount() {
     const { uid, brand, profile } = this.props;
     if (!uid) this.props.history.push("/");
     const brand_name = brand.name;
-    const property_id = profile.property_id;
-    Firebase.getPropertyById(property_id, brand_name).then(res => {
-      console.log("property info", res);
-      this.setState({ property: res });
-    });
+    if (profile) {
+      const property_id = profile.property_id;
+      Firebase.getPropertyById(property_id, brand_name).then((res) => {
+        console.log("property info", res);
+        this.setState({ property: res });
+      });
+    }
   }
   //   addProperty = async state => {
   //     const { brand_id } = this.state;
@@ -63,14 +65,7 @@ class NewProperty extends React.Component {
   render() {
     const { addproperty_visible, property } = this.state;
     return (
-      <div
-        id="property-container "
-        className="row no-gutters flex-md-10-auto"
-        style={{
-          position: "fixed",
-          top: 72
-        }}
-      >
+      <div id="property-container">
         {property && (
           <PropertyThumbnail
             property={property}
@@ -100,7 +95,7 @@ class NewProperty extends React.Component {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
@@ -108,10 +103,7 @@ function mapStateToProps(state) {
     brand: state.brand,
     uid: state.uid,
     profile: state.profile,
-    renters: state.renters
+    renters: state.renters,
   };
 }
-export default connect(
-  mapStateToProps,
-  mapDispatchToProps
-)(NewProperty);
+export default connect(mapStateToProps, mapDispatchToProps)(NewProperty);

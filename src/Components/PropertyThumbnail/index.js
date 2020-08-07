@@ -1,6 +1,10 @@
 import React, { Component } from "react";
 import Firebase from "../../firebasehelper";
 import "./index.css";
+
+const activeIcon = require("../../assets/media/property_status/active.png");
+const pendingIcon = require("../../assets/media/property_status/pending.png");
+
 class PropertyThumbnail extends React.Component {
   constructor(props) {
     super(props);
@@ -8,7 +12,7 @@ class PropertyThumbnail extends React.Component {
   }
   async componentDidMount() {}
   render() {
-    const { property, onRequestPropertyTest } = this.props;
+    const { property, onRequestPropertyTest, isActive } = this.props;
     const { url, property_address } = property;
     const { first_address_line, second_address_line } = property_address;
     return (
@@ -25,6 +29,11 @@ class PropertyThumbnail extends React.Component {
             <h6 className="text-white mb-2">{second_address_line}</h6>
           </div>
         </div>
+        <img
+          src={isActive ? activeIcon : pendingIcon}
+          className="property-status"
+          alt="status"
+        />
         <button
           className={`btn btn-warning`}
           style={{ width: "100%" }}

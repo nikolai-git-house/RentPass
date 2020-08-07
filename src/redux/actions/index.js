@@ -9,6 +9,7 @@ export const SAVE_PROFILE = "SAVE_PROFILE";
 export const SAVE_UID = "SAVE_UID";
 export const SAVE_USERS = "SAVE_USERS";
 export const REMOVE = "REMOVE";
+export const SAVE_RENTERS = "SAVE_RENTERS";
 export const SAVE_HOUSEMATES = "SAVE_HOUSEMATES";
 export const SAVE_PROPERTIES = "SAVE_PROPERTIES";
 export const SAVE_BRAND = "SAVE_BRAND";
@@ -22,6 +23,10 @@ export const saveProperties = properties => ({
   properties: properties
 });
 export const saveUID = uid => ({ type: SAVE_UID, uid: uid });
+export const saveRenters = renters => ({
+  type: SAVE_RENTERS,
+  renters: renters
+});
 export const saveUsers = users => ({
   type: SAVE_USERS,
   users: users

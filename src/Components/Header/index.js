@@ -65,22 +65,6 @@ class Header extends React.Component {
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
-                <NavLink
-                  to="/referencing"
-                  className={classnames("nav-main-link")}
-                >
-                  <span className="nav-main-link-name">Referencing</span>
-                </NavLink>
-              </li>
-              <li className="nav-main-item" onClick={this.click}>
-                <NavLink
-                  to="/concierge"
-                  className={classnames("nav-main-link")}
-                >
-                  <span className="nav-main-link-name">Concierge</span>
-                </NavLink>
-              </li>
-              <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/tickets" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">Tickets</span>
                 </NavLink>

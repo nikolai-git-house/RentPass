@@ -61,7 +61,7 @@ class Header extends React.Component {
                   to="/newproperty"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">My Properties</span>
+                  <span className="nav-main-link-name">My Property</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>

@@ -14,7 +14,8 @@
     display: flex;
     flex-direction: row;
     align-items: center;
-    justify-content: center; }
+    justify-content: space-between;
+    flex: 1; }
     .content-header .heading .burger {
       visibility: hidden; }
     .content-header .heading a.nav-main-link {

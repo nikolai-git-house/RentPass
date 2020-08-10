@@ -2,7 +2,8 @@
   width: 100% !important;
   flex: 1;
   flex-direction: column;
-  align-items: flex-start; }
+  align-items: flex-start;
+  background-color: #fff; }
   #profile-container .row {
     width: 100%;
     align-items: flex-start;
@@ -125,7 +126,8 @@
 
 .rentbot-iframe {
   height: 100%;
-  width: 100%; }
+  width: 100%;
+  border: 0; }
 
 .feed {
   width: 100%;

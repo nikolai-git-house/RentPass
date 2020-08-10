@@ -9,7 +9,7 @@ import {
   saveProfile,
   saveUsers,
   saveBrand,
-  saveHousemates
+  saveHousemates,
 } from "../../redux/actions";
 import "./index.css";
 import logoImg from "../../assets/media/logo.png";
@@ -21,7 +21,7 @@ class LogIn extends React.PureComponent {
       phonenumber: "",
       pin: "",
       sms: "",
-      send_sms: false
+      send_sms: false,
     };
     this.onChangeHandler.bind(this);
   }
@@ -48,11 +48,11 @@ class LogIn extends React.PureComponent {
   createPincode = () => {
     return Math.floor(100000 + Math.random() * 900000);
   };
-  clearZero = function(str) {
+  clearZero = function (str) {
     if (str.charAt(0) === "0") str = str.replace("0", "");
     return str;
   };
-  onChangeHandler = e => {
+  onChangeHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   start = async (phonenumber, brand, property_id) => {
@@ -60,10 +60,10 @@ class LogIn extends React.PureComponent {
       .collection(brand)
       .doc("data")
       .collection("user")
-      .onSnapshot(snapshot => {
+      .onSnapshot((snapshot) => {
         let users = [];
         if (snapshot.size) {
-          snapshot.forEach(doc => {
+          snapshot.forEach((doc) => {
             let user = doc.data();
             user.id = doc.id;
             users.push(user);
@@ -114,7 +114,7 @@ class LogIn extends React.PureComponent {
     } else {
       if (method === 1) {
         Firebase.getInvitationList(phonenumber)
-          .then(async res => {
+          .then(async (res) => {
             let result = res.array;
             console.log("result", result);
             if (res.size === 1) {
@@ -125,7 +125,7 @@ class LogIn extends React.PureComponent {
             } else if (res.size === 0)
               alert("Sorry you have not received any invitation.");
           })
-          .catch(err => {
+          .catch((err) => {
             console.log("error", err);
           });
       } else {
@@ -133,7 +133,7 @@ class LogIn extends React.PureComponent {
 
         if (!result) {
           Firebase.getInvitationList(phonenumber)
-            .then(async res => {
+            .then(async (res) => {
               let result = res.array;
               if (res.size === 1) {
                 const invite_dt = result[0].data();
@@ -144,7 +144,7 @@ class LogIn extends React.PureComponent {
               } else if (res.size === 0)
                 alert("Sorry you have not received any invitation.");
             })
-            .catch(err => {
+            .catch((err) => {
               console.log("error", err);
             });
         } else {
@@ -188,12 +188,12 @@ class LogIn extends React.PureComponent {
                                 Enter mobile number
                               </button>
                             </div> */}
-                            <div className="card-content">
+                            {/* <div className="card-content">
                               <p>Respond to an invite</p>
                               <button type="button" onClick={this.Respond}>
                                 Enter mobile number
                               </button>
-                            </div>
+                            </div> */}
                             <div className="card-content">
                               <p>Login</p>
                               <button type="button" onClick={this.Login}>
@@ -211,7 +211,7 @@ class LogIn extends React.PureComponent {
                                     display: "flex",
                                     flexDirection: "row",
                                     alignItems: "center",
-                                    marginBottom: 10
+                                    marginBottom: 10,
                                   }}
                                 >
                                   <p style={{ fontSize: 20 }}>+44</p>
@@ -234,7 +234,7 @@ class LogIn extends React.PureComponent {
                                     height: 50,
                                     border: "none",
                                     borderRadius: 5,
-                                    cursor: "pointer"
+                                    cursor: "pointer",
                                   }}
                                   onClick={this.SignIn}
                                 >
@@ -264,7 +264,7 @@ class LogIn extends React.PureComponent {
                                     height: 50,
                                     border: "none",
                                     borderRadius: 5,
-                                    cursor: "pointer"
+                                    cursor: "pointer",
                                   }}
                                   onClick={this.Confirm}
                                 >
@@ -311,13 +311,13 @@ class LogIn extends React.PureComponent {
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
   return {
     uid: state.uid,
-    users: state.users
+    users: state.users,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(LogIn);

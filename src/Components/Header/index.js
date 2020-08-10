@@ -4,9 +4,9 @@ import { Link, NavLink } from "react-router-dom";
 import classnames from "classnames";
 import "./index.css";
 import logoImg from "../../assets/media/logo.png";
-import burgerImg from "../../assets/media/icons/burger.png";
-const poker_chip = require("../../assets/media/icons/wallet.png");
-
+import burgerImg from "../../images/burger.png";
+import nav_live_coin_img from "../../images/nav_live_coin.png";
+import token_img from "../../images/chip.png";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -24,18 +24,36 @@ class Header extends React.Component {
   render() {
     const { profile, brand, logout, history } = this.props;
     const { menuVisible } = this.state;
-    console.log(profile)
+    let username = "";
+    let logo = "";
+    let tokens = 0;
+    if (profile) {
+      username = profile.firstname;
+      logo = brand.logo;
+      tokens = profile.tokens ? profile.tokens : 0;
+    }
     return (
       <header id="page-header" className="page-header-glass">
         <div className="content-header">
           <div className="heading">
-            <a className="link-fx font-w600 font-size-lg text-white" href="/">
-              <span className="smini-hidden">
-                <span className="text-white-75">
-                  <img src={brand.logo} style={{ width: 150 }} alt="logo" />
-                </span>
-              </span>
-            </a>
+            <button
+              className="header-logo"
+              style={{
+                backgroundImage: logo ? `url(${logo})` : `url(${logoImg})`,
+                // backgroundImage: `url(${default_logo})`,
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "contain",
+                backgroundColor: "transparent",
+                border: "none",
+
+                cursor: "pointer",
+                width: 180,
+                height: 60,
+              }}
+            >
+              {/* <img src={logo ? logo : default_logo} height="60px" alt="logo" /> */}
+            </button>
 
             <ul className={menuVisible ? "show" : "hide"}>
               <li className="nav-main-item" onClick={this.click}>
@@ -75,32 +93,60 @@ class Header extends React.Component {
                 </NavLink>
               </li>
             </ul>
-            <div>
-              <div className="dropdown">
-                <button
-                  type="button"
-                  className="btn nav-btn top-btn"
-                  id="page-header-notifications-dropdown"
-                  data-toggle="dropdown"
-                  aria-haspopup="true"
-                  aria-expanded="false"
-                >
-                  <i className="fas fa-user" />
-                  <span className="badge  badge-pill">{profile && profile.firstname}</span>
-                </button>
-                <div
-                  className="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
-                  aria-labelledby="page-header-notifications-dropdown"
-                >
-                  <div className="p-2 border-top">
-                    <button
-                      className="btn btn-light btn-block text-center"
-                      onClick={logout}
-                    >
-                      <i className="nav-main-link-icon si si-logout" />
-                      &nbsp;&nbsp;&nbsp;Sign Out
-                    </button>
-                  </div>
+            <div
+              className={`nav-token-counter-wrapper margin_img ${
+                menuVisible ? "hide" : "show"
+              }`}
+            >
+              <p className="tokens">
+                {tokens - ((profile && profile.tokenSpent) || 0)}
+              </p>
+              <img
+                src={nav_live_coin_img}
+                style={{ width: "32px", height: "32px" }}
+              />
+            </div>
+            <button
+              className={`burger ${menuVisible ? "hide" : "show"}`}
+              onClick={() => {
+                this.toggleMenu();
+              }}
+            >
+              <img
+                className="img-burger"
+                src={burgerImg}
+                width="30"
+                alt="burger"
+              />
+            </button>
+          </div>
+          <div className="second_menu">
+            <div className="dropdown">
+              <button
+                type="button"
+                className="btn nav-btn top-btn"
+                id="page-header-notifications-dropdown"
+                data-toggle="dropdown"
+                aria-haspopup="true"
+                aria-expanded="false"
+              >
+                <i className="fas fa-user" />
+                <span className="badge  badge-pill">
+                  {profile && profile.firstname}
+                </span>
+              </button>
+              <div
+                className="dropdown-menu dropdown-menu-lg dropdown-menu-right p-0"
+                aria-labelledby="page-header-notifications-dropdown"
+              >
+                <div className="p-2 border-top">
+                  <button
+                    className="btn btn-light btn-block text-center"
+                    onClick={logout}
+                  >
+                    <i className="nav-main-link-icon si si-logout" />
+                    &nbsp;&nbsp;&nbsp;Sign Out
+                  </button>
                 </div>
               </div>
             </div>

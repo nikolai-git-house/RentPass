@@ -170,3 +170,16 @@
 
 .burger:focus {
   outline: none !important; }
+
+.header-actions-container {
+  display: flex;
+  align-items: center; }
+  .header-actions-container .view-platform-btn {
+    background-color: #f2fb79;
+    color: black;
+    margin-right: 10px;
+    padding: 10px 15px;
+    font-size: 12px; }
+    .header-actions-container .view-platform-btn:hover, .header-actions-container .view-platform-btn:focus, .header-actions-container .view-platform-btn.focus {
+      background-color: #f2fb79 !important;
+      color: black !important; }

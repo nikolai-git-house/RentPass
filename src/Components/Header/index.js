@@ -21,6 +21,18 @@ class Header extends React.Component {
   click = () => {
     this.setState({ menuVisible: false });
   };
+
+  goToCommunity = () => {
+    const { brand } = this.props;
+    if (brand) {
+      window.open(
+        `https://ecosystem.life/${(brand.name || "")
+          .replace(/\s/g, "")
+          .toLowerCase()}`,
+        "_blank"
+      );
+    }
+  };
   render() {
     const { profile, brand, logout, history } = this.props;
     const { menuVisible } = this.state;
@@ -120,8 +132,14 @@ class Header extends React.Component {
               />
             </button>
           </div>
-          <div className="second_menu">
-            <div className="dropdown">
+          <div className="second_menu header-actions-container">
+            <button
+              class="btn btn-block btn-hero-lg btn-hero-success view-platform-btn"
+              onClick={this.goToCommunity}
+            >
+              Visit your community
+            </button>
+            <div className="dropdown d-inline-block">
               <button
                 type="button"
                 className="btn nav-btn top-btn"

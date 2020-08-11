@@ -4,7 +4,7 @@ class Package extends Component {
   constructor(props) {
     super(props);
     this.state = {
-      data: props.data
+      data: props.data,
     };
   }
   componentWillReceiveProps(nextProps) {
@@ -16,12 +16,12 @@ class Package extends Component {
     const {
       caption,
       description,
-      footer_1,
-      footer_2,
       image,
       contents,
       type,
-      active
+      active,
+      saleType,
+      price,
     } = data;
     const { profile } = this.props;
     return (
@@ -35,7 +35,7 @@ class Package extends Component {
               backgroundImage: `url(${image})`,
               backgroundRepeat: "no-repeat",
               backgroundSize: "cover",
-              backgroundPosition: "center"
+              backgroundPosition: "center",
             }}
           ></div>
           <p className="caption">{caption}</p>
@@ -45,7 +45,7 @@ class Package extends Component {
           <div className="package_content">
             {contents &&
               contents.split("\n").map((item, key) => {
-                return <p key={key}>{item}</p>;
+                return <p key={key}>{item !== "-" ? item : ""}</p>;
               })}
           </div>
         )}
@@ -53,57 +53,35 @@ class Package extends Component {
         <div
           style={{
             width: "100%",
-            display: "flex",
-            flexDirection: "row",
-            alignItems: "center",
-            justifyContent: "space-around"
           }}
         >
-          <div className="footer">
-            <p style={{ fontWeight: "500", fontSize: 14, textAlign: "center" }}>
-              {footer_1}
-            </p>
+          <div className="d-flex flex-wrap justify-content-between">
+            <div className="footer">
+              <p
+                style={{ fontWeight: "500", fontSize: 14, textAlign: "center" }}
+              >
+                £{price} cost {type === 0 && "pcm"}
+              </p>
+            </div>
+            <button
+              className="btn"
+              type="button"
+              data-toggle="modal"
+              data-target="#subscribe_modal"
+              style={{
+                marginTop: 10,
+                backgroundColor: saleType === 0 ? "#bbffa8" : "#FFE366",
+              }}
+            >
+              {saleType === 0 ? "Subscribe" : "Pre register"}
+            </button>
           </div>
-          <div className="footer">
+          {/* <div className="footer">
             <p style={{ fontWeight: "500", fontSize: 14, textAlign: "center" }}>
               {footer_2}
             </p>
-          </div>
+          </div> */}
         </div>
-        {!profile && (
-          <button
-            className="btn"
-            type="button"
-            data-toggle="modal"
-            data-target="#subscribe_modal"
-            style={{
-              marginTop: 10,
-              backgroundColor: !active
-                ? "#FFE366"
-                : type
-                ? "#bbffa8"
-                : "#bbffa8"
-            }}
-          >
-            {!active ? "Pre register" : type ? "Buy It" : "Subscribe"}
-          </button>
-        )}
-        {profile && (
-          <button
-            className="btn"
-            type="button"
-            style={{
-              marginTop: 10,
-              backgroundColor: !active
-                ? "#FFE366"
-                : type
-                ? "#bbffa8"
-                : "#bbffa8"
-            }}
-          >
-            {!active ? "Pre register" : type ? "Buy It" : "Subscribe"}
-          </button>
-        )}
       </div>
     );
   }

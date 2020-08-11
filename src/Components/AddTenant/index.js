@@ -6,14 +6,14 @@ import Firebase from "../../firebasehelper";
 import { sendInvitation, clearZero } from "../../functions/Auth";
 import { sendNotification } from "../../apis/index";
 const Styles = {
-  control: styles => ({ ...styles, backgroundColor: "white", width: 450 })
+  control: (styles) => ({ ...styles, backgroundColor: "white", width: 450 }),
 };
 class AddTenant extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
       tenants: [],
-      selectedTenants: []
+      selectedTenants: [],
     };
   }
   componentDidMount() {
@@ -31,14 +31,14 @@ class AddTenant extends React.PureComponent {
       : [];
     this.setState({ tenants, properties });
   }
-  handleChange = selectedTenants => {
+  handleChange = (selectedTenants) => {
     this.setState({ selectedTenants });
     console.log(`selectedTenants:`, selectedTenants);
   };
-  handleChangeProperty = selectedProperty => {
+  handleChangeProperty = (selectedProperty) => {
     this.setState({ selectedProperty });
   };
-  onChange = e => {
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   addTenant = () => {
@@ -61,7 +61,7 @@ class AddTenant extends React.PureComponent {
       username,
       property_id,
       property_name
-    ).then(user_profile => {
+    ).then((user_profile) => {
       console.log("user_profile", user_profile);
       if (user_profile) {
         const { uuid, firstname, app_opened } = user_profile;
@@ -80,7 +80,7 @@ class AddTenant extends React.PureComponent {
 
   addMember = (phone, username, property_id, property_name) => {
     Firebase.addTenant(property_id, phone, username)
-      .then(result => {
+      .then((result) => {
         console.log("result", result);
         if (result) {
           let response = sendInvitation(phone, username, property_name);
@@ -90,7 +90,7 @@ class AddTenant extends React.PureComponent {
             "The phone number is existing on other property. You can't invite the user to another group."
           );
       })
-      .catch(err => {
+      .catch((err) => {
         console.log("error", err);
       });
   };
@@ -140,7 +140,7 @@ class AddTenant extends React.PureComponent {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <p
@@ -148,7 +148,7 @@ class AddTenant extends React.PureComponent {
                   marginRight: -29,
                   marginTop: 1,
                   color: "#495057",
-                  zIndex: 0
+                  zIndex: 0,
                 }}
               >
                 +44
@@ -174,10 +174,11 @@ class AddTenant extends React.PureComponent {
           </button>
           <button
             type="button"
-            className="btn btn-sm btn-secondary"
+            className="btn btn-sm"
             onClick={this.addTenant}
+            style={{ backgroundColor: "#bbffa8" }}
           >
-            Add
+            Invite
           </button>
         </div>
       </Modal>
@@ -186,14 +187,14 @@ class AddTenant extends React.PureComponent {
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
   return {
     uid: state.uid,
     profile: state.profile,
-    users: state.users
+    users: state.users,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AddTenant);

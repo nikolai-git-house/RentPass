@@ -7,10 +7,19 @@ class AddHousemate extends React.Component {
     super(props);
     this.state = {
       phonenumber: "",
-      username: ""
+      username: "",
     };
   }
-  onChange = e => {
+
+  componentDidUpdate(prevProps) {
+    if (prevProps.showModal && !this.props.showModal) {
+      this.setState({
+        phonenumber: "",
+        username: "",
+      });
+    }
+  }
+  onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   addHousemate = () => {
@@ -54,7 +63,7 @@ class AddHousemate extends React.Component {
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "center",
-                justifyContent: "center"
+                justifyContent: "center",
               }}
             >
               <p
@@ -62,7 +71,7 @@ class AddHousemate extends React.Component {
                   marginRight: -29,
                   marginTop: 1,
                   color: "#495057",
-                  zIndex: 0
+                  zIndex: 0,
                 }}
               >
                 +44
@@ -88,10 +97,11 @@ class AddHousemate extends React.Component {
           </button>
           <button
             type="button"
-            className="btn btn-sm btn-secondary"
-            onClick={this.addHousemate}
+            className="btn btn-sm"
+            onClick={this.addTenant}
+            style={{ backgroundColor: "#bbffa8" }}
           >
-            Add
+            Invite
           </button>
         </div>
       </Modal>

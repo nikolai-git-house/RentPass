@@ -15,6 +15,7 @@ $pad_left: 10%;
     flex-direction: row;
     margin: 0 auto;
     display: none;
+    margin-bottom: 10px;
     button {
       background-color: #ecedee;
       width: 100%;
@@ -51,11 +52,15 @@ $pad_left: 10%;
 @media only screen and (max-width: 768px) {
   #profile-container {
     top: 72px;
+    flex-wrap: nowrap;
 
     .view-controls {
       display: block;
     }
 
+    .mobile-show {
+      display: block;
+    }
     .mobile-hide {
       display: none;
     }

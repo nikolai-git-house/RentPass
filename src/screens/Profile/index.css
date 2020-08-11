@@ -11,7 +11,8 @@
   #profile-container .view-controls {
     flex-direction: row;
     margin: 0 auto;
-    display: none; }
+    display: none;
+    margin-bottom: 10px; }
     #profile-container .view-controls button {
       background-color: #ecedee;
       width: 100%;
@@ -40,8 +41,11 @@
 
 @media only screen and (max-width: 768px) {
   #profile-container {
-    top: 72px; }
+    top: 72px;
+    flex-wrap: nowrap; }
     #profile-container .view-controls {
+      display: block; }
+    #profile-container .mobile-show {
       display: block; }
     #profile-container .mobile-hide {
       display: none; } }

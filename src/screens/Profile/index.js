@@ -107,8 +107,9 @@ class Profile extends React.Component {
         </div>
         <div
           className={`row no-gutters ${
-            this.state.viewMode !== "profile" ? "mobile-hide" : ""
+            this.state.viewMode !== "profile" ? "mobile-hide" : "mobile-show"
           }`}
+          style={{ background: "#fff" }}
         >
           <div
             className="col-md-5 col-lg-5 col-xl-5"

@@ -126,6 +126,11 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Shop</span>
                 </NavLink>
               </li>
+              <li className={`nav-main-item burger show`}>
+                <a className="nav-main-link" onClick={logout}>
+                  <span className="nav-main-link-name">Sign Out</span>
+                </a>
+              </li>
             </ul>
             <div
               className={`nav-token-counter-wrapper margin_img ${

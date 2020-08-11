@@ -51,8 +51,6 @@ $pad_left: 10%;
 @media only screen and (max-width: 768px) {
   #profile-container {
     top: 72px;
-    min-height: calc(100% - 72px);
-    position: absolute;
 
     .view-controls {
       display: block;

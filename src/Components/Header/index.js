@@ -13,6 +13,13 @@ class Header extends React.Component {
     this.state = {
       menuVisible: false,
     };
+    this.outOfMenu = React.createRef();
+  }
+  componentDidMount() {
+    document.addEventListener("mousedown", this.handleClick, true);
+  }
+  componentWillUnmount() {
+    document.removeEventListener("mousedown", this.handleClick, true);
   }
   toggleMenu = () => {
     const { menuVisible } = this.state;
@@ -31,6 +38,17 @@ class Header extends React.Component {
           .toLowerCase()}`,
         "_blank"
       );
+    }
+  };
+  //  start of when click the outsite of menu
+  handleClickOutSide() {
+    this.setState({ menuVisible: false });
+  }
+  handleClick = (e) => {
+    if (!this.outOfMenu.current.contains(e.target)) {
+      this.handleClickOutSide();
+    } else {
+      return;
     }
   };
   render() {
@@ -67,7 +85,11 @@ class Header extends React.Component {
               {/* <img src={logo ? logo : default_logo} height="60px" alt="logo" /> */}
             </button>
 
-            <ul className={menuVisible ? "show" : "hide"}>
+            <ul
+              className={menuVisible ? "show" : "hide"}
+              onClick={this.click}
+              ref={this.outOfMenu}
+            >
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/profile" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">My Profile</span>

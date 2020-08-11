@@ -41,7 +41,7 @@
 @media only screen and (max-width: 768px) {
   #profile-container {
     top: 72px;
-    bottom: 0;
+    min-height: calc(100% - 72px);
     position: absolute; }
     #profile-container .view-controls {
       display: block; }

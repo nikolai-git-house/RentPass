@@ -1,32 +1,36 @@
 import React, { Component, Fragment } from "react";
 import ReactHtmlParser from "react-html-parser";
-import { animateScroll } from "react-scroll";
 import Loader from "./Loader";
-const getImage = type => {
-  switch (type) {
-    case "landlord":
-      return require("./logos/landlord_logo.png");
-    case "contractor":
-      return require("./logos/contractor_logo.png");
-    default:
-      return require("./logos/agency_logo.png");
-  }
-};
+
 class MessageItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: props.loaded,
-      img_src: require("./logos/logo.png")
+      img_src: require("./logos/logo.png"),
     };
   }
 
   componentDidMount() {
     this.setState({ loaded: this.props.loaded });
   }
-
+  getImage = (type) => {
+    const { icon, userIcon } = this.props;
+    switch (type) {
+      case "agency":
+        return userIcon || require("./logos/logo.png");
+      case "bot":
+        return icon;
+      case "landlord":
+        return require("./logos/landlord_logo.png");
+      case "contractor":
+        return require("./logos/contractor_logo.png");
+      default:
+        return require("./logos/agency_logo.png");
+    }
+  };
   render() {
-    const { icon } = this.props;
+    const { logo } = this.props;
     const { type, message } = this.props.message;
     const { loaded, img_src } = this.state;
     return (
@@ -37,11 +41,15 @@ class MessageItem extends Component {
               ? {
                   display: "flex",
                   flexDirection: "row",
-                  alignItems: "flex-start",
                   justifyContent: "flex-start",
-                  marginBottom: 16
+                  marginBottom: 16,
                 }
-              : { display: "flex", alignSelf: "flex-end", maxWidth: "100%" }
+              : {
+                  display: "flex",
+                  alignSelf: "flex-end",
+                  maxWidth: "100%",
+                  marginBottom: 16,
+                }
           }
         >
           {type === "user" && (
@@ -59,27 +67,18 @@ class MessageItem extends Component {
             } ${type} `}
           >
             <Loader />
-            <div className={`message`}>{ReactHtmlParser(message)}</div>
+            <div className={`message ${logo === "bolt" ? "" : "notbolt"}`}>
+              {ReactHtmlParser(message)}
+            </div>
           </div>
-          {(type === "landlord" || type === "contractor") && (
+          {(type === "agency" ||
+            type === "landlord" ||
+            type === "contractor" ||
+            type === "bot") && (
             <img
               className="avatar"
-              src={getImage(type)}
+              src={this.getImage(type)}
               style={{ width: 40, height: 40, marginLeft: 5 }}
-              alt="concierge"
-            />
-          )}
-          {type === "agency" && (
-            <img
-              className="avatar"
-              src={icon}
-              style={{
-                width: 40,
-                height: 40,
-                minWidth: 40,
-                minHeight: 40,
-                marginLeft: 5
-              }}
               alt="concierge"
             />
           )}

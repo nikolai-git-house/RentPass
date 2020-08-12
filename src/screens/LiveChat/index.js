@@ -1,6 +1,5 @@
 import React, { Component } from "react";
 import MessageList from "./MessageList";
-import Firebase from "../../firebasehelper";
 import "./Styles/index.css";
 class LiveChat extends React.Component {
   constructor(props) {
@@ -8,14 +7,16 @@ class LiveChat extends React.Component {
     this.state = {};
   }
   render() {
-    const { uid, ticket, username, icon } = this.props;
+    const { room_id, ticket, username, icon, brand } = this.props;
     return (
       <div className="app-wrapper">
         <MessageList
+          logo="bolt"
           icon={icon}
-          uid={uid}
+          room_id={room_id}
           ticket={ticket}
           username={username}
+          brand={brand}
         />
       </div>
     );

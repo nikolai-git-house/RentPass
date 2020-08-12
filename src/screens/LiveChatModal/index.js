@@ -8,8 +8,8 @@ const customStyles = {
   zIndex: 1000,
   content: {
     width: "100%",
-    height: "90%"
-  }
+    height: "90%",
+  },
 };
 
 class LiveChatModal extends React.Component {
@@ -18,7 +18,15 @@ class LiveChatModal extends React.Component {
     this.state = {};
   }
   render() {
-    const { uid, ticket, username, icon, showModal, toggleModal } = this.props;
+    const {
+      uid,
+      ticket,
+      username,
+      icon,
+      showModal,
+      toggleModal,
+      brand,
+    } = this.props;
     return (
       <Modal
         closeTimeoutMS={200}
@@ -35,10 +43,12 @@ class LiveChatModal extends React.Component {
         </div>
         <div className="modal-body pb-1 status_container app-wrapper">
           <MessageList
+            logo="bolt"
             icon={icon}
-            uid={uid}
+            room_id={uid}
             ticket={ticket}
             username={username}
+            brand={brand}
           />
         </div>
       </Modal>

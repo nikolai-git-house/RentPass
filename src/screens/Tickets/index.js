@@ -204,10 +204,11 @@ class Tickets extends React.Component {
                 <div id="side-content" className="d-none d-md-block push">
                   {chatdiv_visible && (
                     <LiveChat
-                      uid={uid}
+                      brand={brand.name}
+                      room_id={uid}
                       ticket={ticket}
                       icon={brand.icon}
-                      username={profile.firstname}
+                      username={profile && profile.firstname}
                     />
                   )}
                 </div>
@@ -219,7 +220,8 @@ class Tickets extends React.Component {
               uid={uid}
               ticket={ticket}
               icon={brand.icon}
-              username={profile.firstname}
+              brand={brand.name}
+              username={profile && profile.firstname}
               showModal={showModal}
               toggleModal={this.toggleModal}
             />

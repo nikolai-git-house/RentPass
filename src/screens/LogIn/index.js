@@ -12,12 +12,13 @@ import {
   saveHousemates,
 } from "../../redux/actions";
 import "./index.css";
-import logoImg from "../../assets/media/logo.png";
+import logoImg from "../../assets/media/ecosystem-landing.png"
 class LogIn extends React.PureComponent {
   constructor(props) {
     super(props);
     this.state = {
-      number_panel: false,
+      number_panel: true,
+      method: 2,
       phonenumber: "",
       pin: "",
       sms: "",
@@ -176,7 +177,7 @@ class LogIn extends React.PureComponent {
                   <div className="row no-gutters justify-content-center">
                     <div className="col-sm-10 col-xl-10">
                       <center>
-                        <img src={logoImg} width="100" alt="logo" />
+                        <img src={logoImg} width="300" alt="logo" />
                       </center>
                       <br />
                       <form className="js-validation-signin">
@@ -297,7 +298,7 @@ class LogIn extends React.PureComponent {
                     Welcome to the future of renting properties
                   </p>
                   <p className="font-size-lg font-w600 text-white-75 mb-0">
-                    Copyright &copy; <span className="js-year-copy">2019</span>
+                    Copyright &copy; <span className="js-year-copy">2020</span>
                   </p>
                 </div>
               </div>

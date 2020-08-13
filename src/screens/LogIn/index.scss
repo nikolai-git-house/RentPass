@@ -4,8 +4,15 @@ a {
 a:hover {
   color: white;
 }
+
+.landing-img {
+  background-image: url("../../assets/media/ecosystem-landing.png") !important;
+  background-size: 80% auto;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center;
+}
 .bg-image {
-  background-image: url("../../assets/media/photos/landing_image.jpeg") !important;
 }
 .bg-opacity {
   background-color: rgba(0, 0, 0, 0.75) !important;

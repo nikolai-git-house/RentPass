@@ -211,15 +211,13 @@ class Firebase {
     });
   }
   static updateUserById(uid, brand, data) {
-    return new Promise((resolve, reject) => {
-      firebase
-        .firestore()
-        .collection(brand)
-        .doc("data")
-        .collection("user")
-        .doc(`${uid}`)
-        .set(data, { merge: true });
-    });
+    return firebase
+      .firestore()
+      .collection(brand)
+      .doc("data")
+      .collection("user")
+      .doc(uid)
+      .set(data, { merge: true });
   }
   static addPropertyImage(imageName, content) {
     return new Promise((resolve, reject) => {

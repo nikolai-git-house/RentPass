@@ -1,16 +1,58 @@
 import React from "react";
+import moment from "moment";
 import { connect } from "react-redux";
 import ReactHtmlParser from "react-html-parser";
+import ReactSelect from "react-select";
 import loadImage from "blueimp-load-image";
 import "./index.css";
 import Firebase from "../../firebasehelper";
-const phone_img = require("../../assets/media/icons/personal_profile/phone.png");
+import { saveProfile } from "../../redux/actions";
+const superskills = require("./superskills.json");
+const professions = require("./professions.json");
 const age_img = require("../../assets/media/icons/personal_profile/user.png");
-const profession_img = require("../../assets/media/icons/personal_profile/suitcase.png");
-const salary_img = require("../../assets/media/icons/personal_profile/growth.png");
 const error_img = require("../../assets/media/icons/rent_profile/error.png");
 const user_img = require("../../assets/media/logo/avatar_pending.png");
 const pending_img = require("../../assets/media/icons/pending.png");
+const phone_img = require("../../images/profile/phone.png");
+const heart_img = require("../../images/profile/heart.png");
+const profession_img = require("../../images/profile/profession.png");
+const superhero_img = require("../../images/profile/superhero.png");
+const salary_img = require("../../images/profile/growth.png");
+const UKIcon = require("../../images/profile/uk.png");
+const USAIcon = require("../../images/profile/usa.png");
+const IrelandIcon = require("../../images/profile/ireland.png");
+const CanadaIcon = require("../../images/profile/canada.png");
+const ApproveIcon = require("../../images/profile/done.png");
+
+const Styles = {
+  option: (provided, state) => ({
+    ...provided,
+    fontSize: 14,
+  }),
+};
+
+const TerritoryIcon = {
+  UK: UKIcon,
+  Ireland: IrelandIcon,
+  USA: USAIcon,
+  Canada: CanadaIcon,
+};
+
+function _calculateAge(birthday) {
+  // birthday is a date
+  if (!birthday) return null;
+  const age = birthday
+    ? moment().diff(
+        isNaN(new Date(birthday).getTime())
+          ? moment(birthday, "DD/MM/YYYY")
+          : new Date(birthday),
+        "years"
+      )
+    : "";
+
+  return age;
+}
+
 window.addEventListener("message", (data) => {
   console.log("msg received");
   const msg = JSON.parse(data.data);
@@ -42,6 +84,39 @@ class Profile extends React.Component {
   openRentRobot = () => {
     this.props.history.push("/referencing");
   };
+
+  changeProfileData = async (field, value) => {
+    const { profile } = this.state;
+    const { uid, brand, dispatch } = this.props;
+    let brand_name = brand.name;
+    try {
+      const newProfile = { ...profile };
+      newProfile[field] = value;
+      localStorage.setItem("rentkey_profile", JSON.stringify(newProfile));
+      this.setState({ profile: newProfile });
+      this.props.dispatch(saveProfile(newProfile));
+      console.log(field, value);
+      console.log({
+        [field]: value,
+      });
+      await Firebase.updateUserById(uid, brand_name, {
+        [field]: value,
+      });
+    } catch (e) {
+      console.log(e);
+    }
+  };
+
+  onChangeProfileData = (field) => {
+    const { editfield, editValue, profile } = this.state;
+    if (field === editfield) {
+      this.changeProfileData(field, editValue);
+      this.setState({ editfield: "" });
+    } else {
+      this.setState({ editfield: field, editValue: profile[field] || "" });
+    }
+  };
+
   selectedFile = async (e) => {
     const { uid, brand } = this.props;
     let brand_name = brand.name;
@@ -78,12 +153,23 @@ class Profile extends React.Component {
     }
   };
   render() {
-    const { profile, img_content, viewMode } = this.state;
+    const { profile, img_content, viewMode, editfield, editValue } = this.state;
     const { brand, uid } = this.props;
-    let { avatar_url, firstname, phonenumber, dob, property_name } = profile;
+    let {
+      avatar_url,
+      firstname,
+      phonenumber,
+      dob,
+      profession,
+      salary,
+      super_skill,
+    } = profile;
     if (!avatar_url) avatar_url = user_img;
     let brand_name = brand.name;
     brand_name = (brand_name || "").replace(/\s/g, "");
+
+    const territory = (phonenumber || "").startsWith("+1") ? "USA" : "UK";
+    console.log(profile);
     return (
       <div id="profile-container" className="row no-gutters">
         <div className="view-controls">
@@ -113,31 +199,32 @@ class Profile extends React.Component {
         >
           <div
             className="col-md-5 col-lg-5 col-xl-5"
-            style={{ padding: 15, overflow: "auto" }}
+            style={{ padding: 15, overflow: "visible" }}
           >
             <div className="content">
               <div className="personal_profile">
                 <div
+                  className="personal_profile__avatar"
                   style={{
-                    width: 100,
-                    height: 100,
-                    borderRadius: 50,
-                    marginRight: 10,
                     backgroundImage: `url(${
                       img_content ? img_content : avatar_url
                     })`,
-                    backgroundRepeat: "no-repeat",
-                    backgroundPosition: "center",
-                    backgroundSize: "contain",
                   }}
                   onClick={() => {
                     this.refs.fileUploader.click();
                   }}
                 ></div>
+                <div className="icons-container">
+                  {/* {userstatus === "Active" ? (
+                      <img src={ApproveIcon} alt="active" />
+                    ) : (
+                      <div />
+                    )} */}
+                  <img src={ApproveIcon} alt="active" />
+                  <img src={TerritoryIcon[territory]} alt="flag" />
+                </div>
                 <p>
-                  {ReactHtmlParser(
-                    `<b>${firstname}'s</b> <br /> Personal Profile`
-                  )}
+                  <b>{firstname}</b>
                 </p>
               </div>
 
@@ -147,16 +234,130 @@ class Profile extends React.Component {
                   <p>{phonenumber}</p>
                 </div>
                 <div className="row_item">
-                  <img src={age_img} width="30" alt="age"></img>
-                  <p>Age</p>
+                  <img src={heart_img} width="30" alt="age"></img>
+                  <p className="row_item_value">
+                    {editfield === "dob" ? (
+                      <input
+                        className="input_box"
+                        type="date"
+                        value={editValue}
+                        onChange={(e) =>
+                          this.setState({ editValue: e.target.value })
+                        }
+                      ></input>
+                    ) : (
+                      `Age: ${_calculateAge(dob)}`
+                    )}
+                  </p>
+                  <div
+                    className="edit"
+                    onClick={() => this.onChangeProfileData("dob")}
+                  >
+                    <i
+                      className={
+                        editfield === "dob" ? "si si-check" : "si si-settings"
+                      }
+                    />
+                  </div>
                 </div>
                 <div className="row_item">
                   <img src={profession_img} width="30" alt="profession"></img>
-                  <p>Profession</p>
+                  <p className="row_item_value">
+                    {editfield === "profession" ? (
+                      <div style={{ flex: 1 }}>
+                        <ReactSelect
+                          value={{ label: editValue, value: editValue }}
+                          onChange={(e) => {
+                            this.setState({ editValue: e.value });
+                          }}
+                          options={professions.map((obj) => ({
+                            value: obj,
+                            label: obj,
+                          }))}
+                          isSearchable={false}
+                          styles={Styles}
+                        ></ReactSelect>
+                      </div>
+                    ) : (
+                      profession || "Profession"
+                    )}
+                  </p>
+                  <div
+                    className="edit"
+                    onClick={() => this.onChangeProfileData("profession")}
+                  >
+                    <i
+                      className={
+                        editfield === "profession"
+                          ? "si si-check"
+                          : "si si-settings"
+                      }
+                    />
+                  </div>
+                </div>
+                <div className="row_item">
+                  <img src={superhero_img} width="30" alt="super_skill"></img>
+                  <p className="row_item_value">
+                    {editfield === "super_skill" ? (
+                      <div style={{ flex: 1 }}>
+                        <ReactSelect
+                          value={{ label: editValue, value: editValue }}
+                          onChange={(e) => {
+                            this.setState({ editValue: e.value });
+                          }}
+                          options={superskills.map((obj) => ({
+                            value: obj,
+                            label: obj,
+                          }))}
+                          isSearchable={false}
+                          styles={Styles}
+                        ></ReactSelect>
+                      </div>
+                    ) : (
+                      super_skill || "Super Skill"
+                    )}
+                  </p>
+                  <div
+                    className="edit"
+                    onClick={() => this.onChangeProfileData("super_skill")}
+                  >
+                    <i
+                      className={
+                        editfield === "super_skill"
+                          ? "si si-check"
+                          : "si si-settings"
+                      }
+                    />
+                  </div>
                 </div>
                 <div className="row_item">
                   <img src={salary_img} width="30" alt="salary"></img>
-                  <p>Annual Salary</p>
+                  <p className="row_item_value">
+                    £{" "}
+                    {editfield === "salary" ? (
+                      <input
+                        className="input_box"
+                        value={editValue}
+                        onChange={(e) =>
+                          this.setState({ editValue: e.target.value })
+                        }
+                      ></input>
+                    ) : (
+                      salary || "Monthly Salary"
+                    )}
+                  </p>
+                  <div
+                    className="edit"
+                    onClick={() => this.onChangeProfileData("salary")}
+                  >
+                    <i
+                      className={
+                        editfield === "salary"
+                          ? "si si-check"
+                          : "si si-settings"
+                      }
+                    />
+                  </div>
                 </div>
                 <input
                   type="file"

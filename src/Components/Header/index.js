@@ -105,7 +105,7 @@ class Header extends React.Component {
                     style={{ width: 12, marginRight: 10 }}
                     src={security_png}
                   />
-                  <span className="nav-main-link-name">Profile</span>
+                  <span className="nav-main-link-name">ID</span>
                 </NavLink>
               </li>
               {/* <li className="nav-main-item">

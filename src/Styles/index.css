@@ -585,6 +585,13 @@
         padding-left: 105px;
         width: 80%;
         font-family: "Graphik", sans-serif; }
+      .message-input-container .message-input-wrapper div .message-input-container .bill-price {
+        text-align: right;
+        font-family: "Graphik", sans-serif;
+        width: 150px;
+        margin-left: auto;
+        flex: 0;
+        background: white; }
       .message-input-container .message-input-wrapper div .message-input-container .year {
         margin-right: -100px;
         padding-right: 50px;
@@ -657,6 +664,8 @@
           background: transparent;
           box-shadow: unset;
           padding: 10px; }
+  .message-input-container.select-brand input {
+    padding: 0.6em 1.4em !important; }
 
 .swal-overlay .swal-modal .swal-footer .swal-button-container .swal-button--confirm {
   background-color: #2b2b2b;
@@ -691,6 +700,28 @@
   margin-bottom: -1em;
   margin-top: 1em;
   opacity: 0.6; }
+
+.send-button-pay {
+  display: flex;
+  background-color: #152439;
+  opacity: 1;
+  transition: opacity 0.15s;
+  width: 50px;
+  height: 50px;
+  background-color: #152439;
+  border-radius: 4em;
+  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  z-index: 1;
+  padding: 0; }
+  .send-button-pay img {
+    width: 30px;
+    height: 30px;
+    margin: auto; }
+  .send-button-pay.disabled {
+    opacity: 0.8; }
+  .send-button-pay.notbolt {
+    background-color: #152439;
+    color: #ffffff; }
 
 .cards-container {
   position: relative; }

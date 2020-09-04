@@ -3,9 +3,10 @@ import ReactDOM from "react-dom";
 import { BrowserRouter as Router } from "react-router-dom";
 import { Provider } from "react-redux";
 import "./Styles/index.css";
-import App from "./App";
 import * as serviceWorker from "./serviceWorker";
 import "./assets/styles/dashmix.min.css";
+import "./global.css";
+import App from "./App";
 import store from "./redux";
 ReactDOM.render(
   <Router>

@@ -32,12 +32,13 @@
       display: none;
     }
     a.nav-main-link {
-      font-size: 1rem;
+      font-size: 11px;
     }
     .nav-main-item {
       margin: 5px;
     }
     ul {
+      padding-left: 20px;
       z-index: 10000;
       .btn {
         display: flex;
@@ -59,7 +60,6 @@
     }
   }
 }
-
 .nav-token-counter-wrapper {
   position: relative;
   display: inline-block;
@@ -91,7 +91,10 @@
       padding-left: 10px;
     }
     .heading a.nav-main-link {
-      font-size: 14px;
+      font-size: 10px;
+      img {
+        width: 10px !important;
+      }
     }
   }
 }
@@ -130,7 +133,11 @@
       ul {
         .nav-main-item {
           .nav-main-link {
-            font-size: 14px !important;
+            font-size: 10px !important;
+
+            img {
+              width: 10px !important;
+            }
           }
         }
       }
@@ -141,8 +148,7 @@
 @media (min-width: 768px) {
   .content-header {
     align-items: center;
-    padding-left: 0.875rem !important;
-    padding-right: 0.875rem !important;
+    padding: 0 !important;
     ul {
       display: flex;
       flex-direction: row;

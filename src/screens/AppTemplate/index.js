@@ -12,6 +12,10 @@ import Concierge from "../Concierge";
 import Tickets from "../Tickets";
 import Shop from "../Shop";
 import NewProperty from "../NewProperty";
+import Perks from "../Perks";
+import EarnTokens from "../EarnTokens";
+import Wallets from "../Wallets";
+import Ecopay from "../Ecopay";
 import Header from "../../Components/Header";
 import { removeAll } from "../../redux/actions";
 import "./index.css";
@@ -42,6 +46,10 @@ class AppTemplate extends React.Component {
           <Route exact path="/concierge" component={Concierge} />
           <Route exact path="/tickets" component={Tickets} />
           <Route exact path="/shop" component={Shop} />
+          <Route path="/spend" component={Perks} />
+          <Route path="/earn" component={EarnTokens} />
+          <Route path="/wallets" component={Wallets} />
+          <Route path="/ecopay" component={Ecopay} />
           {/* <Route exact path="/yield" component={Yield} />
           <Route exact path="/compliance" component={Compliance} /> */}
         </Switch>
@@ -52,13 +60,13 @@ class AppTemplate extends React.Component {
 
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
   return {
     showSideBar: state.showSidebar,
-    location: state.location
+    location: state.location,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(AppTemplate);

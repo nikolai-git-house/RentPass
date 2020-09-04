@@ -893,6 +893,150 @@ class Firebase {
         });
     }
   }
+  static getAllDeactiveRetailers = (callback) => {
+    let path = "retailers/deactive";
+    firebase
+      .database()
+      .ref(path)
+      .on("value", (snapshot) => {
+        let result = [];
+        if (snapshot.val()) result = snapshot.val();
+        callback(result);
+      });
+  };
+
+  static getAllTicketsById(user_id, callback) {
+    let path = "livechat/" + user_id + "/tickets";
+    firebase
+      .database()
+      .ref(path)
+      .on("value", (snapshot) => {
+        var res = [];
+        if (snapshot.val()) {
+          res = snapshot.val();
+        }
+        callback(res);
+      });
+  }
+
+  static getAllRetailers = (callback) => {
+    let path = "retailers/all";
+    firebase
+      .database()
+      .ref(path)
+      .on("value", (snapshot) => {
+        let result = [];
+        result = snapshot.val();
+        let res = Object.keys(result).map((obj) => ({
+          uid: obj,
+          ...result[obj],
+        }));
+        callback(res);
+      });
+  };
+
+  static getAllTokenEarnings(callback) {
+    return Firebase.firestore()
+      .collection("token_earning")
+      .onSnapshot((docSnapshot) => {
+        const tokenEarnings = [];
+        docSnapshot.forEach((doc) => {
+          tokenEarnings.push({
+            id: doc.id,
+            ...doc.data(),
+          });
+        });
+        callback(tokenEarnings);
+      });
+  }
+
+  static subscribeUserDatafromUID = (brand_name, uid, callback) => {
+    if (brand_name !== "Ecosystem") {
+      firebase
+        .firestore()
+        .collection(brand_name)
+        .doc("data")
+        .collection("user")
+        .doc(`${uid}`)
+        .onSnapshot((res) => {
+          callback(res.data());
+        });
+    } else {
+      firebase
+        .firestore()
+        .collection("user")
+        .doc(`${uid}`)
+        .onSnapshot((res) => {
+          callback(res.data());
+        });
+    }
+  };
+
+  static getAllPaymentMethods(brand, uid, callback) {
+    let fbInstance;
+    if (brand === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user");
+    }
+    fbInstance
+      .doc(uid)
+      .collection("braintree_payment_method")
+      .onSnapshot((snapshot) => {
+        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+  }
+
+  static getAllSubscriptions(brand, uid, callback) {
+    let fbInstance;
+    if (brand === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user");
+    }
+    fbInstance
+      .doc(uid)
+      .collection("subscriptions")
+      .onSnapshot((snapshot) => {
+        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+  }
+
+  static getAllRetailersOnce = (callback) => {
+    let path = "retailers/all";
+    firebase
+      .database()
+      .ref(path)
+      .once("value", (snapshot) => {
+        let result = [];
+        result = snapshot.val();
+        let res = Object.keys(result).map((obj) => ({
+          uid: obj,
+          ...result[obj],
+        }));
+        callback(res);
+      });
+  };
+
+  static getAllDeactiveRetailersOnce = (callback) => {
+    let path = "retailers/deactive";
+    firebase
+      .database()
+      .ref(path)
+      .once("value", (snapshot) => {
+        let result = [];
+        if (snapshot.val()) result = snapshot.val();
+        callback(result);
+      });
+  };
 }
 Firebase.initialize();
 export default Firebase;

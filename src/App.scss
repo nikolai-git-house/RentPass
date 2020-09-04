@@ -1,65 +1,113 @@
 .App {
-	text-align: center;
+  text-align: center;
 }
 
 .App-logo {
-	animation: App-logo-spin infinite 20s linear;
-	height: 40vmin;
+  animation: App-logo-spin infinite 20s linear;
+  height: 40vmin;
 }
 
 .App-header {
-	background-color: #282c34;
-	min-height: 100vh;
-	display: flex;
-	flex-direction: column;
-	align-items: center;
-	justify-content: center;
-	font-size: calc(10px + 2vmin);
-	color: white;
+  background-color: #282c34;
+  min-height: 100vh;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  font-size: calc(10px + 2vmin);
+  color: white;
 }
 
 .App-link {
-	color: #61dafb;
+  color: #61dafb;
 }
 #page-container #main {
-	padding-top: 4.375rem;
+  padding-top: 4.375rem;
 }
 @keyframes App-logo-spin {
-	from {
-		transform: rotate(0deg);
-	}
-	to {
-		transform: rotate(360deg);
-	}
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
 }
 
 .table-width-10 {
-	width: 10%;
+  width: 10%;
 }
 .table-width-20 {
-	width: 20%;
+  width: 20%;
 }
 .table-width-30 {
-	width: 30%;
+  width: 30%;
 }
 .table-width-40 {
-	width: 40%;
+  width: 40%;
 }
 .table-width-50 {
-	width: 50%;
+  width: 50%;
 }
 .table-width-60 {
-	width: 60%;
+  width: 60%;
 }
 .table-width-70 {
-	width: 70%;
+  width: 70%;
 }
 .table-width-80 {
-	width: 80%;
+  width: 80%;
 }
 .table-width-90 {
-	width: 90%;
+  width: 90%;
 }
 .table-width-100 {
-	width: 100%;
+  width: 100%;
+}
+
+.btn-filter-with-img {
+  height: 85px;
+  margin-left: 2%;
+  box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
+  width: 12%;
+  border-radius: 0.55rem !important;
+  &:first-child {
+    margin-left: 0px;
+  }
+
+  p {
+    font-weight: normal;
+    overflow: hidden;
+    -o-text-overflow: ellipsis;
+    text-overflow: ellipsis;
+    white-space: nowrap;
+    margin-bottom: 0px;
+  }
+
+  img {
+    height: 60%;
+  }
+
+  @media only screen and (min-width: 1024px) {
+    margin-top: 0px;
+  }
+
+  @media (max-width: 960px) {
+    height: 75px;
+    margin-left: 2%;
+    width: 12%;
+  }
+
+  @media (max-width: 640px) {
+    margin-left: 1%;
+    font-size: 10px;
+    img {
+      height: 50%;
+    }
+  }
+
+  @media (max-width: 420px) {
+    height: 45px;
+    padding: 0 !important;
+    margin-left: 2%;
+  }
 }

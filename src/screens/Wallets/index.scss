@@ -1,0 +1,300 @@
+.wallets-page-container {
+  height: 100vh !important;
+  #main-container {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    margin: 20px 20px 0;
+    width: 100%;
+    flex: 1;
+    overflow: hidden;
+
+    .card-container {
+      position: relative;
+      display: flex;
+      width: fit-content;
+      margin: 0 auto;
+
+      .card {
+        height: 200px;
+      }
+
+      .card-remove {
+        width: 30px;
+        height: 30px;
+        left: 30px;
+        bottom: 30px;
+        position: absolute;
+      }
+
+      .card-index {
+        width: 30px;
+        height: 30px;
+        right: 30px;
+        top: 20px;
+        position: absolute;
+      }
+
+      .card-number {
+        right: 30px;
+        bottom: 30px;
+        position: absolute;
+        margin-bottom: 0;
+      }
+    }
+
+    .fullwidth-container {
+      overflow: auto;
+      width: 100%;
+      display: flex;
+      justify-content: center;
+      -ms-overflow-style: none; /* Internet Explorer 10+ */
+      scrollbar-width: none; /* Firefox */
+
+      &::-webkit-scrollbar {
+        display: none; /* Safari and Chrome */
+      }
+    }
+
+    .subscriptions-container {
+      width: 360px;
+      max-width: 100%;
+      padding: 5px;
+
+      .subscription-empty {
+        display: flex;
+        flex-direction: column;
+        align-items: center;
+        .subscription-empty-placeholder {
+          width: 100px;
+          height: 100px;
+        }
+
+        p {
+          margin-bottom: 10px;
+          text-align: center;
+        }
+      }
+
+      .subscription-container {
+        position: relative;
+        width: 100%;
+        display: flex;
+        box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+        color: black;
+        background-color: white;
+        font-size: 12px;
+        margin-bottom: 10px;
+        .subscription-status {
+          position: absolute;
+          top: 5px;
+          left: 5px;
+          width: 30px;
+          height: 30px;
+        }
+
+        .product-avatar {
+          height: 100px;
+          width: 100px;
+        }
+
+        .product-description {
+          margin: auto 10px;
+          p {
+            margin-bottom: 0;
+            overflow: hidden;
+            text-overflow: ellipsis;
+            display: -webkit-box;
+            -webkit-line-clamp: 1; /* number of lines to show */
+            -webkit-box-orient: vertical;
+          }
+        }
+      }
+    }
+
+    .tabs-container {
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      width: 100%;
+      padding-bottom: 50px;
+      padding-left: 2px;
+      padding-right: 2px;
+      padding-top: 3px;
+
+      .tab-btn {
+        flex: 1;
+        max-width: 300px;
+        background: white;
+        box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+        margin-right: 20px;
+
+        &:last-child {
+          margin-right: 0;
+        }
+
+        &.selected {
+          background: #f2fb79ff;
+        }
+      }
+    }
+
+    .content-container {
+      flex: 1;
+      overflow-y: auto;
+      padding-bottom: 20px;
+      padding-top: 3px;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      width: 100%;
+    }
+
+    .token-container {
+      width: 100%;
+      display: flex;
+      flex-wrap: wrap;
+      margin-left: 50px;
+      width: 670px;
+
+      .token {
+        background: white;
+        box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+        position: relative;
+        height: 100px;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        padding: 0 15px;
+        margin-right: 100px;
+        border-radius: 16px;
+        width: 285px;
+        margin-bottom: 30px;
+
+        img {
+          position: absolute;
+          width: 100px;
+          height: 100px;
+          top: 0;
+          left: -50px;
+        }
+
+        &__title {
+          margin-bottom: 0;
+          font-size: 20px;
+          line-height: 24px;
+        }
+
+        &__number {
+          margin-bottom: 0;
+          font-size: 16px;
+          b {
+            font-size: 24px;
+          }
+        }
+
+        &:nth-child(2n) {
+          margin-right: 0;
+        }
+      }
+    }
+
+    .cards-container {
+      flex: 1;
+      overflow: auto;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      margin-top: 50px;
+      padding-top: 10px;
+
+      .btn-green {
+        background-color: #d5fec6;
+        cursor: pointer;
+        box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+      }
+
+      ul.feature-container {
+        list-style-type: none;
+        margin: 20px auto;
+        padding-inline-start: 10px;
+
+        li {
+          margin-bottom: 10px;
+        }
+
+        li:before {
+          content: "-";
+          position: absolute;
+          margin-left: -20px;
+        }
+      }
+    }
+
+    .ledger-btn {
+      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+      background: #f2fb79ff;
+      max-width: 600px;
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    @media only screen and (max-width: 768px) {
+      .tabs-container {
+        padding: 3px 20px 20px;
+        .tab-btn {
+          margin-right: 10px;
+          font-size: 13px;
+        }
+      }
+
+      .content-container {
+        width: 100%;
+      }
+
+      .token-container {
+        flex-direction: column;
+        align-items: center;
+        width: unset;
+        margin-left: 35px;
+
+        .token {
+          margin-right: 0;
+          height: 70px;
+
+          img {
+            width: 70px;
+            height: 70px;
+            left: -35px;
+          }
+
+          &__title {
+            margin-bottom: 0;
+            font-size: 18px;
+            line-height: 20px;
+          }
+
+          &__number {
+            margin-bottom: 0;
+            font-size: 14px;
+            b {
+              font-size: 22px;
+            }
+          }
+        }
+      }
+
+      .ledger-btn {
+        max-width: 320px;
+        margin-top: 0;
+      }
+    }
+  }
+
+  @media only screen and (max-width: 768px) {
+    #main-container {
+      margin-left: 0;
+      margin-right: 0;
+    }
+  }
+}

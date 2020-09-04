@@ -7,6 +7,15 @@ import logoImg from "../../assets/media/logo.png";
 import burgerImg from "../../images/burger.png";
 import nav_live_coin_img from "../../images/nav_live_coin.png";
 import token_img from "../../images/chip.png";
+
+import chip_png from "../../images/explore/chip.png";
+import wallet_png from "../../images/explore/wallet.jpg";
+import pay_png from "../../images/explore/pay.png";
+import shopping_bag_png from "../../images/explore/shopping-bag.png";
+import security_png from "../../images/explore/security.png";
+import housemates_png from "../../images/explore/housemates.png";
+import tickets_png from "../../images/explore/tickets.png";
+import property_png from "../../images/explore/property.png";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -92,7 +101,11 @@ class Header extends React.Component {
             >
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/profile" className={classnames("nav-main-link")}>
-                  <span className="nav-main-link-name">My Profile</span>
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={security_png}
+                  />
+                  <span className="nav-main-link-name">Profile</span>
                 </NavLink>
               </li>
               {/* <li className="nav-main-item">
@@ -105,7 +118,11 @@ class Header extends React.Component {
                   to="/housemates"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">My Housemates</span>
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={housemates_png}
+                  />
+                  <span className="nav-main-link-name">Housemates</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
@@ -113,17 +130,86 @@ class Header extends React.Component {
                   to="/newproperty"
                   className={classnames("nav-main-link")}
                 >
-                  <span className="nav-main-link-name">My Property</span>
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={property_png}
+                  />
+                  <span className="nav-main-link-name">Property</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/tickets" className={classnames("nav-main-link")}>
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={tickets_png}
+                  />
                   <span className="nav-main-link-name">Tickets</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item" onClick={this.click}>
+              {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/shop" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">Shop</span>
+                </NavLink>
+              </li> */}
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/spend",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img style={{ width: 12, marginRight: 10 }} src={token_img} />
+                  <span className="nav-main-link-name">Token Offers</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/earn",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img style={{ width: 12, marginRight: 10 }} src={chip_png} />
+                  <span className="nav-main-link-name">Earn Tokens</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/wallets",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={wallet_png}
+                  />
+                  <span className="nav-main-link-name">EcoWallet</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/ecopay",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img style={{ width: 12, marginRight: 10 }} src={pay_png} />
+                  <span className="nav-main-link-name">EcoPay</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/shop",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={shopping_bag_png}
+                  />
+                  <span className="nav-main-link-name">EcoShop</span>
                 </NavLink>
               </li>
               <li className={`nav-main-item burger show`}>
@@ -160,12 +246,12 @@ class Header extends React.Component {
             </button>
           </div>
           <div className="second_menu header-actions-container">
-            <button
+            {/* <button
               class="btn btn-block btn-hero-lg btn-hero-success view-platform-btn"
               onClick={this.goToCommunity}
             >
               Visit your community
-            </button>
+            </button> */}
             <div className="dropdown d-inline-block">
               <button
                 type="button"

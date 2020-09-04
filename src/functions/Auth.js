@@ -3,7 +3,7 @@ export const doSMS = async (phoneNumber, pin) => {
     let response = await fetch(
       `https://apricot-mole-2227.twil.io/rentpass_sms?phoneNumber=${phoneNumber}&pin=${pin}`,
       {
-        method: "GET"
+        method: "GET",
       }
     );
     let res = await response.json();
@@ -12,7 +12,7 @@ export const doSMS = async (phoneNumber, pin) => {
     return err;
   }
 };
-export const clearZero = function(str) {
+export const clearZero = function (str) {
   if (str.charAt(0) === "0") str = str.replace("0", "");
   return str;
 };
@@ -26,12 +26,12 @@ export function isDateValidate(date) {
     return true;
   else return false;
 }
-export const getAddresses = async postcode => {
+export const getAddresses = async (postcode) => {
   try {
     let response = await fetch(
       `https://api.getAddress.io/find/${postcode}?api-key=TAOlpULvxkm8OUK_tN6RzA21029`,
       {
-        method: "GET"
+        method: "GET",
       }
     );
     let res = await response.json();
@@ -50,12 +50,52 @@ export const sendInvitation = async (
     let response = await fetch(
       `https://apricot-mole-2227.twil.io/property_invite?phoneNumber=${phoneNumber}&username=${username}&property_name=${property_name}&brand_name=${brand}`,
       {
-        method: "GET"
+        method: "GET",
       }
     );
     let res = await response.json();
     return res;
   } catch (err) {
     return err;
+  }
+};
+
+export const getStringfromSeconds = function (time) {
+  var t = new Date(parseInt(time));
+  var dd = String(t.getDate()).padStart(2, "0");
+  var mm = String(t.getMonth() + 1).padStart(2, "0"); //January is 0!
+  var month = getMonth(mm);
+  t = dd + "th " + month;
+  return t;
+};
+
+var getMonth = (month) => {
+  switch (month) {
+    case "01":
+      return "January";
+    case "02":
+      return "February";
+    case "03":
+      return "March";
+    case "04":
+      return "April";
+    case "05":
+      return "May";
+    case "06":
+      return "June";
+    case "07":
+      return "July";
+    case "08":
+      return "August";
+    case "09":
+      return "September";
+    case "10":
+      return "October";
+    case "11":
+      return "November";
+    case "12":
+      return "December";
+    default:
+      return "January";
   }
 };

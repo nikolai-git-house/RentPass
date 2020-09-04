@@ -69,8 +69,8 @@
       width: 100%;
       text-align: center; }
       .message-input-container .message-input-wrapper .message-static.notbolt {
-        background-color: #152439;
-        color: #ffffff; }
+        background-color: #ffffff;
+        color: #0b0b0b; }
     .message-input-container .message-input-wrapper div .message-input-container {
       width: 100%;
       display: flex;

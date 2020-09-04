@@ -126,6 +126,14 @@
           width: 80%;
           font-family: "Graphik", sans-serif;
         }
+        .bill-price {
+          text-align: right;
+          font-family: "Graphik", sans-serif;
+          width: 150px;
+          margin-left: auto;
+          flex: 0;
+          background: white;
+        }
         .year {
           margin-right: -100px;
           padding-right: 50px;
@@ -217,6 +225,12 @@
       }
     }
   }
+
+  &.select-brand {
+    input {
+      padding: 0.6em 1.4em !important;
+    }
+  }
 }
 .swal-overlay {
   .swal-modal {
@@ -260,4 +274,30 @@
   margin-bottom: -1em;
   margin-top: 1em;
   opacity: 0.6;
+}
+
+.send-button-pay {
+  display: flex;
+  background-color: $black;
+  opacity: 1;
+  transition: opacity 0.15s;
+  width: 50px;
+  height: 50px;
+  background-color: $black;
+  border-radius: 4em;
+  box-shadow: $box-shadow;
+  z-index: 1;
+  padding: 0;
+  img {
+    width: 30px;
+    height: 30px;
+    margin: auto;
+  }
+  &.disabled {
+    opacity: 0.8;
+  }
+  &.notbolt {
+    background-color: $black;
+    color: $white;
+  }
 }

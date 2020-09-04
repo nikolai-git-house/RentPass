@@ -12,6 +12,7 @@ import { doSMS, clearZero } from "../functions/Auth";
 import { animateScroll } from "react-scroll";
 import Firebase from "../firebasehelper";
 import ErrorModal from "./ErrorModal";
+import SelectBrand from "./SelectBrand";
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
@@ -32,24 +33,26 @@ class MessageInput extends Component {
       sms: "",
       email: "",
       password: "",
-      salary: ""
+      salary: "",
     },
-    checkingprofile: false
+    checkingprofile: false,
   };
   handleTouchStart = false;
 
   getStaticMessage() {
-    const { addMessage, message } = this.props;
+    const { addMessage, message, logo } = this.props;
     return (
       <div
-        className="message message-static"
-        onClick={e => {
+        className={`message message-static ${
+          logo === "ecosystem" ? " " : "notbolt"
+        }`}
+        onClick={(e) => {
           this.handleTouchStart = true;
           this.addMessage({
             type: "user",
             message: message.message,
             register: message.register,
-            start_trial: message.start_trial
+            start_trial: message.start_trial,
           });
         }}
       >
@@ -65,13 +68,13 @@ class MessageInput extends Component {
         {message.key === "sms" && (
           <div
             className={`button ${logo === "bolt" ? "" : "notbolt"}`}
-            onClick={e => {
+            onClick={(e) => {
               this.handleTouchStart = true;
               addMessage({
                 type: "user",
                 message: "I didn't receive a code.",
                 inputType: "input",
-                key: "no_received"
+                key: "no_received",
               });
             }}
           >
@@ -87,27 +90,29 @@ class MessageInput extends Component {
             placeholder={message.placeholder}
             className={`${message.key.includes("phone") ? "phone" : ""}  ${
               message.key === "salary" ? "salary" : ""
-            } ${message.key === "company_site" ? "company_site" : ""}`}
+            } ${message.key === "company_site" ? "company_site" : ""} ${
+              message.key === "bill-price" ? "bill-price" : ""
+            }`}
             onChange={this.onChange}
-            onKeyPress={e => {
+            onKeyPress={(e) => {
               if (e.charCode === 13) this.addMessage();
             }}
             onFocus={() => {
               this.setState(
                 {
-                  isFocused: true
+                  isFocused: true,
                 },
                 () => {
                   animateScroll.scrollToBottom({
                     duration: 500,
-                    smooth: "easeInOutQuad"
+                    smooth: "easeInOutQuad",
                   });
                 }
               );
             }}
             onBlur={() => {
               this.setState({
-                isFocused: false
+                isFocused: false,
               });
             }}
           />
@@ -116,7 +121,7 @@ class MessageInput extends Component {
             className={`send-button ${value ? "" : "disabled"} ${
               logo === "bolt" ? "" : "notbolt"
             }`}
-            onClick={e => {
+            onClick={(e) => {
               if (value) {
                 if (this.handleTouchStart) {
                   setTimeout(() => {
@@ -131,7 +136,7 @@ class MessageInput extends Component {
                 this.setState({
                   modalIsOpen: true,
                   caption: "Warning",
-                  content: "All fields are required!"
+                  content: "All fields are required!",
                 });
             }}
           >
@@ -148,7 +153,7 @@ class MessageInput extends Component {
     return <Select options={options} addMessage={addMessage} />;
   }
 
-  setSelectedOption = async index => {
+  setSelectedOption = async (index) => {
     const { addMessage, message } = this.props;
     const selectedOption = message.options[index]["value"];
     console.log("message", message);
@@ -158,17 +163,17 @@ class MessageInput extends Component {
       type: "user",
       message: selectedOption,
       inputType: "toggleInput",
-      key: message.key
+      key: message.key,
     });
   };
-  chooseOption = result => {
+  chooseOption = (result) => {
     const { addMessage, message } = this.props;
     profile[message.key] = result;
     addMessage({
       type: "user",
       message: result,
       inputType: "yesno",
-      key: message.key
+      key: message.key,
     });
   };
   getAddress() {
@@ -206,16 +211,16 @@ class MessageInput extends Component {
       <CardContainer addMessage={addMessage} cards={cards} message={message} />
     );
   }
-  onChange = e => {
+  onChange = (e) => {
     this.setState({
-      value: e.target.value
+      value: e.target.value,
     });
   };
 
   createPincode = () => {
     return Math.floor(100000 + Math.random() * 900000);
   };
-  addAddress = address => {
+  addAddress = (address) => {
     const { addMessage, message } = this.props;
     const address_arr = address.split(",");
     if (message.key === "address") {
@@ -226,14 +231,14 @@ class MessageInput extends Component {
     }
     addMessage({
       message: address,
-      ...message
+      ...message,
     });
   };
 
   jsUcfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  doRegister = profile => {
+  doRegister = (profile) => {
     const { onRegister } = this.props;
     onRegister(profile);
   };
@@ -249,7 +254,7 @@ class MessageInput extends Component {
       let number = clearZero(value);
       let phone = "+44" + number;
       this.setState({ checkingprofile: true });
-      Firebase.isProfileExist(phone).then(res => {
+      Firebase.isProfileExist(phone).then((res) => {
         console.log("isProfileExist", res);
         this.setState({ checkingprofile: false });
         addMessage({
@@ -258,7 +263,7 @@ class MessageInput extends Component {
           key: message.key,
           isPhoneNumberExist: res,
           inputType: "input",
-          isNext: message.isNext
+          isNext: message.isNext,
         });
         if (!res) {
           let pin = this.createPincode();
@@ -280,7 +285,7 @@ class MessageInput extends Component {
           message: value,
           key: message.key,
           inputType: "input",
-          isNext: message.isNext
+          isNext: message.isNext,
         });
       } else {
         addMessage({
@@ -288,7 +293,7 @@ class MessageInput extends Component {
           message: value,
           key: "wrong_sms",
           inputType: "input",
-          isNext: message.isNext
+          isNext: message.isNext,
         });
       }
     } else if (message.register) {
@@ -296,13 +301,13 @@ class MessageInput extends Component {
         type: "user",
         message: message.message,
         key: message.key,
-        inputType: "input"
+        inputType: "input",
       });
       let newProfile = [];
       newProfile = {
         firstname: profile["firstname"],
         phonenumber: profile["phone"],
-        manageType: profile["manageType"]
+        manageType: profile["manageType"],
       };
       this.doRegister(newProfile);
     } else if (message.start_trial) {
@@ -310,7 +315,7 @@ class MessageInput extends Component {
         type: "user",
         message: message.message,
         key: message.key,
-        inputType: "input"
+        inputType: "input",
       });
       onStartTrial();
     } else
@@ -319,7 +324,7 @@ class MessageInput extends Component {
         message: value,
         key: message.key,
         inputType: "input",
-        result: message.result
+        result: message.result,
       });
     console.log("profile", profile);
   };
@@ -327,7 +332,7 @@ class MessageInput extends Component {
     const { message } = this.props;
     if (message.inputType !== "input") {
       this.setState({
-        leaving: true
+        leaving: true,
       });
       setTimeout(() => {
         callback();
@@ -338,13 +343,31 @@ class MessageInput extends Component {
   closeModal = () => {
     this.setState({ modalIsOpen: false });
   };
+
+  getSelectBrand() {
+    const { addMessage, message } = this.props;
+    return (
+      <SelectBrand
+        addMessage={(message) =>
+          addMessage({
+            type: "user",
+            message: message,
+            inputType: "selectbrand",
+            isNext: true,
+          })
+        }
+        message={message}
+      />
+    );
+  }
+
   render() {
     const {
       leaving,
       modalIsOpen,
       caption,
       content,
-      checkingprofile
+      checkingprofile,
     } = this.state;
     const { message } = this.props;
     return (
@@ -372,6 +395,7 @@ class MessageInput extends Component {
             {message.inputType === "address" ? this.getAddress() : null}
             {message.inputType === "date" ? this.getDateMessage() : null}
             {message.inputType === "select" ? this.getSelectInput() : null}
+            {message.inputType === "selectBrand" ? this.getSelectBrand() : null}
             {message.inputType === "card" ? this.getCardInput() : null}
             {message.inputType === "yesno" ? this.getYesNoInput() : null}
             {message.inputType === "upload" ? this.getUploadDialog() : null}

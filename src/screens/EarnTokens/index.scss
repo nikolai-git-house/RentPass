@@ -1,0 +1,383 @@
+.earntokens-container {
+  #main-container {
+    width: 100%;
+  }
+
+  .content {
+    flex: 1;
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+  }
+
+  .tiles {
+    // height: calc(100vh - 100px);
+    overflow: hidden;
+    overflow-y: auto;
+  }
+
+  .deal {
+    box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
+  }
+  @media only screen and (min-width: 320px) and (max-width: 359px) {
+    .tiles {
+      /* display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+          width: 80%;
+          height: 100%; */
+      flex-wrap: wrap;
+      margin-top: 10px;
+      display: inline-flex;
+      justify-content: center;
+      margin-right: -10px;
+    }
+    .deal {
+      position: relative;
+      cursor: pointer;
+      height: 220px;
+      // width: 154px;
+      width: 136px;
+      display: block;
+      /* margin-left: 10px; */
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 25px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .deal .deal-caption {
+      font-size: 15px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 111px;
+      background-color: #fff;
+      padding-top: 35px;
+      text-align: center;
+      line-height: 18px;
+    }
+    .deal .deal-caption b {
+      font-weight: bold;
+      color: #2b2929;
+    }
+    .deal .deal-caption span {
+      font-size: 15px;
+      color: #000;
+      display: block;
+      margin-top: 10px;
+    }
+    .deal .deal-caption .top10 {
+      font-size: 10px;
+    }
+    .deal .deal-logo {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 120px;
+      height: 75px;
+      margin: 80px auto;
+      background-color: #fff;
+      position: relative;
+      top: 50px;
+    }
+  }
+
+  @media only screen and (min-width: 360px) and (max-width: 410px) {
+    .tiles {
+      /* display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+          width: 80%;
+          height: 100%; */
+      flex-wrap: wrap;
+      margin-top: 10px;
+      display: inline-flex;
+      justify-content: center;
+      margin-right: -10px;
+    }
+    .deal {
+      position: relative;
+      cursor: pointer;
+      height: 220px;
+      // width: 154px;
+      width: 155px;
+      display: block;
+      /* margin-left: 10px; */
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 25px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .deal .deal-caption {
+      font-size: 15px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 111px;
+      background-color: #fff;
+      padding-top: 35px;
+      text-align: center;
+      line-height: 18px;
+    }
+    .deal .deal-caption b {
+      font-weight: bold;
+      color: #2b2929;
+    }
+    .deal .deal-caption span {
+      font-size: 15px;
+      color: #000;
+      display: block;
+      margin-top: 10px;
+    }
+    .deal .deal-caption .top10 {
+      font-size: 10px;
+    }
+    .deal .deal-logo {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 120px;
+      height: 75px;
+      margin: 80px auto;
+      background-color: #fff;
+      position: relative;
+      top: 50px;
+    }
+  }
+
+  @media only screen and (min-width: 411px) and (max-width: 767px) {
+    .tiles {
+      /* display: flex;
+          flex-direction: row;
+          justify-content: center;
+          flex-wrap: wrap;
+          width: 80%;
+          height: 100%; */
+      flex-wrap: wrap;
+      margin-top: 10px;
+      display: inline-flex;
+      justify-content: center;
+      margin-right: -10px;
+    }
+    .deal {
+      position: relative;
+      cursor: pointer;
+      height: 220px;
+      // width: 154px;
+      width: 180px;
+      display: block;
+      /* margin-left: 10px; */
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 25px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .deal .deal-caption {
+      font-size: 15px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 111px;
+      background-color: #fff;
+      padding-top: 35px;
+      text-align: center;
+      line-height: 18px;
+    }
+    .deal .deal-caption b {
+      font-weight: bold;
+      color: #2b2929;
+    }
+    .deal .deal-caption span {
+      font-size: 15px;
+      color: #000;
+      display: block;
+      margin-top: 10px;
+    }
+    .deal .deal-caption .top10 {
+      font-size: 10px;
+    }
+    .deal .deal-logo {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 120px;
+      height: 75px;
+      margin: 80px auto;
+      background-color: #fff;
+      position: relative;
+      top: 50px;
+    }
+  }
+
+  @media only screen and (min-width: 768px) and (max-width: 1024px) {
+    .tiles {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      /* width: 80%; */
+      height: 100%;
+    }
+
+    .deal {
+      position: relative;
+      cursor: pointer;
+      height: 220px;
+      /* width: 168px; */
+      display: block;
+      margin-left: 10px;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 50px;
+      background-size: contain;
+      background-repeat: no-repeat;
+      overflow: hidden;
+    }
+    .deal .deal-caption {
+      font-size: 15px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 120px;
+      background-color: #fff;
+      padding-top: 35px;
+      text-align: center;
+      line-height: 18px;
+    }
+    .deal .deal-caption b {
+      font-weight: bold;
+      color: #2b2929;
+    }
+    .deal .deal-caption span {
+      font-size: 15px;
+      color: #000;
+      display: block;
+      margin-top: 10px;
+    }
+    .deal .deal-caption .top10 {
+      font-size: 10px;
+    }
+    .deal .deal-logo {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 120px;
+      height: 75px;
+      margin: 25px auto;
+      background-color: #fff;
+      position: relative;
+      top: 50px;
+    }
+  }
+
+  @media only screen and (min-width: 1024px) {
+    .tiles {
+      display: flex;
+      flex-direction: row;
+      justify-content: center;
+      flex-wrap: wrap;
+      width: 80%;
+      height: 100%;
+    }
+
+    .deal {
+      position: relative;
+      cursor: pointer;
+      height: 220px;
+      width: 168px;
+      display: block;
+      margin-left: 10px;
+      margin-right: 10px;
+      border: 1px solid #ddd;
+      margin-bottom: 50px;
+      background-size: contain;
+      background-repeat: no-repeat;
+    }
+    .deal .deal-caption {
+      font-size: 15px;
+      position: absolute;
+      right: 0;
+      left: 0;
+      bottom: 0;
+      top: 120px;
+      background-color: #fff;
+      padding-top: 35px;
+      text-align: center;
+      line-height: 18px;
+    }
+    .deal .deal-caption b {
+      font-weight: bold;
+      color: #2b2929;
+    }
+    .deal .deal-caption span {
+      font-size: 15px;
+      color: #000;
+      display: block;
+      margin-top: 10px;
+    }
+    .deal .deal-caption .top10 {
+      font-size: 10px;
+    }
+    .deal .deal-logo {
+      background-size: contain;
+      background-repeat: no-repeat;
+      background-position: 50% 50%;
+      width: 120px;
+      height: 75px;
+      margin: 25px auto;
+      background-color: #fff;
+      position: relative;
+      top: 50px;
+    }
+  }
+
+  .btn-earn-token-community {
+    position: relative;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+    width: 140px;
+    padding: 10px 20px;
+    margin: 10px;
+    background-color: #fff;
+    border-radius: 15px;
+    cursor: pointer;
+    box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
+    .btn-img-main {
+      width: 40px;
+      height: 40px;
+    }
+    .button-text-title {
+      font-weight: 500;
+      font-size: 20px;
+      text-align: center;
+      line-height: 22px;
+      padding-top: 8px;
+      padding-bottom: 8px;
+      margin: 0px;
+    }
+    .btn-img-token {
+      position: absolute;
+      bottom: 10px;
+      width: 48px;
+      height: 48px;
+    }
+    .btn-text-token-count {
+      font-size: 20px;
+      line-height: 48px;
+      font-weight: 500;
+    }
+  }
+}

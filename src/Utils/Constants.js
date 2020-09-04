@@ -8,3 +8,12 @@ export const response_type = "token";
 export const redirect_uri = "http://boltconcierge-2f0f9.firebaseapp.com";
 export const scope = "refresh_token full";
 export const display = "touch";
+
+export const TerritoryOptions = ["UK", "Ireland", "USA", "Canada"];
+
+export const CurrencyOptions = {
+  UK: "£",
+  Ireland: "€",
+  USA: "$",
+  Canada: "$",
+};

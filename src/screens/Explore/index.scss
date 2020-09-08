@@ -78,13 +78,13 @@
   }
 
   .explore-item-wrapper {
-    flex: 1;
     display: flex;
     width: 100% !important;
     justify-content: center;
     flex-wrap: wrap;
-    max-width: 900px;
-    margin: auto;
+    max-width: 1200px;
+    margin: 0 auto;
+    padding: 12px 0;
     overflow-y: auto;
 
     .explore-token-wrapper {

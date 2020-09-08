@@ -1,3 +1,5 @@
+import Firebase from "../firebasehelper";
+
 export const doSMS = async (phoneNumber, pin) => {
   try {
     let response = await fetch(
@@ -97,5 +99,31 @@ var getMonth = (month) => {
       return "December";
     default:
       return "January";
+  }
+};
+
+export async function getTicketNumber(name) {
+  console.log("name", name);
+  let category_id = await Firebase.getCategoryIDbyTitle(name);
+  console.log("category_id", category_id);
+  return category_id;
+}
+
+export const ticket_create_SMS = async (
+  phoneNumber,
+  username,
+  ticket_name,
+  brand_name
+) => {
+  try {
+    let url = "";
+    url = `https://apricot-mole-2227.twil.io/ticket_create?phoneNumber=${phoneNumber}&username=${username}&ticket_name=${ticket_name}&brand_name=${brand_name}`;
+    let response = await fetch(url, {
+      method: "GET",
+    });
+    let res = await response.json();
+    return res;
+  } catch (err) {
+    return err;
   }
 };

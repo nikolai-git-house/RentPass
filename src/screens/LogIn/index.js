@@ -36,7 +36,7 @@ class LogIn extends React.PureComponent {
       this.props.dispatch(saveProfile(JSON.parse(profile)));
       this.props.dispatch(saveBrand(JSON.parse(brand_data)));
       this.props.dispatch(saveUsers(JSON.parse(users)));
-      this.props.history.push("/profile");
+      this.props.history.push("/explore");
       console.log("uid", uid);
       console.log("profile", profile);
       console.log("brand_data", JSON.parse(brand_data));
@@ -88,7 +88,7 @@ class LogIn extends React.PureComponent {
     localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
     this.props.dispatch(saveProfile(profile));
     this.props.dispatch(saveUID(result.id));
-    this.props.history.push("/profile");
+    this.props.history.push("/explore");
   };
   SignIn = () => {
     this.setState({ send_sms: true });

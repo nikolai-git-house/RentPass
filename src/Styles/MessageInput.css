@@ -35,6 +35,52 @@
       font-size: 16px;
       color: #555;
       height: 2em; }
+    .message-input-container .message-input-wrapper.choice div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+      .message-input-container .message-input-wrapper.choice div .row {
+        display: flex;
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around; }
+        .message-input-container .message-input-wrapper.choice div .row button {
+          width: 100%;
+          margin: 10px;
+          border-radius: 10px;
+          background-color: transparent;
+          border: none;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); }
+      .message-input-container .message-input-wrapper.choice div .gallery {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; }
+        .message-input-container .message-input-wrapper.choice div .gallery button {
+          width: 100px;
+          height: 100px;
+          margin: 10px;
+          border-radius: 10px;
+          background-color: white;
+          border: none;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+          cursor: pointer; }
+        .message-input-container .message-input-wrapper.choice div .gallery a {
+          text-decoration: none; }
+      @media screen and (max-width: 768px) {
+        .message-input-container .message-input-wrapper.choice div .gallery {
+          display: flex;
+          flex-direction: row;
+          flex-wrap: wrap;
+          width: 340px; }
+          .message-input-container .message-input-wrapper.choice div .gallery button {
+            width: 130px;
+            height: 130px;
+            margin: 10px;
+            border-radius: 10px;
+            background-color: white;
+            border: none;
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); } }
     .message-input-container .message-input-wrapper.toggleButton {
       display: block; }
       .message-input-container .message-input-wrapper.toggleButton hr {

@@ -8,7 +8,8 @@ class MessageItem extends Component {
     super(props);
     this.state = {
       loaded: false,
-      img_src: require("../images/logos/logo.png")
+      img_src: require("../images/logos/logo.png"),
+      user_img: require("../images/livechat/user.png"),
     };
   }
 
@@ -19,10 +20,10 @@ class MessageItem extends Component {
       () => {
         if (type === "bot")
           animateScroll.scrollToBottom({
-            duration: 0
+            duration: 0,
           });
         this.setState({
-          loaded: true
+          loaded: true,
         });
       },
       type === "bot" ? timeoutValue : 0
@@ -35,9 +36,9 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { firstChild, logo } = this.props;
+    const { firstChild, logo, icon } = this.props;
     const { type, message, mark, end } = this.props.message;
-    const { loaded, img_src } = this.state;
+    const { loaded, img_src, user_img } = this.state;
     return (
       <Fragment>
         <div
@@ -47,15 +48,21 @@ class MessageItem extends Component {
                   display: "flex",
                   flexDirection: "row",
                   alignItems: "flex-start",
-                  justifyContent: "flex-start"
+                  justifyContent: "flex-start",
                 }
-              : { alignSelf: "flex-end" }
+              : {
+                  width: "100%",
+                  display: "flex",
+                  flexDirection: "row",
+                  alignItems: "flex-start",
+                  justifyContent: "flex-end",
+                }
           }
         >
           {type === "bot" && (
             <img
               className="avatar"
-              src={img_src}
+              src={icon || img_src}
               style={{ width: 40, height: 40, marginRight: 3 }}
               alt="concierge"
             />
@@ -71,6 +78,14 @@ class MessageItem extends Component {
               {ReactHtmlParser(message)}
             </div>
           </div>
+          {type === "user" && (
+            <img
+              src={user_img}
+              style={{ width: 40, height: 40 }}
+              alt="concierge"
+              className="avatar"
+            />
+          )}
         </div>
       </Fragment>
     );

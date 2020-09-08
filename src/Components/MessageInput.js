@@ -13,9 +13,25 @@ import { animateScroll } from "react-scroll";
 import Firebase from "../firebasehelper";
 import ErrorModal from "./ErrorModal";
 import SelectBrand from "./SelectBrand";
+import Choice from "./Choice";
+import IssueInput from "./IssueInput";
 function numberWithCommas(x) {
   return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
 }
+
+let items = [];
+let rooms = [];
+
+Firebase.getAllItem((res) => {
+  items = res.map((item) => {
+    return { value: item, label: item.toLowerCase() };
+  });
+});
+Firebase.getAllRoom((res) => {
+  rooms = res.map((item) => {
+    return { value: item, label: item.toLowerCase() };
+  });
+});
 
 let profile = {};
 class MessageInput extends Component {
@@ -159,12 +175,21 @@ class MessageInput extends Component {
     console.log("message", message);
     profile[message.key] = selectedOption;
     console.log("selectedOption", selectedOption);
-    addMessage({
-      type: "user",
-      message: selectedOption,
-      inputType: "toggleInput",
-      key: message.key,
-    });
+    if (message.ticket)
+      addMessage({
+        type: "user",
+        message: selectedOption,
+        inputType: "toggleInput",
+        key: message.key,
+        ticket: message.ticket,
+      });
+    else
+      addMessage({
+        type: "user",
+        message: selectedOption,
+        inputType: "toggleInput",
+        key: message.key,
+      });
   };
   chooseOption = (result) => {
     const { addMessage, message } = this.props;
@@ -211,6 +236,27 @@ class MessageInput extends Component {
       <CardContainer addMessage={addMessage} cards={cards} message={message} />
     );
   }
+
+  addChoice = (choice) => {
+    const { addMessage, message } = this.props;
+    profile[message.key] = choice;
+    addMessage({
+      message: choice,
+      ...message,
+    });
+  };
+
+  getChoice() {
+    const { message, tier_data } = this.props;
+    return (
+      <Choice
+        addMessage={this.addChoice}
+        message={message}
+        tier_data={tier_data}
+      />
+    );
+  }
+
   onChange = (e) => {
     this.setState({
       value: e.target.value,
@@ -344,6 +390,37 @@ class MessageInput extends Component {
     this.setState({ modalIsOpen: false });
   };
 
+  addIssueQuestion = (item, room, adjective) => {
+    const { addMessage, message } = this.props;
+    const text =
+      "The " +
+      item.toLowerCase() +
+      " in the " +
+      room.toLowerCase() +
+      " is " +
+      adjective.toLowerCase() +
+      ".";
+    profile[message.key] = text;
+    addMessage({
+      message: text,
+      quez: { item: item, room: room, adjective: adjective },
+      ...message,
+    });
+  };
+
+  getIssueInput() {
+    const { logo, message } = this.props;
+    return (
+      <IssueInput
+        addMessage={this.addIssueQuestion}
+        logo={logo}
+        message={message}
+        items={items}
+        rooms={rooms}
+      />
+    );
+  }
+
   getSelectBrand() {
     const { addMessage, message } = this.props;
     return (
@@ -399,6 +476,8 @@ class MessageInput extends Component {
             {message.inputType === "card" ? this.getCardInput() : null}
             {message.inputType === "yesno" ? this.getYesNoInput() : null}
             {message.inputType === "upload" ? this.getUploadDialog() : null}
+            {message.inputType === "choice" ? this.getChoice() : null}
+            {message.inputType === "issue" ? this.getIssueInput() : null}
             {message.inputType === "toggleButton"
               ? this.getToggleButton()
               : null}

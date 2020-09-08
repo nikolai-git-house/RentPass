@@ -5,7 +5,7 @@ import classnames from "classnames";
 import "./index.css";
 import logoImg from "../../assets/media/logo.png";
 import burgerImg from "../../images/burger.png";
-import nav_live_coin_img from "../../images/nav_live_coin.png";
+import nav_live_coin_img from "../../images/explore/yellow-circle.png";
 import token_img from "../../images/chip.png";
 
 import chip_png from "../../images/explore/chip.png";
@@ -16,6 +16,7 @@ import security_png from "../../images/explore/security.png";
 import housemates_png from "../../images/explore/housemates.png";
 import tickets_png from "../../images/explore/tickets.png";
 import property_png from "../../images/explore/property.png";
+import propertypa_png from "../../images/explore/propertypa.png";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -99,6 +100,17 @@ class Header extends React.Component {
               onClick={this.click}
               ref={this.outOfMenu}
             >
+              <li className="nav-main-item profile">
+                <NavLink
+                  to={{
+                    pathname: "/explore",
+                  }}
+                  className="nav-main-link"
+                >
+                  <i className="nav-main-link-icon si si-compass" />
+                  Explore
+                </NavLink>
+              </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/profile" className={classnames("nav-main-link")}>
                   <img
@@ -135,6 +147,18 @@ class Header extends React.Component {
                     src={property_png}
                   />
                   <span className="nav-main-link-name">Property</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item" onClick={this.click}>
+                <NavLink
+                  to="/propertypa"
+                  className={classnames("nav-main-link")}
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={propertypa_png}
+                  />
+                  <span className="nav-main-link-name">Property PA</span>
                 </NavLink>
               </li>
               <li className="nav-main-item" onClick={this.click}>

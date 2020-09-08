@@ -17,6 +17,8 @@ import EarnTokens from "../EarnTokens";
 import Wallets from "../Wallets";
 import Ecopay from "../Ecopay";
 import Header from "../../Components/Header";
+import Explore from "../Explore";
+import PropertyPA from "../PropertyPA";
 import { removeAll } from "../../redux/actions";
 import "./index.css";
 
@@ -50,6 +52,8 @@ class AppTemplate extends React.Component {
           <Route path="/earn" component={EarnTokens} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/ecopay" component={Ecopay} />
+          <Route path="/explore" component={Explore} />
+          <Route path="/propertypa" component={PropertyPA} />
           {/* <Route exact path="/yield" component={Yield} />
           <Route exact path="/compliance" component={Compliance} /> */}
         </Switch>

@@ -13,6 +13,22 @@ const firebaseConfig = {
   storageBucket: "boltconcierge-2f0f9.appspot.com",
 };
 
+function filterArrayByKey(arr, key) {
+  var a = arr.reduce(function (accumulator, current) {
+    if (checkIfAlreadyExist(current)) {
+      return accumulator;
+    } else {
+      return accumulator.concat([current]);
+    }
+    function checkIfAlreadyExist(currentVal) {
+      return accumulator.some(function (item) {
+        return item[key] === currentVal[key];
+      });
+    }
+  }, []);
+  return a;
+}
+
 class Firebase {
   static initialize() {
     firebase.initializeApp(firebaseConfig);
@@ -1035,6 +1051,234 @@ class Firebase {
         let result = [];
         if (snapshot.val()) result = snapshot.val();
         callback(result);
+      });
+  };
+
+  static getServicesRouting = (brand_name, callback) => {
+    let path = "brands";
+    firebase
+      .database()
+      .ref(path)
+      .orderByChild("name")
+      .equalTo(brand_name)
+      .on("value", (snapshot) => {
+        let result = [];
+        result = snapshot.val();
+        let res = Object.values(result)[0];
+        callback(res.services_routing);
+      });
+  };
+
+  static getTier1byID = (tier1_id) => {
+    let path = "tier1/" + tier1_id;
+    return new Promise((resolve, reject) => {
+      firebase
+        .database()
+        .ref(path)
+        .once("value", (snapshot) => {
+          let result = snapshot.val();
+          resolve(result);
+        });
+    });
+  };
+  static getCategorybyID = (category_id) => {
+    let path = "categories/" + category_id;
+    return new Promise((resolve, reject) => {
+      firebase
+        .database()
+        .ref(path)
+        .once("value", (snapshot) => {
+          let result = snapshot.val();
+          resolve(result);
+        });
+    });
+  };
+
+  static getChatsById(uid, callback) {
+    let path = "livechat/" + uid + "/unread";
+    firebase
+      .database()
+      .ref(path)
+      .on("value", (snapshot) => {
+        var res = null;
+        console.log("unread,", snapshot.val());
+        if (snapshot.val()) {
+          res = snapshot.val();
+        }
+        callback(res);
+      });
+  }
+
+  static getAllSuperAdmins(callback) {
+    let path = "agencies/";
+    firebase
+      .database()
+      .ref(path)
+      .orderByChild("role")
+      .equalTo(0)
+      .on("value", (snapshot) => {
+        let result = [];
+        result = snapshot.val();
+        let res = Object.values(result);
+        callback(res);
+      });
+  }
+
+  static getAllItem(callback) {
+    console.log("getAllItem");
+    let path = "chatbot/quez";
+    firebase
+      .database()
+      .ref(path)
+      .once("value", (snapshot) => {
+        var res = [];
+
+        if (snapshot.val()) {
+          res = snapshot.val();
+        }
+        var a = filterArrayByKey(res, "item");
+        let result = a.map((item) => item.item);
+        callback(result);
+      });
+  }
+  static getAllRoom(callback) {
+    console.log("getAllRoom");
+    let path = "chatbot/rooms";
+    firebase
+      .database()
+      .ref(path)
+      .once("value", (snapshot) => {
+        var res = [];
+
+        if (snapshot.val()) {
+          res = snapshot.val();
+        }
+        callback(res);
+      });
+  }
+  static getAllAdjective(callback) {
+    console.log("getAllAdjective");
+    let path = "chatbot/quez";
+    firebase
+      .database()
+      .ref(path)
+      .once("value", (snapshot) => {
+        var res = [];
+
+        if (snapshot.val()) {
+          res = snapshot.val();
+        }
+        var a = filterArrayByKey(res, "adjective");
+        let result = a.map((item) => item.adjective);
+        callback(result);
+      });
+  }
+
+  static getRoomByItem(item, callback) {
+    let path = "chatbot/quez";
+    firebase
+      .database()
+      .ref(path)
+      .orderByChild("item")
+      .equalTo(item)
+      .once("value", (snapshot) => {
+        let res = [];
+        if (snapshot.val()) res = snapshot.val();
+        res = Object.values(res);
+        console.log("result before filter", res);
+        var adjective = res.map((item) => {
+          return { value: item.adjective, label: item.adjective.toLowerCase() };
+        });
+        console.log("adjectives array", adjective);
+        if (!res.pop().room) callback(null, adjective);
+        else {
+          var a = filterArrayByKey(res, "room");
+          let result = a.map((item) => item.room);
+          callback(result, adjective);
+        }
+      });
+  }
+
+  static findAnswer = (item, room, adjective, callback) => {
+    let path = "chatbot/quez";
+    firebase
+      .database()
+      .ref(path)
+      .orderByChild("item_room_adjective")
+      .equalTo(item + "_" + room + "_" + adjective)
+      .once("value", (snapshot) => {
+        let res = [];
+        if (snapshot.val()) {
+          res = Object.values(snapshot.val());
+        }
+        console.log("result in ques", res);
+        if (!res.length) {
+          firebase
+            .database()
+            .ref(path)
+            .orderByChild("item_room_adjective")
+            .equalTo(item + "__" + adjective)
+            .once("value", (snapshot) => {
+              let result = [];
+              if (snapshot.val()) {
+                result = Object.values(snapshot.val());
+                const ticket = result[0].ticket;
+                let sub_path = "chatbot/answers";
+                firebase
+                  .database()
+                  .ref(sub_path)
+                  .orderByChild("ticket")
+                  .equalTo(ticket)
+                  .once("value", (snapshot) => {
+                    let result = [];
+                    result = Object.values(snapshot.val());
+                    callback(result[0]);
+                  });
+              }
+            });
+        } else {
+          const ticket = res[0].ticket;
+          let sub_path = "chatbot/answers";
+          firebase
+            .database()
+            .ref(sub_path)
+            .orderByChild("ticket")
+            .equalTo(ticket)
+            .once("value", (snapshot) => {
+              let result = [];
+              result = Object.values(snapshot.val());
+              callback(result[0]);
+            });
+        }
+      });
+  };
+
+  static requestChat = (uid, firstname, brand, ticket) => {
+    let data = {
+      uid: uid,
+      username: firstname,
+    };
+    if (brand !== "Ecosystem") data.brand = brand;
+    let path = "livechat/" + uid;
+    firebase.database().ref(path).update(data);
+    let ticket_id = "" + ticket.id;
+    let child_id = ticket_id.split(".").join("");
+    let ticket_path = "livechat/" + uid + "/tickets/" + child_id;
+    firebase
+      .database()
+      .ref(ticket_path)
+      .set({
+        ticket_id: ticket.id,
+        issue: ticket.issue,
+        title: ticket.title,
+        status: ticket.status,
+        time: ticket.time,
+        item: ticket.item ? ticket.item : null,
+        room: ticket.room ? ticket.room : null,
+        band: ticket.band ? ticket.band : null,
+        adjective: ticket.adjective ? ticket.adjective : null,
+        response_sla: ticket.response_sla ? ticket.response_sla : null,
+        repair_sla: ticket.repair_sla ? ticket.repair_sla : null,
       });
   };
 }

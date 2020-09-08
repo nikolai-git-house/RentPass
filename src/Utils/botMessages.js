@@ -1,4 +1,8 @@
-import { signup_botMessages, chatbot_botMessages } from "../Constants/messages";
+import {
+  signup_botMessages,
+  chatbot_botMessages,
+  botMessages,
+} from "../Constants/messages";
 
 export const getTimeoutValue = () => {
   return 1000;
@@ -12,7 +16,7 @@ export const getInputTimeoutValue = () => {
   return 1500;
 };
 
-export const getBotMessageGroup = type => {
+export const getBotMessageGroup = (type) => {
   switch (type) {
     case "signup_botMessages":
       console.log("botMessages", signup_botMessages);
@@ -36,10 +40,18 @@ export const addBotMessageGroup = (type, msgGroup) => {
   }
 };
 
-export const getBotMessage = message => {
-  return new Promise(resolve => {
+export const getBotMessage = (message) => {
+  return new Promise((resolve) => {
     setTimeout(() => {
       resolve(message);
     }, getTimeoutValue(message.message));
   });
+};
+
+export const addBotMessages = (messages) => {
+  console.log("originalbot", botMessages);
+  messages.map((item) => {
+    return botMessages.push(item);
+  });
+  console.log("botMessages", botMessages);
 };

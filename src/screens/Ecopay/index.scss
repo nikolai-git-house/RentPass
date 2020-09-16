@@ -23,6 +23,7 @@ $inputAnimationDuration: 700ms;
 #ecopay-container {
   padding: 20px;
   width: 100%;
+  overflow-y: auto;
 
   .message-item-wrapper {
     color: $text;

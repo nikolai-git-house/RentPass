@@ -3,7 +3,7 @@
 
   #main-container {
     width: 100%;
-    overflow: hidden;
+    overflow: auto;
     flex: 1;
     padding-top: 20px;
     padding-left: 16px;
@@ -12,6 +12,7 @@
     .message-list-wrapper {
       .message-input-container {
         margin-top: 0;
+        z-index: 0;
       }
 
       .send-button {

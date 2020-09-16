@@ -1,7 +1,7 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter, NavLink } from "react-router-dom";
-import { isMobile } from "react-device-detect";
+import { deviceDetect, isMobile } from "react-device-detect";
 import ProfileModal from "../../Components/ProfileModal";
 import TimelineModal from "../../Components/TimelineModal";
 import { removeAll } from "../../redux/actions";
@@ -77,6 +77,7 @@ class Explore extends React.Component {
       delay: 0,
       smooth: "easeInOutQuart",
       containerId: "containerElement",
+      offset: 30
     });
 
     var next = timeIndex == top10Retailers.length - 1 ? 0 : timeIndex + 1;
@@ -170,7 +171,7 @@ class Explore extends React.Component {
                 top10Retailers.length > 0 ? "show" : "hide"
               }`}
             >
-              <Element name="test7" className="element" id="containerElement">
+              <div className="element" id="containerElement">
                 {top10Retailers.map((item, index) => {
                   return (
                     <Element name={`element_${index}`} key={index}>
@@ -196,7 +197,7 @@ class Explore extends React.Component {
                     </Element>
                   );
                 })}
-              </Element>
+              </div>
             </NavLink>
             <NavLink to="/profile" className="explore-item-button">
               <img src={security_png} />

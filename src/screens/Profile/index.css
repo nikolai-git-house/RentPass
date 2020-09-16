@@ -3,7 +3,10 @@
   flex: 1;
   flex-direction: column;
   align-items: flex-start;
-  background-color: #fff; }
+  background-color: #fff;
+  flex-direction: column;
+  width: 100%;
+  overflow: hidden; }
   #profile-container .row {
     width: 100%;
     align-items: flex-start;

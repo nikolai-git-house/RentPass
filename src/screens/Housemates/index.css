@@ -10,7 +10,7 @@
 
 @media (max-width: 767px) {
   #housemates-container {
-    margin-top: 72px;
+    margin-top: 20px;
     justify-content: center; }
     #housemates-container button {
       height: 150px; } }

@@ -49,6 +49,7 @@ class MessageItem extends Component {
                   flexDirection: "row",
                   alignItems: "flex-start",
                   justifyContent: "flex-start",
+                  minHeight: "max-content",
                 }
               : {
                   width: "100%",
@@ -56,6 +57,7 @@ class MessageItem extends Component {
                   flexDirection: "row",
                   alignItems: "flex-start",
                   justifyContent: "flex-end",
+                  minHeight: "max-content",
                 }
           }
         >

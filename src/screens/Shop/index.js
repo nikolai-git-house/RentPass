@@ -56,7 +56,7 @@ class Shop extends React.Component {
     brand_name = brand_name && brand_name.replace(/\s/g, "");
     console.log("profile in render", profile);
     return (
-      <div id="home-container" className="row no-gutters flex-md-10-auto">
+      <div id="home-container" className="row no-gutters flex-md-10-auto shop-container">
         <div className="div_content">
           {loading && <i class="fa fa-4x fa-sync fa-spin text-muted" />}
           {!loading && this.showPackages()}

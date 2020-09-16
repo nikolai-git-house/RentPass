@@ -1,5 +1,6 @@
 .wallets-page-container {
   height: 100vh !important;
+  overflow-y: auto !important;
   #main-container {
     display: flex;
     flex-direction: column;

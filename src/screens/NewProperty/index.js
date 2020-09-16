@@ -18,6 +18,7 @@ class NewProperty extends React.Component {
     const brand_name = brand.name;
     if (profile) {
       const property_id = profile.property_id;
+      console.log(property_id, uid);
       Firebase.getPropertyById(property_id, brand_name).then((res) => {
         console.log("property info", res);
         this.setState({ property: res });

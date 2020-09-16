@@ -62,12 +62,6 @@ function _calculateAge(birthday) {
   return age;
 }
 
-window.addEventListener("message", (data) => {
-  console.log("msg received");
-  const msg = JSON.parse(data.data);
-  console.log("msg", msg);
-});
-
 class Profile extends React.Component {
   constructor(props) {
     super(props);
@@ -205,7 +199,7 @@ class Profile extends React.Component {
           className={`row no-gutters ${
             this.state.viewMode !== "profile" ? "mobile-hide" : "mobile-show"
           }`}
-          style={{ background: "#fff" }}
+          style={{ background: "#fff", overflowY: "auto" }}
         >
           <div
             className="col-md-5 col-lg-5 col-xl-5"
@@ -494,7 +488,9 @@ class Profile extends React.Component {
                   </div>
                   <div className="row_editable_item">
                     <img src={employment_img} width="30" alt="salary"></img>
-                    <p className="row_item_value">Employment, affordability & income</p>
+                    <p className="row_item_value">
+                      Employment, affordability & income
+                    </p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />
                     </div>

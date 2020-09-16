@@ -42,8 +42,8 @@ class TenantThumbnail extends React.Component {
           <div className="caption-bar">
             <p className="name">{tenant.firstname}</p>
             <p className="address">{tenant.property_name}</p>
-            {!accepted && <p className="pending">Pending</p>}
-            {accepted && <p className="active">Active</p>}
+            {/* {!accepted && <p className="pending">Pending</p>}
+            {accepted && <p className="active">Active</p>} */}
             {/* <p className="address">{tenant.property_address}</p> */}
           </div>
         </div>

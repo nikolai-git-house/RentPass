@@ -145,8 +145,8 @@ class MessageList extends Component {
     });
   }
   scrollToBottom(delay = 0) {
-    console.log("scrolled to Bottom");
-    this.messagesEnd.scrollIntoView({ behavior: "smooth" });
+    // console.log("scrolled to Bottom");
+    // this.messagesEnd.scrollIntoView({ behavior: "smooth" });
   }
 
   setMessages() {
@@ -202,8 +202,9 @@ class MessageList extends Component {
     const { logo } = this.props;
     const { user_typing, landlord_typing, contractor_typing } = this.state;
     return (
-      <div>
+      <div className="message-list-wrapper-container">
         <div className="message-list-wrapper">
+          <div className="message-items-container">
           {this.setMessages()}
           {user_typing && (
             <MessageItem message={{ type: "user" }} loaded={false} />
@@ -214,6 +215,7 @@ class MessageList extends Component {
           {contractor_typing && (
             <MessageItem message={{ type: "contractor" }} loaded={false} />
           )}
+          </div>
           <div
             component="div"
             className="message-input-container"

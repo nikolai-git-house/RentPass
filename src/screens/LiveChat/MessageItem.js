@@ -43,12 +43,14 @@ class MessageItem extends Component {
                   flexDirection: "row",
                   justifyContent: "flex-start",
                   marginBottom: 16,
+                  minHeight: 'max-content'
                 }
               : {
                   display: "flex",
                   alignSelf: "flex-end",
                   maxWidth: "100%",
                   marginBottom: 16,
+                  minHeight: 'max-content'
                 }
           }
         >

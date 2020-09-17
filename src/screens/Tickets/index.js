@@ -1,5 +1,6 @@
 import React from "react";
 import { connect } from "react-redux";
+import classNames from "classnames";
 import Firebase from "../../firebasehelper";
 import { getStringfromSeconds } from "../../functions";
 import LiveChat from "../LiveChat";
@@ -15,9 +16,9 @@ function compare(a, b) {
   }
   return 0;
 }
-window.mobilecheck = function() {
+window.mobilecheck = function () {
   var check = false;
-  (function(a) {
+  (function (a) {
     if (
       /(android|bb\d+|meego).+mobile|avantgo|bada\/|blackberry|blazer|compal|elaine|fennec|hiptop|iemobile|ip(hone|od)|iris|kindle|lge |maemo|midp|mmp|mobile.+firefox|netfront|opera m(ob|in)i|palm( os)?|phone|p(ixi|re)\/|plucker|pocket|psp|series(4|6)0|symbian|treo|up\.(browser|link)|vodafone|wap|windows ce|xda|xiino/i.test(
         a
@@ -38,13 +39,13 @@ class Tickets extends React.Component {
       selected: false,
       chatdiv_visible: false,
       loading: true,
-      showModal: false
+      showModal: false,
     };
   }
   componentDidMount() {
     let uid = this.props.uid;
     console.log("uid", uid);
-    Firebase.getTicketsById(uid, res => {
+    Firebase.getTicketsById(uid, (res) => {
       console.log("tickets", res);
       if (res) {
         let array = [];
@@ -88,14 +89,14 @@ class Tickets extends React.Component {
         return "green";
     }
   }
-  showTickets = tickets => {
+  showTickets = (tickets) => {
     const { focused } = this.state;
     return tickets.map((item, index) => {
       return (
         <div
           key={index}
           style={{
-            background: focused === index ? "#9F9E9E" : "#152439"
+            background: focused === index ? "#9F9E9E" : "#152439",
           }}
           className="ticket"
           onClick={() => this.clickTicket(item, index)}
@@ -107,27 +108,15 @@ class Tickets extends React.Component {
               {item.issue}
             </p>
           </div>
-          <div
-            style={{
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "center",
-              justifyContent: "space-between"
-            }}
-          >
-            <p
-              style={{
-                color: this.getColorByStatus(item.status),
-                fontWeight: "bold"
-              }}
-            >
-              {item.status}
-            </p>
-          </div>
         </div>
       );
     });
   };
+
+  onBack = () => {
+    this.setState({ chatdiv_visible: false });
+  };
+
   render() {
     const { uid, profile, brand } = this.props;
     let { chatdiv_visible, ticket, tickets, loading, showModal } = this.state;
@@ -136,104 +125,100 @@ class Tickets extends React.Component {
       <div id="page-container">
         <div
           className="row no-gutters flex-md-10-auto"
-          style={{ position: "fixed", width: "100%", height: "100%", top: 62 }}
+          style={{ margin: 0, overflow: "hidden", height: "100%" }}
         >
           <div
-            className="row no-gutters flex-md-10-auto"
-            style={{
-              position: "fixed",
-              width: "100%",
-              height: "100%",
-              top: 70
-            }}
+            className={classNames(
+              "col-sm-12 col-md-7 col-lg-7 col-xl-7 bg-body-dark",
+              { tickets_hide: chatdiv_visible }
+            )}
+            style={{ padding: 15, height: "100%", overflow: "auto" }}
           >
-            <div
-              className="col-md-7 col-lg-7 col-xl-7 bg-body-dark"
-              style={{ padding: 15, height: "100%", overflow: "scroll" }}
-            >
-              <div className="content content-full">
-                <div className="block block-fx-pop">
-                  {this.showTickets(tickets)}
-                </div>
-              </div>
-              {!tickets.length && !loading && (
-                <div
-                  style={{
-                    width: "80%",
-                    display: "flex",
-                    flexDirection: "column",
-                    alignItems: "center",
-                    justifyContent: "center",
-                    backgroundColor: "white",
-                    borderRadius: 20,
-                    padding: 40,
-                    margin: 40
-                  }}
-                >
-                  <img
-                    src={bolt_img}
-                    width="100"
-                    height="100"
-                    alt="support"
-                    style={{ marginBottom: 20 }}
-                  />
-                  <p style={{ textAlign: "center" }}>
-                    There are currently no live tickets against your properties.
-                    Tenants are able to run their property by submitting tickets
-                    through their concierge, once you've added them as a tenant.
-                  </p>
-                </div>
-              )}
-            </div>
-            <div
-              className="col-md-5 col-lg-5 col-xl-5"
-              style={{ padding: 15, height: "93%", overflow: "scroll" }}
-            >
-              <div className="content">
-                <div className="d-md-none push">
-                  <button
-                    type="button"
-                    className="btn btn-block btn-hero-primary"
-                    data-toggle="class-toggle"
-                    data-target="#side-content"
-                    data-class="d-none"
-                  >
-                    Live chat
-                  </button>
-                </div>
-                <div id="side-content" className="d-none d-md-block push">
-                  {chatdiv_visible && (
-                    <LiveChat
-                      brand={brand.name}
-                      room_id={uid}
-                      ticket={ticket}
-                      icon={brand.icon}
-                      username={profile && profile.firstname}
-                    />
-                  )}
-                </div>
+            <div className="content content-full">
+              <div className="block block-fx-pop">
+                {this.showTickets(tickets)}
               </div>
             </div>
+            {!tickets.length && !loading && (
+              <div
+                style={{
+                  width: "80%",
+                  display: "flex",
+                  flexDirection: "column",
+                  alignItems: "center",
+                  justifyContent: "center",
+                  backgroundColor: "white",
+                  borderRadius: 20,
+                  padding: 40,
+                  margin: 40,
+                }}
+              >
+                <img
+                  src={bolt_img}
+                  width="100"
+                  height="100"
+                  alt="support"
+                  style={{ marginBottom: 20 }}
+                />
+                <p style={{ textAlign: "center" }}>
+                  There are currently no live tickets against your properties.
+                  Tenants are able to run their property by submitting tickets
+                  through their concierge, once you've added them as a tenant.
+                </p>
+              </div>
+            )}
           </div>
-          <div className="chatModal">
-            <LiveChatModal
-              uid={uid}
-              ticket={ticket}
-              icon={brand.icon}
-              brand={brand.name}
-              username={profile && profile.firstname}
-              showModal={showModal}
-              toggleModal={this.toggleModal}
-            />
+          <div
+            className={classNames(
+              "col-sm-12 col-md-5 col-lg-5 col-xl-5",
+              "chat-container"
+            )}
+            style={{ height: "100%" }}
+          >
+            {chatdiv_visible && (
+              <LiveChat
+                brand={brand.name}
+                room_id={uid}
+                ticket={ticket}
+                icon={brand.icon}
+                username={profile && profile.firstname}
+                onBack={this.onBack}
+              />
+            )}
+            {/* <div className="content">
+              <div className="d-md-none push">
+                <button
+                  type="button"
+                  className="btn btn-block btn-hero-primary"
+                  data-toggle="class-toggle"
+                  data-target="#side-content"
+                  data-class="d-none"
+                >
+                  Live chat
+                </button>
+              </div>
+              <div id="side-content" className="d-none d-md-block push"></div> */}
+            {/* </div> */}
           </div>
         </div>
+        {/* <div className="chatModal">
+          <LiveChatModal
+            uid={uid}
+            ticket={ticket}
+            icon={brand.icon}
+            brand={brand.name}
+            username={profile && profile.firstname}
+            showModal={showModal}
+            toggleModal={this.toggleModal}
+          />
+        </div> */}
       </div>
     );
   }
 }
 function mapDispatchToProps(dispatch) {
   return {
-    dispatch
+    dispatch,
   };
 }
 function mapStateToProps(state) {
@@ -241,7 +226,7 @@ function mapStateToProps(state) {
     brand: state.brand,
     uid: state.uid,
     profile: state.profile,
-    renters: state.renters
+    renters: state.renters,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Tickets);

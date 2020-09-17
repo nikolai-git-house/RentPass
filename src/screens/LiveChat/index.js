@@ -7,9 +7,12 @@ class LiveChat extends React.Component {
     this.state = {};
   }
   render() {
-    const { room_id, ticket, username, icon, brand } = this.props;
+    const { room_id, ticket, username, icon, brand, onBack } = this.props;
     return (
-      <div className="app-wrapper">
+      <div className="live-chat-container">
+        <div className="mobile-back" onClick={onBack}>
+          <i class="fa fa-angle-left"></i>
+        </div>
         <MessageList
           logo="bolt"
           icon={icon}

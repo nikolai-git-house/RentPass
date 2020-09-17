@@ -33,3 +33,59 @@ body {
     user-select: text;
   }
 }
+
+.live-chat-container {
+  height: 100%;
+  overflow: hidden;
+
+  .mobile-back {
+    display: none;
+    height: 60px;
+    background-color: #f3f3f3;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 25px;
+  }
+  .message-list-wrapper-container {
+    height: 100%;
+    padding: 15px;
+    overflow: hidden;
+    .message-list-wrapper {
+      margin-bottom: 0;
+      height: 100%;
+      padding-bottom: 110px;
+      position: relative;
+      min-height: unset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column;
+
+      .message-items-container {
+        overflow: auto;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        overflow: auto;
+        flex: 1;
+      }
+
+      .message-input-container {
+        position: absolute;
+        bottom: 5px;
+      }
+    }
+  }
+
+  @media (max-width: 767px) {
+    .mobile-back {
+      display: flex;
+    }
+
+    .message-list-wrapper-container {
+      height: calc(100% - 60px);
+    }
+  }
+}

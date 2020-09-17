@@ -42,6 +42,16 @@
   margin-top: 5px;
   margin-bottom: 5px;
   height: 40px;
+  border-radius: 4px;
   cursor: pointer; }
   .ticket div p {
     margin: 0px; }
+
+.chat-container {
+  padding: 15px; }
+
+@media (max-width: 767px) {
+  .tickets_hide {
+    display: none; }
+  .chat-container {
+    padding: 0; } }

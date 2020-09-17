@@ -648,3 +648,45 @@ body {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text; }
+
+.live-chat-container {
+  height: 100%;
+  overflow: hidden; }
+  .live-chat-container .mobile-back {
+    display: none;
+    height: 60px;
+    background-color: #f3f3f3;
+    align-items: center;
+    padding: 0 10px;
+    font-size: 25px; }
+  .live-chat-container .message-list-wrapper-container {
+    height: 100%;
+    padding: 15px;
+    overflow: hidden; }
+    .live-chat-container .message-list-wrapper-container .message-list-wrapper {
+      margin-bottom: 0;
+      height: 100%;
+      padding-bottom: 110px;
+      position: relative;
+      min-height: unset;
+      overflow: hidden;
+      display: flex;
+      flex-direction: column; }
+      .live-chat-container .message-list-wrapper-container .message-list-wrapper .message-items-container {
+        overflow: auto;
+        display: flex;
+        -ms-flex-align: start;
+        align-items: flex-start;
+        -ms-flex-direction: column;
+        flex-direction: column;
+        width: 100%;
+        overflow: auto;
+        flex: 1; }
+      .live-chat-container .message-list-wrapper-container .message-list-wrapper .message-input-container {
+        position: absolute;
+        bottom: 5px; }
+  @media (max-width: 767px) {
+    .live-chat-container .mobile-back {
+      display: flex; }
+    .live-chat-container .message-list-wrapper-container {
+      height: calc(100% - 60px); } }

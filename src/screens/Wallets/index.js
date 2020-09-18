@@ -23,6 +23,7 @@ const CloseIcon = require("../../assets/images/cards/close.png");
 const ActiveIcon = require("../../assets/images/subscriptions/active.png");
 const PendingIcon = require("../../assets/images/subscriptions/pending.png");
 const SubscriptionIcon = require("../../assets/images/subscriptions/subscription.png");
+const MarketplaceIcon = require("../../assets/images/subscriptions/marketplace.png");
 
 class Explore extends React.Component {
   timerId;
@@ -95,16 +96,19 @@ class Explore extends React.Component {
       <div className="fullwidth-container">
         <div className="subscriptions-container">
           {subscriptionsList.length === 0 && (
-            <div className="subscription-empty">
+            <div className="wallet-empty">
               <img
-                className="subscription-empty-placeholder"
+                className="wallet-empty-placeholder"
                 src={SubscriptionIcon}
                 alt="placeholder"
               />
-              <p>You don't have any active subscriptions or purchases.</p>
-              <p>
-                Visit EcoShop to save time & money with our products & packages.
-              </p>
+              <div style={{ maxWidth: 250 }}>
+                <p>You don’t have any active subscriptions or purchases.</p>
+                <p>
+                  Visit EcoShop to save time and money across all walks of life
+                  with our smooth subscriptions.
+                </p>
+              </div>
               <button
                 className="btn btn-green"
                 onClick={() => this.props.history.push("/shop")}
@@ -289,22 +293,33 @@ class Explore extends React.Component {
           )}
           {selectedTab === 1 && (
             <div className="cards-container">
-              <button
-                className="btn btn-green"
-                onClick={() => this.setState({ paymentModal: true })}
-              >
-                Add linked cards
-              </button>
-              <ul className="feature-container">
-                <li>Spend with EcoPay</li>
-                <li>Earn tokens with retailers</li>
-                <li>Purchase in the Marketplace</li>
-                <li>Subscribe in the Marketplace</li>
-              </ul>
+              <div className="wallet-empty">
+                <img
+                  className="wallet-empty-placeholder"
+                  src={MarketplaceIcon}
+                  alt="placeholder"
+                />
+                <div>
+                  <p>Spend with EcoPay</p>
+                  <p>Earn tokens with retailers</p>
+                  <p>Purchase in the Marketplace</p>
+                  <p>Subscribe in the Marketplace</p>
+                </div>
+                <button
+                  className="btn btn-green"
+                  onClick={() => this.setState({ paymentModal: true })}
+                >
+                  Add linked cards
+                </button>
+              </div>
               {paymentMethods &&
                 paymentMethods.slice(0, 2).map((item, index) => {
                   return (
-                    <div className="card-container" key={item.id}>
+                    <div
+                      className="card-container"
+                      key={item.id}
+                      style={{ marginTop: 10 }}
+                    >
                       <img
                         src={CreditCardIcon}
                         className="card"

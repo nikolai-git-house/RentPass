@@ -1,6 +1,5 @@
 .wallets-page-container {
   height: 100vh !important;
-  overflow-y: auto !important;
   #main-container {
     display: flex;
     flex-direction: column;
@@ -97,6 +96,7 @@
         .product-avatar {
           height: 100px;
           width: 100px;
+          object-fit: cover;
         }
 
         .product-description {
@@ -110,6 +110,23 @@
             -webkit-box-orient: vertical;
           }
         }
+      }
+    }
+
+    .wallet-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 350px;
+      .wallet-empty-placeholder {
+        width: 100px;
+        height: 100px;
+      }
+
+      p {
+        margin-bottom: 10px;
+        text-align: center;
       }
     }
 
@@ -201,34 +218,18 @@
     }
 
     .cards-container {
+      width: 100%;
       flex: 1;
       overflow: auto;
       display: flex;
       flex-direction: column;
       align-items: center;
-      margin-top: 50px;
-      padding-top: 10px;
+      padding: 5px;
 
       .btn-green {
         background-color: #d5fec6;
         cursor: pointer;
         box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
-      }
-
-      ul.feature-container {
-        list-style-type: none;
-        margin: 20px auto;
-        padding-inline-start: 10px;
-
-        li {
-          margin-bottom: 10px;
-        }
-
-        li:before {
-          content: "-";
-          position: absolute;
-          margin-left: -20px;
-        }
       }
     }
 
@@ -298,4 +299,16 @@
       margin-right: 0;
     }
   }
+}
+
+.btn-green {
+  background-color: #d5fec6;
+  cursor: pointer;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+  border: none;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  margin-right: 15px;
+  border-radius: 4px;
 }

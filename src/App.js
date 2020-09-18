@@ -5,7 +5,7 @@ import LogIn from "./screens/LogIn";
 import SignUp from "./screens/SignUp";
 import AuthReminder from "./screens/AuthReminder";
 import AppTemplate from "./screens/AppTemplate";
-import "./App.scss";
+import "./App.css";
 
 const App = () => (
   <Switch>

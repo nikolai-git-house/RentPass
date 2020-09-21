@@ -12,7 +12,8 @@ import {
   saveHousemates,
 } from "../../redux/actions";
 import "./index.css";
-import logoImg from "../../assets/media/ecosystem-landing.png"
+import logoImg from "../../images/login/logo-letter.png";
+import logoSm from "../../images/login/logo-sm.png";
 class LogIn extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -174,12 +175,15 @@ class LogIn extends React.PureComponent {
             <div className="row no-gutters bg-opacity">
               <div className="hero-static col-md-6 d-flex align-items-center bg-white">
                 <div className="p-3 w-100">
+                  <div className="mb-3 text-center login-logo-container">
+                    <img src={logoSm} className="login-logo-sm" />
+                    <img src={logoImg} style={{ width: 250 }} alt="logo" />
+                    <p className="text-muted brand-hub-text">
+                      Your Renting Hub
+                    </p>
+                  </div>
                   <div className="row no-gutters justify-content-center">
                     <div className="col-sm-10 col-xl-10">
-                      <center>
-                        <img src={logoImg} width="300" alt="logo" />
-                      </center>
-                      <br />
                       <form className="js-validation-signin">
                         {!number_panel && (
                           <div>
@@ -204,7 +208,12 @@ class LogIn extends React.PureComponent {
                           </div>
                         )}
                         {number_panel && (
-                          <div style={{ padding: "10%" }}>
+                          <div
+                            style={{
+                              padding: "10%",
+                              paddingTop: 0,
+                            }}
+                          >
                             {!send_sms && (
                               <div className="form-group">
                                 <div
@@ -212,7 +221,7 @@ class LogIn extends React.PureComponent {
                                     display: "flex",
                                     flexDirection: "row",
                                     alignItems: "center",
-                                    marginBottom: 10,
+                                    marginBottom: 32,
                                   }}
                                 >
                                   <p style={{ fontSize: 20 }}>+44</p>
@@ -228,19 +237,10 @@ class LogIn extends React.PureComponent {
                                 </div>
                                 <button
                                   type="button"
-                                  style={{
-                                    marginBottom: 10,
-                                    backgroundColor: "#ecedee",
-                                    width: "100%",
-                                    height: 50,
-                                    border: "none",
-                                    borderRadius: 5,
-                                    cursor: "pointer",
-                                  }}
+                                  className="btn btn-block btn-hero-lg btn-hero-primary"
                                   onClick={this.SignIn}
                                 >
-                                  <i className="fa fa-fw fa-sign-in-alt mr-1" />
-                                  SignIn
+                                  Log into your Ecosystem
                                 </button>
                               </div>
                             )}
@@ -254,19 +254,11 @@ class LogIn extends React.PureComponent {
                                   placeholder="6-digit"
                                   onChange={this.onChangeHandler}
                                   value={sms}
-                                  style={{ marginBottom: 10 }}
+                                  style={{ marginBottom: 32 }}
                                 />
                                 <button
                                   type="button"
-                                  style={{
-                                    marginBottom: 10,
-                                    backgroundColor: "#ecedee",
-                                    width: "100%",
-                                    height: 50,
-                                    border: "none",
-                                    borderRadius: 5,
-                                    cursor: "pointer",
-                                  }}
+                                  className="btn btn-block btn-hero-lg btn-hero-primary"
                                   onClick={this.Confirm}
                                 >
                                   <i className="fa fa-fw fa-sign-in-alt mr-1" />

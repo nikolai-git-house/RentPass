@@ -15,8 +15,23 @@ a:hover {
   background-color: rgba(0, 0, 0, 0.75) !important; }
 
 .btn-hero-primary {
-  background-color: #a9ffc6 !important;
-  color: #152439 !important; }
+  background-color: #d5ffc6ff !important;
+  color: #152439 !important;
+  text-transform: none !important; }
+
+.login-logo-container {
+  display: flex;
+  flex-direction: column;
+  align-items: center; }
+
+.brand-hub-text {
+  margin-top: 10px;
+  font-size: 20px; }
+
+.login-logo-sm {
+  display: block;
+  width: 40px;
+  margin-bottom: 16px; }
 
 .card-content {
   width: 100%;

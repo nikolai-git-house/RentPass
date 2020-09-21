@@ -170,7 +170,7 @@ class LogIn extends React.PureComponent {
     const { phonenumber, send_sms, sms, number_panel } = this.state;
     return (
       <div id="page-container">
-        <main id="main-container">
+        <main id="main-container" className="login-main-container">
           <div className="bg-image">
             <div className="row no-gutters bg-opacity">
               <div className="hero-static col-md-6 d-flex align-items-center bg-white">
@@ -284,16 +284,7 @@ class LogIn extends React.PureComponent {
                 </div>
               </div>
 
-              <div className="hero-static col-md-6 d-none d-md-flex align-items-md-center justify-content-md-center text-md-center">
-                <div className="p-3">
-                  <p className="display-4 font-w700 text-white mb-3">
-                    Welcome to the future of renting properties
-                  </p>
-                  <p className="font-size-lg font-w600 text-white-75 mb-0">
-                    Copyright &copy; <span className="js-year-copy">2020</span>
-                  </p>
-                </div>
-              </div>
+              <div className="landing-img hero-static col-md-6"></div>
             </div>
           </div>
         </main>

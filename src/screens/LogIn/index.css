@@ -4,6 +4,9 @@ a {
 a:hover {
   color: white; }
 
+.login-main-container {
+  width: 100%; }
+
 .landing-img {
   background-image: url("../../assets/media/ecosystem-landing.png") !important;
   background-size: 80% auto;
@@ -18,6 +21,13 @@ a:hover {
   background-color: #d5ffc6ff !important;
   color: #152439 !important;
   text-transform: none !important; }
+
+.landing-img {
+  background-image: url("../../images/login/illustration.png") !important;
+  background-size: 80% auto;
+  background-color: white;
+  background-repeat: no-repeat;
+  background-position: center; }
 
 .login-logo-container {
   display: flex;

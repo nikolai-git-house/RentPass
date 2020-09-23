@@ -15,7 +15,7 @@ class LiveChat extends React.Component {
         </div>
         <MessageList
           logo="bolt"
-          icon={icon}
+          icon="https://firebasestorage.googleapis.com/v0/b/boltconcierge-2f0f9.appspot.com/o/brand_icon%2FRental%20Community?alt=media&token=2e96bade-f7f1-4dbd-afd9-6f7caa9d4dc8"
           room_id={room_id}
           ticket={ticket}
           username={username}

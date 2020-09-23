@@ -79,7 +79,7 @@ class Header extends React.Component {
             <button
               className="header-logo"
               style={{
-                backgroundImage: logo ? `url(${logo})` : `url(${logoImg})`,
+                backgroundImage: `url(https://firebasestorage.googleapis.com/v0/b/boltconcierge-2f0f9.appspot.com/o/brand_logo%2FRental%20Community?alt=media&token=8f0426f6-3e6c-4b75-9b6a-e8117892f137)`,
                 // backgroundImage: `url(${default_logo})`,
                 backgroundRepeat: "no-repeat",
                 backgroundPosition: "center",

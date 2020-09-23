@@ -4,6 +4,7 @@
   justify-content: center;
   width: 100%; }
 
-#home-container.shop-container {
-  top: 0;
-  overflow-y: auto; }
+@media (max-width: 767px) {
+  #home-container.shop-container {
+    top: 0;
+    overflow-y: auto; } }

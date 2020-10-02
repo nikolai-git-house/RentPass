@@ -2,30 +2,19 @@
 .message-input-container {
   width: 100%;
   margin-top: auto;
-  z-index: 10;
   position: relative;
   .message-input-wrapper {
     position: relative;
     width: 100%;
     top: 0;
-    left: -1em;
-    padding: 1em;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     transition: top 300ms;
-    a {
-      text-decoration: none;
-      color: #152439;
-    }
-    &.yesno {
-      justify-content: flex-end;
-    }
     &.nation {
       div {
         .nationality {
           width: 80%;
-          padding: 1em;
           border-radius: 14px;
           border: none;
           background-color: #ffffff;
@@ -41,9 +30,7 @@
         }
       }
     }
-
     &.choice {
-      left: 0;
       div {
         display: flex;
         flex-direction: column;
@@ -72,7 +59,7 @@
             height: 100px;
             margin: 10px;
             border-radius: 10px;
-            background-color: white;
+            background-color: transparent;
             border: none;
             box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
             cursor: pointer;
@@ -92,10 +79,39 @@
               height: 130px;
               margin: 10px;
               border-radius: 10px;
-              background-color: white;
+              background-color: transparent;
               border: none;
               box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
             }
+          }
+        }
+      }
+    }
+    &.wellnessSupport {
+      .option-item-wrapper {
+        flex: 1;
+        margin-right: 10px;
+        display: flex;
+        align-items: center;
+        flex-direction: column;
+        justify-content: center;
+        &.message {
+          padding-left: 10px;
+          padding-right: 10px;
+          text-align: center;
+          background-color: #ffffff;
+          cursor: pointer;
+          justify-content: space-between;
+          img {
+            width: 30px;
+            height: 30px;
+            margin-bottom: 5px;
+          }
+          p {
+            width: 120px;
+            margin: auto;
+            font-weight: 500;
+            color: #0b0b0b;
           }
         }
       }
@@ -108,11 +124,30 @@
       .message-item-wrapper {
         max-width: 100%;
         .message {
+          padding-left: 20px;
+          padding-right: 20px;
+          text-align: center;
+          background-color: #ffffff;
+          color: #0b0b0b;
+          cursor: pointer;
+          font-weight: 500;
+        }
+      }
+    }
+    &.yesno {
+      display: block;
+      hr {
+        border: 1px solid #ffffff66;
+      }
+      .message-item-wrapper {
+        max-width: 100%;
+        .message {
+          width: 120px;
+          text-align: center;
           background-color: #ffffff;
           color: #0b0b0b;
           cursor: pointer;
           text-transform: capitalize;
-          font-weight: 500;
         }
       }
     }
@@ -144,14 +179,14 @@
     }
     .message-static {
       cursor: pointer;
-      background-color: $green;
-      color: $black;
+      background-color: #ffffff;
+      color: #0b0b0b;
       font-weight: 600;
       width: 100%;
       text-align: center;
       &.notbolt {
-        background-color: $black;
-        color: $white;
+        background-color: #ffffff;
+        color: #0b0b0b;
       }
     }
     div {
@@ -159,40 +194,19 @@
         width: 100%;
         display: flex;
         align-items: center;
-        input,
-        .send-button {
+        input {
           padding: 1em 1.4em;
           border-radius: 4em;
           box-shadow: $box-shadow;
+          margin: 0px;
+          
         }
-        .phone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .agentphone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .salary {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .company_site {
-          padding-left: 105px;
-          width: 80%;
-          font-family: "Graphik", sans-serif;
-        }
-        .bill-price {
-          text-align: right;
-          font-family: "Graphik", sans-serif;
-          width: 150px;
-          margin-left: auto;
-          flex: 0;
-          background: white;
-        }
+        // .phone {
+        //   margin-left: -50px;
+        //   padding-left: 50px;
+        //   font-family: "Graphik", sans-serif;
+        // }
+       
         .year {
           margin-right: -100px;
           padding-right: 50px;
@@ -201,6 +215,8 @@
         p {
           font-size: 1em;
           margin-left: 50px;
+          font-family: "Graphik", sans-serif;
+          margin-bottom: 0px;
           z-index: 100;
           line-height: 1;
         }
@@ -211,84 +227,9 @@
           flex: 1;
           font-size: 1em;
         }
-        .send-button {
-          margin-left: 1em;
-          padding: 1em 1.6em;
-          background-color: $green;
-          color: $black;
-          font-weight: 600;
-          opacity: 1;
-          transition: opacity 0.15s;
-          &.disabled {
-            opacity: 0.8;
-          }
-          &.notbolt {
-            background-color: $black;
-            color: $white;
-          }
-        }
       }
     }
-    .message-input-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      input,
-      .send-button {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: $box-shadow;
-      }
-      input {
-        background-color: $greywhite;
-        outline: none;
-        border: none;
-        flex: 1;
-        font-size: 1em;
-      }
-      .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: $green;
-        color: $black;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s;
-        &.disabled {
-          opacity: 0.8;
-        }
-        &.notbolt {
-          background-color: $black;
-          color: $white;
-        }
-      }
-
-      .addressbox {
-        display: "flex";
-        flex-direction: "column";
-        width: 250px;
-        padding: 15px;
-
-        border-radius: 20px;
-        border: 2px solid $greywhite;
-        .address {
-          border: 0;
-          border-bottom: 1px solid $greywhite;
-          outline: 0;
-          border-width: 0 0 2px;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: unset;
-          padding: 10px;
-        }
-      }
-    }
-  }
-
-  &.select-brand {
-    input {
-      padding: 0.6em 1.4em !important;
-    }
+    
   }
 }
 .swal-overlay {
@@ -335,7 +276,7 @@
   opacity: 0.6;
 }
 
-.send-button-pay {
+.send-button {
   display: flex;
   background-color: $black;
   opacity: 1;

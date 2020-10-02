@@ -10,9 +10,10 @@
     left: 0;
     right: 0;
     bottom: 0;
-    background-image: url("../images/top_bg.png");
-    background-position: top right;
-    background-repeat: no-repeat;
-    background-size: 600px;
+  }
+  .header-container {
+    margin-bottom: 20px;
+    align-items: center;
+    display: flex;
   }
 }

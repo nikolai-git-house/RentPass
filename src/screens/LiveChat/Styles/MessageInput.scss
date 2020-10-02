@@ -96,32 +96,18 @@
         width: 100%;
         display: flex;
         align-items: center;
-        input,
-        .send-button {
+        input{
+          margin: 0px;
           padding: 1em 1.4em;
-          border-radius: 4em;
-          box-shadow: $box-shadow;
         }
-        .phone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .agentphone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .salary {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .company_site {
-          padding-left: 105px;
-          width: 80%;
-          font-family: "Graphik", sans-serif;
-        }
+        // .phone {
+        //   margin-left: -50px;
+        //   padding-left: 50px;
+        //   font-family: "Graphik", sans-serif;
+        // }
+        
+      
+       
         .year {
           margin-right: -100px;
           padding-right: 50px;
@@ -140,22 +126,6 @@
           flex: 1;
           font-size: 1em;
         }
-        .send-button {
-          margin-left: 1em;
-          padding: 1em 1.6em;
-          background-color: $black;
-          color: $white;
-          font-weight: 600;
-          opacity: 1;
-          transition: opacity 0.15s;
-          &.disabled {
-            opacity: 0.8;
-          }
-          &.notbolt {
-            background-color: $black;
-            color: $white;
-          }
-        }
       }
     }
     .message-input-container {
@@ -163,11 +133,6 @@
       display: flex;
       align-items: center;
       input,
-      .send-button {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: $box-shadow;
-      }
       input {
         background-color: $greywhite;
         outline: none;
@@ -175,23 +140,6 @@
         flex: 1;
         font-size: 1em;
       }
-      .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: $black;
-        color: $white;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s;
-        &.disabled {
-          opacity: 0.8;
-        }
-        &.notbolt {
-          background-color: $black;
-          color: $white;
-        }
-      }
-
       .addressbox {
         display: "flex";
         flex-direction: "column";

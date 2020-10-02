@@ -12,8 +12,7 @@ import {
   saveHousemates,
 } from "../../redux/actions";
 import "./index.css";
-import logoImg from "../../images/login/logo-letter.png";
-import logoSm from "../../images/login/logo-sm.png";
+import logoImg from "../../images/login/logo.png";
 class LogIn extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -108,6 +107,9 @@ class LogIn extends React.PureComponent {
       console.log("response", response);
     }
   };
+  SignUp = ()=>{
+    this.props.history.push("/signup");
+  }
   Confirm = async () => {
     const { pin, sms, phonenumber, method } = this.state;
     if (pin !== sms) {
@@ -176,7 +178,7 @@ class LogIn extends React.PureComponent {
               <div className="hero-static col-md-6 d-flex align-items-center bg-white">
                 <div className="p-3 w-100">
                   <div className="mb-3 text-center login-logo-container">
-                    <img src={logoSm} className="login-logo-sm" />
+                    {/* <img src={logoSm} className="login-logo-sm" /> */}
                     <img src={logoImg} style={{ width: 250 }} alt="logo" />
                     <p className="text-muted brand-hub-text">
                       Your Renting Hub
@@ -187,18 +189,6 @@ class LogIn extends React.PureComponent {
                       <form className="js-validation-signin">
                         {!number_panel && (
                           <div>
-                            {/* <div className="card-content">
-                              <p>Join</p>
-                              <button type="button" onClick={this.Join}>
-                                Enter mobile number
-                              </button>
-                            </div> */}
-                            {/* <div className="card-content">
-                              <p>Respond to an invite</p>
-                              <button type="button" onClick={this.Respond}>
-                                Enter mobile number
-                              </button>
-                            </div> */}
                             <div className="card-content">
                               <p>Login</p>
                               <button type="button" onClick={this.Login}>
@@ -224,7 +214,7 @@ class LogIn extends React.PureComponent {
                                     marginBottom: 32,
                                   }}
                                 >
-                                  <p style={{ fontSize: 20 }}>+44</p>
+                                  <p style={{ fontSize: 20,marginBottom:-7 }}>+44</p>
                                   <input
                                     type="text"
                                     className="form-control form-control-lg form-control-alt"
@@ -241,6 +231,13 @@ class LogIn extends React.PureComponent {
                                   onClick={this.SignIn}
                                 >
                                   Log into your Ecosystem
+                                </button>
+                                <button
+                                  type="button"
+                                  className="btn btn-block btn-hero-lg btn-hero-secondary"
+                                  onClick={this.SignUp}
+                                >
+                                  Join the rental community
                                 </button>
                               </div>
                             )}

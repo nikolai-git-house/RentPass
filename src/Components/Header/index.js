@@ -151,6 +151,30 @@ class Header extends React.Component {
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink
+                  to="#"
+                  className={classnames("nav-main-link")}
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={property_png}
+                  />
+                  <span className="nav-main-link-name">Feeds</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item" onClick={this.click}>
+                <NavLink
+                  to="#"
+                  className={classnames("nav-main-link")}
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={property_png}
+                  />
+                  <span className="nav-main-link-name">Polls</span>
+                </NavLink>
+              </li>
+              {/* <li className="nav-main-item" onClick={this.click}>
+                <NavLink
                   to="/propertypa"
                   className={classnames("nav-main-link")}
                 >
@@ -160,8 +184,8 @@ class Header extends React.Component {
                   />
                   <span className="nav-main-link-name">Property PA</span>
                 </NavLink>
-              </li>
-              <li className="nav-main-item" onClick={this.click}>
+              </li> */}
+              {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/tickets" className={classnames("nav-main-link")}>
                   <img
                     style={{ width: 12, marginRight: 10 }}
@@ -169,7 +193,7 @@ class Header extends React.Component {
                   />
                   <span className="nav-main-link-name">Tickets</span>
                 </NavLink>
-              </li>
+              </li> */}
               {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink to="/shop" className={classnames("nav-main-link")}>
                   <span className="nav-main-link-name">Shop</span>

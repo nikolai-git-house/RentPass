@@ -8,12 +8,16 @@
   min-height: 1.4em;
   &.bot {
     .typing-loader {
-      width: 70px;
+      height: 50px;
       transition: all 0.3s;
       opacity: 1;
       position: relative;
-      animation-name: slideInLeft;
+      animation-name: slideInRight;
       animation-duration: 300ms;
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: center;
     }
     .message {
       position: absolute;
@@ -34,7 +38,6 @@
     }
     &.loaded {
       .typing-loader {
-        width: 70px;
         position: absolute;
         opacity: 0;
         transform: translateY(2em);
@@ -78,85 +81,19 @@
     }
   }
   &.user {
-    .typing-loader {
-      width: 70px;
-      transition: all 0.3s;
-      opacity: 1;
-      position: relative;
-      animation-name: slideInRight;
-      animation-duration: 300ms;
-    }
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: flex-start;
+    justify-content: flex-end;
     .message {
-      position: absolute;
-      opacity: 0;
-      transform: scale(0);
-      font-weight: 100;
-      background-color: white;
-    }
-    &.loaded {
-      .typing-loader {
-        width: 40px;
-        position: absolute;
-        opacity: 0;
-        transform: translateY(2em);
-      }
-      .message {
-        position: relative;
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    .typing-loader {
-      display: block;
-    }
-  }
-  &.agency {
-    align-self: flex-end;
-    .typing-loader {
-      width: 70px;
-      transition: all 0.3s;
-      opacity: 1;
-      position: relative;
-      animation-name: slideInRight;
-      animation-duration: 300ms;
-    }
-    .message {
-      background-color: #fdffd0;
+      background-color: #d9d9d9;
       color: $black;
-      font-weight: 100;
+      font-weight: 300;
       opacity: 0;
       transform: scale(0);
       &.notbolt {
-        background-color: #fdffd0;
-        color: $black;
-      }
-    }
-    &.loaded {
-      .typing-loader {
-        width: 40px;
-        position: absolute;
-        opacity: 0;
-        transform: translateY(2em);
-      }
-      .message {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    .typing-loader {
-      display: block;
-    }
-  }
-  &.landlord {
-    align-self: flex-end;
-    .message {
-      background-color: #daffda;
-      color: $black;
-      font-weight: 100;
-      opacity: 0;
-      transform: scale(0);
-      &.notbolt {
-        background-color: #daffda;
+        background-color: #DCF8C4;
         color: $black;
       }
     }
@@ -170,45 +107,9 @@
       display: none;
     }
   }
-  &.contractor {
-    align-self: flex-end;
-    .typing-loader {
-      width: 70px;
-      transition: all 0.3s;
-      opacity: 1;
-      position: relative;
-      animation-name: slideInRight;
-      animation-duration: 300ms;
-    }
-    .message {
-      background-color: #ffeaf9;
-      color: $black;
-      font-weight: 100;
-      opacity: 0;
-      transform: scale(0);
-      &.notbolt {
-        background-color: #ffeaf9;
-        color: $black;
-      }
-    }
-    &.loaded {
-      .typing-loader {
-        width: 40px;
-        position: absolute;
-        opacity: 0;
-        transform: translateY(2em);
-      }
-      .message {
-        opacity: 1;
-        transform: scale(1);
-      }
-    }
-    .typing-loader {
-      display: block;
-    }
-  }
 }
 .avatar {
-  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
-  border-radius: 20px;
+  border-radius: 40px;
+  box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
+  margin-right: 5px;
 }

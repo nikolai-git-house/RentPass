@@ -3,36 +3,12 @@ import Progress from "react-progressbar";
 import Select from "./Select";
 import ToggleButton from "./ToggleButton";
 import YesNoButton from "./YesNoButton";
-import CardContainer from "./CardContainer";
-import Address from "./Address";
-import FileDialog from "./FileDialog";
 import DateInput from "./DateInput";
-import CountryPicker from "./CountryPicker";
+import IssueInput from "./IssueInput";
 import { doSMS, clearZero } from "../functions/Auth";
 import { animateScroll } from "react-scroll";
 import Firebase from "../firebasehelper";
 import ErrorModal from "./ErrorModal";
-import SelectBrand from "./SelectBrand";
-import Choice from "./Choice";
-import IssueInput from "./IssueInput";
-function numberWithCommas(x) {
-  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
-}
-
-let items = [];
-let rooms = [];
-
-Firebase.getAllItem((res) => {
-  items = res.map((item) => {
-    return { value: item, label: item.toLowerCase() };
-  });
-});
-Firebase.getAllRoom((res) => {
-  rooms = res.map((item) => {
-    return { value: item, label: item.toLowerCase() };
-  });
-});
-
 let profile = {};
 class MessageInput extends Component {
   state = {
@@ -40,50 +16,85 @@ class MessageInput extends Component {
     modalIsOpen: false,
     caption: "",
     content: "",
+    checking_phone: false,
     profile: {
       value: "",
       isFocused: false,
       pin: "",
-      phone: "",
-      username: "",
+      phonenumber: "",
+      firstname: "",
+      dob: "",
       sms: "",
       email: "",
       password: "",
+      personalType: "",
+      spareType: "",
+      animalType: "",
+      socialType: "",
+      employmentType: "",
       salary: "",
+      addressType: "",
     },
-    checkingprofile: false,
+    fileupload: 0,
   };
   handleTouchStart = false;
 
   getStaticMessage() {
     const { addMessage, message, logo } = this.props;
+    if (Array.isArray(message.message)) {
+      return (
+        <div className="message-array">
+          {message.message.map((message, i) => {
+            return (
+              <div
+                className={`message message-static ${
+                  logo === "ecosystem" ? " " : "notbolt"
+                }`}
+                onTouchStart={() => {
+                  addMessage({
+                    type: "user",
+                    ...message,
+                  });
+                }}
+                key={i}
+              >
+                {message.message}
+              </div>
+            );
+          })}
+        </div>
+      );
+    }
     return (
       <div
         className={`message message-static ${
           logo === "ecosystem" ? " " : "notbolt"
         }`}
-        onClick={(e) => {
-          this.handleTouchStart = true;
-          this.addMessage({
-            type: "user",
-            message: message.message,
-            register: message.register,
-            start_trial: message.start_trial,
-          });
+        onClick={() => {
+          if (message.signup) {
+            const signup_profile = {
+              firstname: profile.firstname,
+              phonenumber: profile.phonenumber,
+              dob: profile.dob,
+            };
+            message.profile = signup_profile;
+          }
+          addMessage(message);
         }}
       >
         {message.message}
       </div>
     );
   }
+
   getInputMessage() {
-    const { value, isFocused } = this.state;
+    const { value, isFocused, checking_phone } = this.state;
     const { message, logo, isIphoneX, addMessage } = this.props;
     return (
       <div className="message-input-outer">
         {message.key === "sms" && (
           <div
-            className={`button ${logo === "bolt" ? "" : "notbolt"}`}
+            className={`button ${logo === "ecosystem" ? "" : "notbolt"}`}
             onClick={(e) => {
               this.handleTouchStart = true;
               addMessage({
@@ -97,7 +108,6 @@ class MessageInput extends Component {
             I didn't receive a code
           </div>
         )}
-
         <div className="message-input-container">
           {message.key.includes("phone") && <p>+44</p>}
           <input
@@ -106,9 +116,7 @@ class MessageInput extends Component {
             placeholder={message.placeholder}
             className={`${message.key.includes("phone") ? "phone" : ""}  ${
               message.key === "salary" ? "salary" : ""
-            } ${message.key === "company_site" ? "company_site" : ""} ${
-              message.key === "bill-price" ? "bill-price" : ""
-            }`}
+            } ${message.key === "company_site" ? "company_site" : ""}`}
             onChange={this.onChange}
             onKeyPress={(e) => {
               if (e.charCode === 13) this.addMessage();
@@ -133,31 +141,39 @@ class MessageInput extends Component {
             }}
           />
 
-          <div
-            className={`send-button ${value ? "" : "disabled"} ${
-              logo === "bolt" ? "" : "notbolt"
-            }`}
-            onClick={(e) => {
-              if (value) {
-                if (this.handleTouchStart) {
-                  setTimeout(() => {
-                    this.handleTouchStart = false;
-                  }, 1000);
-                  e.preventDefault();
-                  return;
-                }
-                this.handleTouchStart = true;
-                this.addMessage();
-              } else
-                this.setState({
-                  modalIsOpen: true,
-                  caption: "Warning",
-                  content: "All fields are required!",
-                });
-            }}
-          >
-            Go
-          </div>
+          {!checking_phone && (
+            <div
+              className={`send-button ${value ? "" : "disabled"} ${
+                logo === "ecosystem" ? "" : "notbolt"
+              }`}
+              onClick={(e) => {
+                if (value) {
+                  if (this.handleTouchStart) {
+                    setTimeout(() => {
+                      this.handleTouchStart = false;
+                    }, 1000);
+                    e.preventDefault();
+                    return;
+                  }
+                  this.handleTouchStart = true;
+                  this.addMessage();
+                } else
+                  this.setState({
+                    modalIsOpen: true,
+                    caption: "Warning",
+                    content: "All fields are required!",
+                  });
+              }}
+            >
+              <img
+                src={require("../images/computer-icons-send.png")}
+                alt="send-icon"
+              />
+            </div>
+          )}
+          {checking_phone && (
+            <p style={{ fontSize: 15 }}>Checking phone number..</p>
+          )}
         </div>
       </div>
     );
@@ -169,12 +185,11 @@ class MessageInput extends Component {
     return <Select options={options} addMessage={addMessage} />;
   }
 
-  setSelectedOption = async (index) => {
+  setSelectedOption = (index) => {
     const { addMessage, message } = this.props;
     const selectedOption = message.options[index]["value"];
-    console.log("message", message);
+
     profile[message.key] = selectedOption;
-    console.log("selectedOption", selectedOption);
     if (message.ticket)
       addMessage({
         type: "user",
@@ -191,26 +206,6 @@ class MessageInput extends Component {
         key: message.key,
       });
   };
-  chooseOption = (result) => {
-    const { addMessage, message } = this.props;
-    profile[message.key] = result;
-    addMessage({
-      type: "user",
-      message: result,
-      inputType: "yesno",
-      key: message.key,
-    });
-  };
-  getAddress() {
-    const { addMessage, message } = this.props;
-    return (
-      <Address
-        addMessage={this.addAddress}
-        message={message}
-        postcode={profile["postcode"]}
-      />
-    );
-  }
   getDateMessage() {
     const { addMessage, logo, message } = this.props;
     return (
@@ -218,45 +213,22 @@ class MessageInput extends Component {
     );
   }
   getToggleButton() {
-    const { options } = this.props.message;
+    const { options, directionRow } = this.props.message;
     return (
       <ToggleButton
         options={options}
         setSelectedOption={this.setSelectedOption}
+        row={directionRow}
       />
     );
   }
   getYesNoInput() {
     return <YesNoButton setSelectedOption={this.chooseOption} />;
   }
-  getCardInput() {
-    const { addMessage, message } = this.props;
-    const { cards } = message;
-    return (
-      <CardContainer addMessage={addMessage} cards={cards} message={message} />
-    );
-  }
-
-  addChoice = (choice) => {
-    const { addMessage, message } = this.props;
-    profile[message.key] = choice;
-    addMessage({
-      message: choice,
-      ...message,
-    });
+  onStartChat = (ticket_id) => {
+    const { onStartChat } = this.props;
+    onStartChat(ticket_id);
   };
-
-  getChoice() {
-    const { message, tier_data } = this.props;
-    return (
-      <Choice
-        addMessage={this.addChoice}
-        message={message}
-        tier_data={tier_data}
-      />
-    );
-  }
-
   onChange = (e) => {
     this.setState({
       value: e.target.value,
@@ -268,114 +240,192 @@ class MessageInput extends Component {
   };
   addAddress = (address) => {
     const { addMessage, message } = this.props;
-    const address_arr = address.split(",");
-    if (message.key === "address") {
-      profile["street"] = address_arr[0];
-      profile["city"] = address_arr[1];
-    } else {
-      profile[message.key] = address;
-    }
+    profile[message.key] = address;
+    let add = address.split(", ");
+    profile["number"] = add[0];
+    profile["street"] = add[1];
+    profile["city"] = add[2];
+    profile["postcode"] = add[3];
     addMessage({
       message: address,
       ...message,
     });
   };
-
+  addDate = (date) => {
+    const { addMessage, message } = this.props;
+    profile[message.key] = date;
+    let status = profile["addressType"];
+    addMessage({
+      message: date,
+      status: status,
+      ...message,
+    });
+  };
   jsUcfirst(string) {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
-  doRegister = (profile) => {
-    const { onRegister } = this.props;
-    onRegister(profile);
-  };
   addMessage = async () => {
-    const { addMessage, message, onStartTrial } = this.props;
-    console.log("message", message);
+    const { addMessage, message, is_member, logo,setTicket } = this.props;
     const { value } = this.state;
-    if (message.key === "firstname") {
-      profile["firstname"] = value;
-    }
-    if (message.key === "phone") {
-      this.setState({ checkingprofile: true });
-      let number = clearZero(value);
-      let phone = "+44" + number;
-      this.setState({ checkingprofile: true });
-      Firebase.isProfileExist(phone).then((res) => {
-        console.log("isProfileExist", res);
-        this.setState({ checkingprofile: false });
+    if (message.key === "email") {
+      if (value && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
+        this.setState({
+          modalIsOpen: true,
+          caption: "Invalid Email",
+          content: "Please enter valid email address!",
+        });
+      else if (value) {
+        profile[message.key] = value;
         addMessage({
           type: "user",
-          message: phone,
-          key: message.key,
-          isPhoneNumberExist: res,
+          message: value,
           inputType: "input",
           isNext: message.isNext,
         });
-        if (!res) {
+      } else {
+        profile[message.key] = null;
+        addMessage({
+          type: "user",
+          message: "not now",
+          inputType: "input",
+          isNext: message.isNext,
+        });
+      }
+    } else if (message.key === "dob") {
+      if (
+        value &&
+        !/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
+          value
+        )
+      )
+        this.setState({
+          modalIsOpen: true,
+          caption: "Invalid format of date",
+          content: "Please enter valid date format!",
+        });
+      else if (value) {
+        profile[message.key] = value;
+        addMessage({
+          type: "user",
+          message: value,
+          inputType: "input",
+          isNext: message.isNext,
+          isCommunication: message.isCommunication
+        });
+      }
+    } else if (message.key === "password") {
+      if (
+        value &&
+        !/(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/.test(
+          value
+        )
+      )
+        this.setState({
+          modalIsOpen: true,
+          caption: "Password is not strong",
+          content: "Please enter stronger password!",
+        });
+      else if (value) {
+        profile["password"] = value;
+        addMessage({
+          type: "user",
+          message: value,
+          inputType: "input",
+          isNext: message.isNext,
+        });
+      }
+    } else if (message.key !== "email") {
+      if (message.key === "phone") {
+        let number = clearZero(value);
+        let phone = "+44" + number;
+        if (profile["is_member"] === "No") {
           let pin = this.createPincode();
           pin = pin.toString();
           console.log("pin", pin);
           localStorage.setItem("phone", phone);
           localStorage.setItem("pin", pin);
-          let response = doSMS(phone, pin);
+          let response = doSMS(phone, pin, logo);
           console.log("response", response);
+
+          addMessage({
+            type: "user",
+            message: phone,
+            profile: profile,
+            key: "phone",
+            inputType: "input",
+            isNext: message.isNext,
+          });
+        } else {
+          this.setState({ checking_phone: true });
+          let profile = await Firebase.getProfile(phone, logo);
+          this.setState({ checking_phone: false });
+          if (profile) {
+            let pin = this.createPincode();
+            pin = pin.toString();
+            console.log("pin", pin);
+            localStorage.setItem("phone", phone);
+            localStorage.setItem("pin", pin);
+            let response = doSMS(phone, pin, logo);
+            console.log("response", response);
+
+            addMessage({
+              type: "user",
+              message: phone,
+              profile: profile,
+              key: "phone",
+              inputType: "input",
+              isNext: message.isNext,
+            });
+          } else {
+            this.setState({
+              modalIsOpen: true,
+              caption: "Error",
+              content: `You aren't registered with that mobile number. Please register as a member now. You will get 30 a day free trial.`,
+            });
+          }
         }
-      });
-    } else if (message.key === "sms") {
-      let phone = localStorage.getItem("phone");
-      let pin = localStorage.getItem("pin");
-      if (pin === value) {
-        profile["phone"] = phone;
+      } else if (message.key === "sms") {
+        let phone = localStorage.getItem("phone");
+        let pin = localStorage.getItem("pin");
+        if (pin === value) {
+          profile["phonenumber"] = phone;
+          addMessage({
+            type: "user",
+            message: value,
+            key: message.key,
+            inputType: "input",
+            is_member: is_member,
+            profile: profile,
+            phone: phone,
+            isNext: message.isNext,
+          });
+        } else {
+          addMessage({
+            type: "user",
+            message: value,
+            key: "wrong_sms",
+            inputType: "input",
+            isNext: message.isNext,
+          });
+        }
+      } else {
+        profile[message.key] = value;
         addMessage({
           type: "user",
           message: value,
+          profile: profile,
           key: message.key,
           inputType: "input",
           isNext: message.isNext,
-        });
-      } else {
-        addMessage({
-          type: "user",
-          message: value,
-          key: "wrong_sms",
-          inputType: "input",
-          isNext: message.isNext,
+          isCommunicationLayer: message.isCommunicationLayer
         });
       }
-    } else if (message.register) {
-      addMessage({
-        type: "user",
-        message: message.message,
-        key: message.key,
-        inputType: "input",
-      });
-      let newProfile = [];
-      newProfile = {
-        firstname: profile["firstname"],
-        phonenumber: profile["phone"],
-        manageType: profile["manageType"],
-      };
-      this.doRegister(newProfile);
-    } else if (message.start_trial) {
-      addMessage({
-        type: "user",
-        message: message.message,
-        key: message.key,
-        inputType: "input",
-      });
-      onStartTrial();
-    } else
-      addMessage({
-        type: "user",
-        message: value,
-        key: message.key,
-        inputType: "input",
-        result: message.result,
-      });
-    console.log("profile", profile);
+    }
   };
   componentWillLeave(callback) {
     const { message } = this.props;
+    console.log("message in componentWillLeave", message);
+    console.log("message when leave", message);
     if (message.inputType !== "input") {
       this.setState({
         leaving: true,
@@ -385,67 +435,16 @@ class MessageInput extends Component {
       }, 400);
     } else callback();
   }
-
   closeModal = () => {
     this.setState({ modalIsOpen: false });
+    window.location.reload();
   };
-
-  addIssueQuestion = (item, room, adjective) => {
-    const { addMessage, message } = this.props;
-    const text =
-      "The " +
-      item.toLowerCase() +
-      " in the " +
-      room.toLowerCase() +
-      " is " +
-      adjective.toLowerCase() +
-      ".";
-    profile[message.key] = text;
-    addMessage({
-      message: text,
-      quez: { item: item, room: room, adjective: adjective },
-      ...message,
-    });
+  goBack = () => {
+    const { goBack } = this.props;
+    goBack();
   };
-
-  getIssueInput() {
-    const { logo, message } = this.props;
-    return (
-      <IssueInput
-        addMessage={this.addIssueQuestion}
-        logo={logo}
-        message={message}
-        items={items}
-        rooms={rooms}
-      />
-    );
-  }
-
-  getSelectBrand() {
-    const { addMessage, message } = this.props;
-    return (
-      <SelectBrand
-        addMessage={(message) =>
-          addMessage({
-            type: "user",
-            message: message,
-            inputType: "selectbrand",
-            isNext: true,
-          })
-        }
-        message={message}
-      />
-    );
-  }
-
   render() {
-    const {
-      leaving,
-      modalIsOpen,
-      caption,
-      content,
-      checkingprofile,
-    } = this.state;
+    const { leaving, modalIsOpen, caption, content, fileupload } = this.state;
     const { message } = this.props;
     return (
       <Fragment>
@@ -455,34 +454,22 @@ class MessageInput extends Component {
           closeModal={this.closeModal}
           modalIsOpen={modalIsOpen}
         />
-        {checkingprofile && (
-          <p style={{ fontSize: 10, textAlign: "right" }}>
-            Checking phone number...
-          </p>
-        )}
-        {message && !checkingprofile && (
+        {message && (
           <div
             className={`message-input-wrapper ${message.inputType} ${
               leaving ? "leaving" : ""
             }`}
           >
             {message.inputType === "static" ? this.getStaticMessage() : null}
-            {message.inputType === "nation" ? this.getNation() : null}
             {message.inputType === "input" ? this.getInputMessage() : null}
             {message.inputType === "address" ? this.getAddress() : null}
             {message.inputType === "date" ? this.getDateMessage() : null}
-            {message.inputType === "select" ? this.getSelectInput() : null}
-            {message.inputType === "selectBrand" ? this.getSelectBrand() : null}
-            {message.inputType === "card" ? this.getCardInput() : null}
-            {message.inputType === "yesno" ? this.getYesNoInput() : null}
-            {message.inputType === "upload" ? this.getUploadDialog() : null}
-            {message.inputType === "choice" ? this.getChoice() : null}
             {message.inputType === "issue" ? this.getIssueInput() : null}
-            {message.inputType === "toggleButton"
-              ? this.getToggleButton()
-              : null}
+            {message.inputType === "select" ? this.getSelectInput() : null}
+            {message.inputType === "yesno" ? this.getYesNoInput() : null}
           </div>
         )}
+        <Progress completed={fileupload} />
       </Fragment>
     );
   }

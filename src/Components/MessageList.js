@@ -1,51 +1,63 @@
 import React, { Component } from "react";
-import { TransitionGroup } from "react-transition-group";
 import { animateScroll } from "react-scroll";
 import MessageItem from "./MessageItem";
 import MessageInput from "./MessageInput";
-
+import Firebase from "../firebasehelper";
+import ErrorModal from "./ErrorModal";
 import {
   getBotMessageGroup,
   getBetweenTimeoutValue,
   getTimeoutValue,
   getInputTimeoutValue,
   addBotMessageGroup,
-  addBotMessages
+  addBotMessages,
 } from "../Utils/botMessages";
 import {
   getUserMessage,
   addUserMessage,
-  addUserMessages
+  addUserMessages,
 } from "../Utils/userMessages";
-import { postMessage } from "../Utils/middleware";
+import {
+  registration_botMessages,
+  registration_userMessages,
+} from "../Constants/messages";
+
 class MessageList extends Component {
-  state = {
-    showInput: false,
-    messages: [],
-    name: "",
-    isIphoneX: true
-  };
   constructor(props) {
     super(props);
     this.messages = [
       {
         type: "user",
-        message: "Hello"
-      }
+        message: "Hello",
+      },
     ];
+    this.state = {
+      showInput: false,
+      messages: [],
+      name: "",
+      isIphoneX: true,
+      brand: "ecosystem",
+      modalIsOpen: false,
+      uid: props.uid,
+      profile: props.profile,
+      showTravel: false,
+      super_admins: [],
+      chatbot: {},
+    };
   }
 
   componentDidMount() {
-    const { type } = this.props;
-    this.getBotMessageGroup(type);
+    const { logo } = this.props;
+    this.setState({ brand: logo });
+    addBotMessages(registration_botMessages);
+    addUserMessages(registration_userMessages);
+    this.getBotMessageGroup();
   }
-
-  getBotMessageGroup = type => {
+  getBotMessageGroup = () => {
     this.setState({
-      showInput: false
+      showInput: false,
     });
-    const messageGroup = getBotMessageGroup(type);
-    console.log("messageGroup", messageGroup);
+    let messageGroup = getBotMessageGroup();
     if (messageGroup) {
       messageGroup.forEach((message, index) => {
         const timeoutValue =
@@ -64,36 +76,22 @@ class MessageList extends Component {
       setTimeout(() => {
         animateScroll.scrollToBottom({
           duration: 500,
-          smooth: "easeInOutQuad"
+          smooth: "easeInOutQuad",
         });
       }, delay);
     } else {
       animateScroll.scrollToBottom({
         duration: 500,
-        smooth: "easeInOutQuad"
+        smooth: "easeInOutQuad",
       });
     }
   }
 
   setMessages() {
-    const { logo } = this.props;
+    const { logo, icon } = this.props;
     const { messages } = this.state;
     return messages.map((message, i) => {
       const firstChild = i !== 0 && messages[i - 1].type !== message.type;
-      if (message.type === "card-static") {
-        return (
-          <div className="card-static-wrapper" key={i}>
-            {this.image}
-          </div>
-        );
-      }
-      if (message.type === "form") {
-        return (
-          <div className="form" key={i}>
-            {this.image}
-          </div>
-        );
-      }
       return (
         <MessageItem
           message={message}
@@ -101,13 +99,13 @@ class MessageList extends Component {
           key={i}
           timeoutValue={getTimeoutValue(message.message)}
           logo={logo}
+          icon={icon}
         />
       );
     });
   }
 
   toggleUserInput(timeout) {
-    const { type } = this.props;
     if (!this.state.showInput) this.scrollToBottom(500);
     const { userMessage } = this.state;
     const showInput = !this.state.showInput;
@@ -116,13 +114,13 @@ class MessageList extends Component {
         if (!this.state.showInput) this.scrollToBottom(500);
         this.setState({
           showInput,
-          userMessage: showInput ? getUserMessage(type) : userMessage
+          userMessage: showInput ? getUserMessage() : userMessage,
         });
       }, getInputTimeoutValue());
     } else {
       this.setState({
         showInput,
-        userMessage: showInput ? getUserMessage(type) : userMessage
+        userMessage: showInput ? getUserMessage() : userMessage,
       });
     }
   }
@@ -132,219 +130,139 @@ class MessageList extends Component {
     messages.push(message);
     this.setState({ messages });
   }
-
-  addMessage = message => {
-    const { type } = this.props;
-    if (message.finish) postMessage("profileTestfinished", true);
-    if (message.isPhoneNumberExist) {
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message:
-            "There is already an account with that number. Please try with another number."
-        }
-      ]);
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "",
-        key: "phone"
-      });
-    }
-
-    if (message.inputType === "input" && message.key === "forename") {
+  addMessage = (message) => {
+    if (message.inputType === "input" && message.key === "firstname") {
       setTimeout(() => {
         this.scrollToBottom();
-        //break into firstname and lastname;
-        let name = message.message;
+        let firstname = message.message;
         this.setMessageInState({
           type: "bot",
-          message: `Thanks ${name}.`
+          message: `Great, thanks ${firstname}. `,
         });
-        this.getBotMessageGroup(type);
+        this.getBotMessageGroup();
       }, getBetweenTimeoutValue());
-    } else if (message.key === "wrong_sms") {
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "6-digits",
-        key: "sms"
-      });
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "",
-        key: "phone"
-      });
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message: "Please confirm the sms code received."
-        }
-      ]);
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message: `SMS Code is not matching. Try again.`
-        }
-      ]);
-      this.getBotMessageGroup(type);
-    } else if (message.key === "no_received") {
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "6-digits",
-        key: "sms"
-      });
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "",
-        key: "phone"
-      });
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message: "Please confirm the sms code received."
-        }
-      ]);
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message: `Try again.`
-        }
-      ]);
-      this.getBotMessageGroup(type);
-    } else if (message.key === "property_address") {
-      console.log("postcod");
-      if (message.message === "PostCode") {
-        addUserMessage(type, {
-          type: "user",
-          inputType: "input",
-          placeholder: "Number of bedrooms",
-          key: "bedrooms"
-        });
-        addUserMessage(type, {
-          type: "user",
-          inputType: "address",
-          key: "address"
-        });
-        addUserMessage(type, {
-          type: "user",
-          inputType: "input",
-          placeholder: "Postcode",
-          key: "postcode"
-        });
-        addBotMessageGroup(type, [
-          {
-            type: "bot",
-            message: "How many bedrooms does the property have?"
-          }
-        ]);
-        addBotMessageGroup(type, [
-          {
-            type: "bot",
-            message: "Please select your address from the dropdown."
-          }
-        ]);
-        addBotMessageGroup(type, [
-          {
-            type: "bot",
-            message: "What is the postcode of your property?"
-          }
-        ]);
-      } else {
-        addUserMessage(type, {
-          type: "user",
-          inputType: "input",
-          placeholder: "Number of bedrooms",
-          key: "bedrooms"
-        });
-        addUserMessage(type, {
-          type: "user",
-          inputType: "input",
-          placeholder: "http://xxx",
-          key: "rightmove"
-        });
-        addBotMessageGroup(type, [
-          {
-            type: "bot",
-            message: "How many bedrooms does the property have?"
-          }
-        ]);
-        addBotMessageGroup(type, [
-          {
-            type: "bot",
-            message: "What is the rightmove link of your property?"
-          }
-        ]);
-      }
-      this.getBotMessageGroup(type);
-    } else if (message.key === "HMO") {
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "Rental price per room",
-        key: "hmo"
-      });
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message:
-            "What is the weekly rental price per room? (Include data entry for number of rooms)"
-        }
-      ]);
-      this.getBotMessageGroup(type);
-    } else if (message.key === "AST") {
-      addUserMessage(type, {
-        type: "user",
-        inputType: "input",
-        placeholder: "Weekly rental price",
-        key: "ast"
-      });
-      addBotMessageGroup(type, [
-        {
-          type: "bot",
-          message: "What is the weekly rental price for the property?"
-        }
-      ]);
-      this.getBotMessageGroup(type);
-    } else {
-      if (typeof message.allowNotification !== "undefined") {
-        if (this.stoppedMessage) {
-          postMessage("allowNotificationsTwice", message.allowNotification);
-        } else {
-          postMessage("allowNotifications", message.allowNotification);
-        }
-      }
-      if (typeof message.moveBot !== "undefined" && message.moveBot) {
-        if (message.allowNotification === true) {
-          if (message.twiceAsked) {
-            for (let i = 0; i < message.moveBot; i++) {
-              getBotMessageGroup(type);
-            }
+    } else if (message.key === "signup") {
+      let profile = message.profile;
+      this.setState({ profile: profile });
+      const { brand } = this.state;
+      this.signup(profile)
+        .then((res) => {
+          if (res) {
+            const uid = res.id;
+            this.setState({ uid: uid });
+            this.getBotMessageGroup();
+            Firebase.getChatsById(res.id, (res) => {
+              if (res) {
+                this.openChat();
+              }
+            });
           } else {
-            this.stoppedMessage = message;
-            return;
+            this.setState({
+              modalIsOpen: true,
+              caption: "Error",
+              content: `Your phone number is already existing in ${brand}!`,
+            });
           }
-        } else {
-          for (let i = 0; i < message.moveBot; i++) {
-            getBotMessageGroup(type);
+        })
+        .catch((err) => {
+          this.setState({
+            modalIsOpen: true,
+            caption: "Error",
+            content: err,
+          });
+        });
+    }else if (message.key === "wrong_sms") {
+      addUserMessage({
+        type: "user",
+        inputType: "input",
+        placeholder: "6-digits",
+        key: "sms",
+      });
+      addUserMessage({
+        type: "user",
+        inputType: "input",
+        placeholder: "",
+        key: "phone",
+      });
+      addBotMessageGroup([
+        {
+          type: "bot",
+          message: "Please confirm the sms code received.",
+        },
+      ]);
+      addBotMessageGroup([
+        {
+          type: "bot",
+          message: `SMS Code is not matching. Try again.`,
+        },
+      ]);
+      this.getBotMessageGroup();
+    } else if (message.key === "no_received") {
+      addUserMessage({
+        type: "user",
+        inputType: "input",
+        placeholder: "6-digits",
+        key: "sms",
+      });
+      addUserMessage({
+        type: "user",
+        inputType: "input",
+        placeholder: "",
+        key: "phone",
+      });
+      addBotMessageGroup([
+        {
+          type: "bot",
+          message: "Please confirm the sms code received.",
+        },
+      ]);
+      addBotMessageGroup([
+        {
+          type: "bot",
+          message: `Try again.`,
+        },
+      ]);
+      this.getBotMessageGroup();
+    } else if (message.key === "sms") {
+      let phone = message.phone;
+      let profile = message.profile;
+      this.setState({ profile, phone });
+      let new_profile = {
+        dob: profile.dob,
+        firstname: profile.firstname,
+        phonenumber: profile.phonenumber,
+      };
+        this.signup(new_profile)
+        .then((res) => {
+          if (res) {
+            const uid = res.id;
+            this.setState({ uid: uid });
+            this.getBotMessageGroup();
+            Firebase.getChatsById(res.id, (res) => {
+              if (res) {
+                this.openChat();
+              }
+            });
+          } else {
+            this.setState({
+              modalIsOpen: true,
+              already_existing: true,
+              caption: "You are already a member",
+              content: `This phone number is registered to a member, I will take you to the members area.`,
+            });
           }
-        }
-      }
-      if (
-        typeof message.moveUser !== "undefined" &&
-        message.moveUser &&
-        message.allowNotification !== true
-      ) {
-        for (let i = 0; i < message.moveUser; i++) {
-          getUserMessage(type);
-        }
-      }
+        })
+        .catch((err) => {
+          this.setState({
+            modalIsOpen: true,
+            caption: "Error",
+            content: err,
+          });
+        });
+    } else {
       if (!message.finish) {
         setTimeout(() => {
-          this.getBotMessageGroup(type);
+          this.getBotMessageGroup();
         }, 1000);
       }
     }
@@ -352,23 +270,61 @@ class MessageList extends Component {
     this.setMessageInState(message);
     this.toggleUserInput();
   };
+  signup = (profile) => {
+    const { brand } = this.state;
+    if (brand !== "ecosystem") {
+      return Firebase.signup(profile, brand);
+    }
+  };
 
+  goBack = () => {
+    this.restart();
+    this.getBotMessageGroup();
+  };
+  closeModal = () => {
+    this.setState({ modalIsOpen: false });
+    window.location.reload();
+  };
   render() {
-    const { logo } = this.props;
-    const { showInput, userMessage, isIphoneX } = this.state;
+    const { logo, tier_data,chatbot } = this.props;
+    const {
+      showInput,
+      userMessage,
+      isIphoneX,
+      modalIsOpen,
+      caption,
+      content,
+      is_member,
+      profile,
+      brand,
+      uid
+    } = this.state;
     return (
       <div className="message-list-wrapper">
         {this.setMessages()}
-        <TransitionGroup component="div" className="message-input-container">
+        <div component="div" className="message-input-container">
           {showInput ? (
             <MessageInput
               message={userMessage}
               addMessage={this.addMessage}
               isIphoneX={isIphoneX}
               logo={logo}
+              brand={brand}
+              chatbot={chatbot}
+              is_member={is_member}
+              tier_data={tier_data}
+              onRestart={this.goBack}
+              profile={profile}
+              uid={uid}
             />
           ) : null}
-        </TransitionGroup>
+        </div>
+        <ErrorModal
+          caption={caption}
+          content={content}
+          closeModal={this.closeModal}
+          modalIsOpen={modalIsOpen}
+        />
       </div>
     );
   }

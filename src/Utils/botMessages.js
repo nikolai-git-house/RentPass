@@ -1,8 +1,4 @@
-import {
-  signup_botMessages,
-  chatbot_botMessages,
-  botMessages,
-} from "../Constants/messages";
+import { botMessages } from "../Constants/messages";
 
 export const getTimeoutValue = () => {
   return 1000;
@@ -16,42 +12,32 @@ export const getInputTimeoutValue = () => {
   return 1500;
 };
 
-export const getBotMessageGroup = (type) => {
-  switch (type) {
-    case "signup_botMessages":
-      console.log("botMessages", signup_botMessages);
-      return signup_botMessages.shift();
-    case "chatbot_botMessages":
-      console.log("botMessages", chatbot_botMessages);
-      return chatbot_botMessages.shift();
-    default:
-      return signup_botMessages.shift();
-  }
+export const getBotMessageGroup = () => {
+  console.log("originalbot", botMessages);
+  return botMessages.shift();
 };
 
-export const addBotMessageGroup = (type, msgGroup) => {
-  switch (type) {
-    case "signup_botMessages":
-      return signup_botMessages.unshift(msgGroup);
-    case "chatbot_botMessages":
-      return chatbot_botMessages.unshift(msgGroup);
-    default:
-      return signup_botMessages.unshift(msgGroup);
-  }
+export const addBotMessageGroup = msgGroup => {
+  return botMessages.unshift(msgGroup);
 };
 
-export const getBotMessage = (message) => {
-  return new Promise((resolve) => {
+export const getRemainingMessages = () => {
+  return botMessages.length;
+};
+export const getBotMessage = message => {
+  return new Promise(resolve => {
     setTimeout(() => {
       resolve(message);
     }, getTimeoutValue(message.message));
   });
 };
-
-export const addBotMessages = (messages) => {
+export const addBotMessages = messages => {
   console.log("originalbot", botMessages);
-  messages.map((item) => {
+  messages.map(item => {
     return botMessages.push(item);
   });
   console.log("botMessages", botMessages);
 };
+export const clearBotMessages = ()=>{
+  botMessages.length = 0;
+}

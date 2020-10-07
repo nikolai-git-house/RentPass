@@ -1,7 +1,6 @@
 import React from "react";
 import moment from "moment";
 import { connect } from "react-redux";
-import ReactHtmlParser from "react-html-parser";
 import ReactSelect from "react-select";
 import loadImage from "blueimp-load-image";
 import "./index.css";
@@ -72,9 +71,7 @@ class Profile extends React.Component {
   }
   componentDidMount() {
     const { uid, profile } = this.props;
-    console.log("uid", uid);
     if (!uid) this.props.history.push("/");
-    console.log("profile", profile);
     this.setState({ profile });
   }
   componentWillReceiveProps(nextProps) {
@@ -90,19 +87,17 @@ class Profile extends React.Component {
 
   changeProfileData = async (field, value) => {
     const { profile } = this.state;
-    const { uid, brand, dispatch } = this.props;
-    let brand_name = brand.name;
+    const { uid } = this.props;
     try {
       const newProfile = { ...profile };
       newProfile[field] = value;
       localStorage.setItem("rentkey_profile", JSON.stringify(newProfile));
       this.setState({ profile: newProfile });
       this.props.dispatch(saveProfile(newProfile));
-      console.log(field, value);
       console.log({
         [field]: value,
       });
-      await Firebase.updateUserById(uid, brand_name, {
+      await Firebase.updateEcoUser(profile.eco_id, {
         [field]: value,
       });
     } catch (e) {
@@ -121,8 +116,8 @@ class Profile extends React.Component {
   };
 
   selectedFile = async (e) => {
-    const { uid, brand } = this.props;
-    let brand_name = brand.name;
+    const { uid } = this.props;
+    const {profile} = this.state;
     let _this = this;
     if (e.target.files && e.target.files[0]) {
       var content = e.target.files[0];
@@ -140,8 +135,7 @@ class Profile extends React.Component {
             _this.setState({ content: img_src });
             console.log("content", img_src);
             let avatar_url = await Firebase.addAvatar(uid, img_src);
-            console.log("avatar_url", avatar_url);
-            Firebase.updateUserById(uid, brand_name, {
+            Firebase.updateEcoUser(profile.eco_id, {
               avatar_url: avatar_url,
             });
             let img_content = "data:image/jpeg;base64," + img_src;
@@ -157,23 +151,20 @@ class Profile extends React.Component {
   };
   render() {
     const { profile, img_content, viewMode, editfield, editValue } = this.state;
-    const { brand, uid } = this.props;
+    const { uid } = this.props;
     let {
       avatar_url,
       firstname,
-      surname,
+      secondname,
       phonenumber,
       dob,
       profession,
-      salary,
+      monthly_wages,
       super_skill,
     } = profile;
     if (!avatar_url) avatar_url = user_img;
-    let brand_name = brand.name;
-    brand_name = (brand_name || "").replace(/\s/g, "");
 
     const territory = (phonenumber || "").startsWith("+1") ? "USA" : "UK";
-    console.log(profile);
     return (
       <div id="profile-container" className="row no-gutters">
         <div className="view-controls">
@@ -219,11 +210,6 @@ class Profile extends React.Component {
                   }}
                 ></div>
                 <div className="icons-container">
-                  {/* {userstatus === "Active" ? (
-                      <img src={ApproveIcon} alt="active" />
-                    ) : (
-                      <div />
-                    )} */}
                   <img src={ApproveIcon} alt="active" />
                   <img src={TerritoryIcon[territory]} alt="flag" />
                 </div>
@@ -235,9 +221,9 @@ class Profile extends React.Component {
                   <p>{firstname}</p>
                 </div>
                 <div className="row_item">
-                  <img src={lastname_img} width="30" alt="surname"></img>
+                  <img src={lastname_img} width="30" alt="secondname"></img>
                   <p className="row_item_value">
-                    {editfield === "surname" ? (
+                    {editfield === "secondname" ? (
                       <input
                         className="input_box"
                         value={editValue}
@@ -246,16 +232,16 @@ class Profile extends React.Component {
                         }
                       ></input>
                     ) : (
-                      surname || "Surname"
+                      secondname || "SecondName"
                     )}
                   </p>
                   <div
                     className="edit"
-                    onClick={() => this.onChangeProfileData("surname")}
+                    onClick={() => this.onChangeProfileData("secondname")}
                   >
                     <i
                       className={
-                        editfield === "surname"
+                        editfield === "secondname"
                           ? "si si-check"
                           : "si si-settings"
                       }
@@ -293,105 +279,6 @@ class Profile extends React.Component {
                     />
                   </div>
                 </div>
-                {/* <div className="row_item">
-                  <img src={profession_img} width="30" alt="profession"></img>
-                  <p className="row_item_value">
-                    {editfield === "profession" ? (
-                      <div style={{ flex: 1 }}>
-                        <ReactSelect
-                          value={{ label: editValue, value: editValue }}
-                          onChange={(e) => {
-                            this.setState({ editValue: e.value });
-                          }}
-                          options={professions.map((obj) => ({
-                            value: obj,
-                            label: obj,
-                          }))}
-                          isSearchable={false}
-                          styles={Styles}
-                        ></ReactSelect>
-                      </div>
-                    ) : (
-                      profession || "Profession"
-                    )}
-                  </p>
-                  <div
-                    className="edit"
-                    onClick={() => this.onChangeProfileData("profession")}
-                  >
-                    <i
-                      className={
-                        editfield === "profession"
-                          ? "si si-check"
-                          : "si si-settings"
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="row_item">
-                  <img src={superhero_img} width="30" alt="super_skill"></img>
-                  <p className="row_item_value">
-                    {editfield === "super_skill" ? (
-                      <div style={{ flex: 1 }}>
-                        <ReactSelect
-                          value={{ label: editValue, value: editValue }}
-                          onChange={(e) => {
-                            this.setState({ editValue: e.value });
-                          }}
-                          options={superskills.map((obj) => ({
-                            value: obj,
-                            label: obj,
-                          }))}
-                          isSearchable={false}
-                          styles={Styles}
-                        ></ReactSelect>
-                      </div>
-                    ) : (
-                      super_skill || "Super Skill"
-                    )}
-                  </p>
-                  <div
-                    className="edit"
-                    onClick={() => this.onChangeProfileData("super_skill")}
-                  >
-                    <i
-                      className={
-                        editfield === "super_skill"
-                          ? "si si-check"
-                          : "si si-settings"
-                      }
-                    />
-                  </div>
-                </div>
-                <div className="row_item">
-                  <img src={salary_img} width="30" alt="salary"></img>
-                  <p className="row_item_value">
-                    £{" "}
-                    {editfield === "salary" ? (
-                      <input
-                        className="input_box"
-                        value={editValue}
-                        onChange={(e) =>
-                          this.setState({ editValue: e.target.value })
-                        }
-                      ></input>
-                    ) : (
-                      salary || "Monthly Salary"
-                    )}
-                  </p>
-                  <div
-                    className="edit"
-                    onClick={() => this.onChangeProfileData("salary")}
-                  >
-                    <i
-                      className={
-                        editfield === "salary"
-                          ? "si si-check"
-                          : "si si-settings"
-                      }
-                    />
-                  </div>
-                </div> */}
                 <input
                   type="file"
                   id="example-file-input"
@@ -444,10 +331,10 @@ class Profile extends React.Component {
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={salary_img} width="30" alt="salary"></img>
+                    <img src={salary_img} width="30" alt="monthly_wages"></img>
                     <p className="row_item_value">
                       £{" "}
-                      {editfield === "salary" ? (
+                      {editfield === "monthly_wages" ? (
                         <input
                           className="input_box"
                           value={editValue}
@@ -456,16 +343,16 @@ class Profile extends React.Component {
                           }
                         ></input>
                       ) : (
-                        salary || "Monthly Salary"
+                        monthly_wages || "Monthly Salary"
                       )}
                     </p>
                     <div
                       className="edit"
-                      onClick={() => this.onChangeProfileData("salary")}
+                      onClick={() => this.onChangeProfileData("monthly_wages")}
                     >
                       <i
                         className={
-                          editfield === "salary"
+                          editfield === "monthly_wages"
                             ? "si si-check"
                             : "si si-settings"
                         }
@@ -473,21 +360,21 @@ class Profile extends React.Component {
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={identity_img} width="30" alt="salary"></img>
+                    <img src={identity_img} width="30" alt="identity"></img>
                     <p className="row_item_value">Identity & right to rent</p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={credit_img} width="30" alt="salary"></img>
+                    <img src={credit_img} width="30" alt="credit"></img>
                     <p className="row_item_value">Credit</p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={employment_img} width="30" alt="salary"></img>
+                    <img src={employment_img} width="30" alt="employment"></img>
                     <p className="row_item_value">
                       Employment, affordability & income
                     </p>
@@ -496,47 +383,19 @@ class Profile extends React.Component {
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={rental_img} width="30" alt="salary"></img>
+                    <img src={rental_img} width="30" alt="rental_history"></img>
                     <p className="row_item_value">Rental history</p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />
                     </div>
                   </div>
                   <div className="row_editable_item">
-                    <img src={final_img} width="30" alt="salary"></img>
+                    <img src={final_img} width="30" alt="overall_discussion"></img>
                     <p className="row_item_value">Overall decision</p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />
                     </div>
                   </div>
-                  {/* <div className="row_item">
-                    <p>KYC</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Credit Rating</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Right to Rent</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Employer</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Accountant</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Affordability</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div>
-                  <div className="row_item">
-                    <p>Rental history</p>
-                    <img src={pending_img} width="30" alt="cross"></img>
-                  </div> */}
                 </div>
               </div>
             </div>
@@ -549,7 +408,7 @@ class Profile extends React.Component {
           style={{ padding: 15, flex: 1, alignSelf: "center" }}
         >
           <iframe
-            src={`https://rentrobot.io/${brand_name}?uid=${uid}`}
+            src={`https://rentrobot.io/Rental Community?uid=${uid}`}
             title="rent robot"
             className="rentbot-iframe"
           />
@@ -565,10 +424,8 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state) {
   return {
-    brand: state.brand,
     uid: state.uid,
     profile: state.profile,
-    renters: state.renters,
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(Profile);

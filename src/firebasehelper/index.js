@@ -117,23 +117,96 @@ class Firebase {
         callback(result);
       });
   };
-  static isActive = (phonenumber) => {
-    return new Promise((resolve, reject) => {
-      firebase
+  static addEcosystemUser(user){
+    let firstname = user.firstname||"demo";
+    let dob = user.dob||"demo";
+    let phonenumber = user.phonenumber?user.phonenumber:"demo";
+    let renter_owner = user.renter_owner||null;
+    let new_user = {firstname,dob,phonenumber,renter_owner};
+    console.log("added");
+    return firebase
         .firestore()
-        .collection("brand_users")
-        .where("phonenumber", "==", phonenumber)
+        .collection("ecosystem_user")
+        .add(new_user);
+  }
+  static addRenterByEcoId(eco_id,phonenumber){
+    let new_user = {eco_id,phonenumber};
+    return firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .add(new_user);
+  }
+  static getEcoUserbyPhonenumber(phonenumber){
+    return new Promise((resolve, reject) => {
+      return firebase
+        .firestore()
+        .collection("ecosystem_user")
+        .where("phonenumber","==",phonenumber)
         .limit(1)
         .get()
         .then((res) => {
           if (res.size === 0) resolve(false);
-          else resolve(res.docs[0].data());
+          else resolve(res.docs[0]);
         })
         .catch((err) => {
           reject(err);
         });
     });
-  };
+  }
+  static getRenterbyPhonenumber(phonenumber){
+    return new Promise((resolve, reject) => {
+      return firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .where("phonenumber","==",phonenumber)
+        .limit(1)
+        .get()
+        .then((res) => {
+          if (res.size === 0) resolve(false);
+          else{
+            let renter = res.docs[0].data();
+            renter.renter_id = res.docs[0].id;
+            resolve(renter);
+          } 
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+  static getEcoUserbyId(eco_id){
+    return new Promise((resolve, reject) => {
+      return firebase
+        .firestore()
+        .collection("ecosystem_user")
+        .doc(eco_id)
+        .get()
+        .then((res) => {
+          resolve(res.data());
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+  static getAllEcoUsers(){
+    return new Promise((resolve,reject)=>{
+      let users = Firebase.firestore()
+        .collection("ecosystem_user")
+        .get()
+        .then((snapshot) => {
+          return snapshot.docs.map((doc) => ({
+            ...doc.data(),
+            id: doc.id,
+          }));
+        });
+        resolve(users);
+    })
+  }
   static setActiveUser = (invitation_data) => {
     const { brand, uid, property_id, phonenumber } = invitation_data;
     return new Promise((resolve, reject) => {
@@ -235,9 +308,17 @@ class Firebase {
       .doc(uid)
       .set(data, { merge: true });
   }
-  static addPropertyImage(imageName, content) {
+  static updateEcoUser(eco_id,data){
+    return firebase
+      .firestore()
+      .collection("ecosystem_user")
+      .doc(eco_id)
+      .set(data, { merge: true });
+  }
+  static addPropertyImage(content) {
+    let current = new Date().getTime();
     return new Promise((resolve, reject) => {
-      let storageRef = this.storage().ref(`/property_logo/${imageName}.png`);
+      let storageRef = this.storage().ref(`/property_logo/${current}.png`);
       storageRef
         .putString(content, "base64")
         .then(function (snap) {
@@ -253,6 +334,27 @@ class Firebase {
         })
         .catch(function (error) {
           reject(error);
+        });
+    });
+  }
+  static addPropertyWishtoRenter(renter_id,property){
+    console.log("new property",property);
+    const created_time = new Date().getTime();
+    property.created_time = created_time;
+    return new Promise((resolve,reject)=>{
+      firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .doc(renter_id)
+        .collection("property")
+        .add(property)
+        .then((res) => {
+          resolve(res.id);
+        })
+        .catch((err) => {
+          reject(err);
         });
     });
   }
@@ -331,6 +433,19 @@ class Firebase {
         .firestore()
         .collection("property")
         .doc(`${property_id}`)
+        .set(data, { merge: true });
+    });
+  }
+  static updateRentersPropertyById(renter_id,property_id,data){
+    return new Promise((resolve, reject) => {
+      firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .doc(renter_id)
+        .collection("property")
+        .doc(property_id)
         .set(data, { merge: true });
     });
   }

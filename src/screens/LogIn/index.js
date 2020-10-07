@@ -7,9 +7,10 @@ import { doSMS } from "../../functions/Auth";
 import {
   saveUID,
   saveProfile,
+  saveProperties,
   saveUsers,
   saveBrand,
-  saveHousemates,
+  saveHousemates, 
 } from "../../redux/actions";
 import "./index.css";
 import logoImg from "../../images/login/logo.png";
@@ -18,7 +19,6 @@ class LogIn extends React.PureComponent {
     super(props);
     this.state = {
       number_panel: true,
-      method: 2,
       phonenumber: "",
       pin: "",
       sms: "",
@@ -26,22 +26,22 @@ class LogIn extends React.PureComponent {
     };
     this.onChangeHandler.bind(this);
   }
-  componentDidMount() {
-    let uid = localStorage.getItem("rentkey_uid");
-    let profile = localStorage.getItem("rentkey_profile");
-    let brand_data = localStorage.getItem("rentkey_brand_data");
-    let users = localStorage.getItem("rentkey_users");
-    if (uid) {
-      this.props.dispatch(saveUID(uid));
-      this.props.dispatch(saveProfile(JSON.parse(profile)));
-      this.props.dispatch(saveBrand(JSON.parse(brand_data)));
-      this.props.dispatch(saveUsers(JSON.parse(users)));
-      this.props.history.push("/explore");
-      console.log("uid", uid);
-      console.log("profile", profile);
-      console.log("brand_data", JSON.parse(brand_data));
-      console.log("users", JSON.parse(users));
-    }
+  async componentDidMount() {
+    // let uid = localStorage.getItem("rentkey_uid");
+    // let profile = localStorage.getItem("rentkey_profile");
+    // let brand_data = localStorage.getItem("rentkey_brand_data");
+    // let users = localStorage.getItem("rentkey_users");
+    // if (uid) {
+    //   this.props.dispatch(saveUID(uid));
+    //   this.props.dispatch(saveProfile(JSON.parse(profile)));
+    //   this.props.dispatch(saveBrand(JSON.parse(brand_data)));
+    //   this.props.dispatch(saveUsers(JSON.parse(users)));
+    //   this.props.history.push("/explore");
+    //   console.log("uid", uid);
+    //   console.log("profile", profile);
+    //   console.log("brand_data", JSON.parse(brand_data));
+    //   console.log("users", JSON.parse(users));
+    // }
   }
   componentWillUnmount() {
     //this.unsubscribeUsers();
@@ -56,38 +56,37 @@ class LogIn extends React.PureComponent {
   onChangeHandler = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
-  start = async (phonenumber, brand, property_id) => {
-    this.unsubscribeUsers = Firebase.firestore()
-      .collection(brand)
+  start = async (profile) => {
+    this.unsubscribeProperties = Firebase.firestore()
+      .collection("Rental Community")
       .doc("data")
       .collection("user")
+      .doc(profile.renter_id)
+      .collection("property")
       .onSnapshot((snapshot) => {
-        let users = [];
+        let properties = [];
         if (snapshot.size) {
           snapshot.forEach((doc) => {
-            let user = doc.data();
-            user.id = doc.id;
-            users.push(user);
-            // if (user.phonenumber !== phonenumber) users.push(user);
+            let property = doc.data();
+            property.id = doc.id;
+            properties.push(property);
           });
-          console.log("users inside this brand", users);
+          console.log("properties in this user's wishlist", properties);
         }
-        this.props.dispatch(saveUsers(users));
-        localStorage.setItem("rentkey_users", JSON.stringify(users));
+        this.props.dispatch(saveProperties(properties));
+        localStorage.setItem("rentkey_users", JSON.stringify(properties));
       });
-    let brand_Data = await Firebase.getBrandDataByName(brand);
-    console.log("brand_Data", brand_Data);
-    this.props.dispatch(saveBrand(brand_Data));
-    let result = await Firebase.getUserProfile(phonenumber, brand);
-    let profile = result.data();
+    // let brand_Data = await Firebase.getBrandDataByName(brand);
+    // console.log("brand_Data", brand_Data);
+    // this.props.dispatch(saveBrand(brand_Data));
+    // let result = await Firebase.getUserProfile(phonenumber, brand);
+    // let profile = result.data();
     console.log("profile", profile);
-    console.log("profile_id", result.id);
-    console.log("brand", brand);
-    localStorage.setItem("rentkey_uid", result.id);
-    localStorage.setItem("rentkey_profile", JSON.stringify(profile));
-    localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
+    // localStorage.setItem("rentkey_uid", result.id);
+    // localStorage.setItem("rentkey_profile", JSON.stringify(profile));
+    // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
     this.props.dispatch(saveProfile(profile));
-    this.props.dispatch(saveUID(result.id));
+    this.props.dispatch(saveUID(profile.renter_id));
     this.props.history.push("/explore");
   };
   SignIn = () => {
@@ -111,62 +110,21 @@ class LogIn extends React.PureComponent {
     this.props.history.push("/signup");
   }
   Confirm = async () => {
-    const { pin, sms, phonenumber, method } = this.state;
+    const { pin, sms, phonenumber } = this.state;
     if (pin !== sms) {
       alert("SMS code is not matching.");
       this.setState({ send_sms: false });
     } else {
-      if (method === 1) {
-        Firebase.getInvitationList(phonenumber)
-          .then(async (res) => {
-            let result = res.array;
-            console.log("result", result);
-            if (res.size === 1) {
-              const invite_dt = result[0].data();
-              console.log("invite", invite_dt);
-              const { brand, property_id } = invite_dt;
-              this.start(phonenumber, brand, property_id);
-            } else if (res.size === 0)
-              alert("Sorry you have not received any invitation.");
-          })
-          .catch((err) => {
-            console.log("error", err);
-          });
-      } else {
-        let result = await Firebase.isActive(phonenumber);
-
-        if (!result) {
-          Firebase.getInvitationList(phonenumber)
-            .then(async (res) => {
-              let result = res.array;
-              if (res.size === 1) {
-                const invite_dt = result[0].data();
-                console.log("invite", invite_dt);
-                const { brand, property_id, uid } = invite_dt;
-                await Firebase.setActiveUser(invite_dt);
-                this.start(phonenumber, brand, property_id);
-              } else if (res.size === 0)
-                alert("Sorry you have not received any invitation.");
-            })
-            .catch((err) => {
-              console.log("error", err);
-            });
-        } else {
-          console.log("user profile", result);
-          const { phonenumber, brand, property_id } = result;
-          this.start(phonenumber, brand, property_id);
-        }
-      }
+        let profile = await Firebase.getRenterbyPhonenumber(phonenumber);
+        const{eco_id} = profile;
+        console.log("eco_id",eco_id);
+        let result = await Firebase.getEcoUserbyId(eco_id);
+        profile = Object.assign({}, profile, result);
+        this.start(profile);
     }
   };
-  Join = () => {
-    this.setState({ number_panel: true });
-  };
-  Respond = () => {
-    this.setState({ number_panel: true, method: 1 });
-  };
   Login = () => {
-    this.setState({ number_panel: true, method: 2 });
+    this.setState({ number_panel: true });
   };
   render() {
     const { phonenumber, send_sms, sms, number_panel } = this.state;
@@ -265,16 +223,6 @@ class LogIn extends React.PureComponent {
                             )}
                           </div>
                         )}
-                        {/* <div className="form-group">
-                          <Link to="/signup">
-                            <button
-                              type="button"
-                              className="btn btn-block btn-hero-lg btn-hero-warning"
-                            >
-                              Join LandlordCare
-                            </button>
-                          </Link>
-                        </div> */}
                       </form>
                     </div>
                   </div>

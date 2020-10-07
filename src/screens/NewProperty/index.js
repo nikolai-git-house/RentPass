@@ -9,53 +9,45 @@ class NewProperty extends React.Component {
     super(props);
     this.state = {
       addproperty_visible: false,
-      property: "",
+      properties: [],
+      adding:false
     };
   }
   async componentDidMount() {
-    const { uid, brand, profile } = this.props;
+    const { uid, profile,properties } = this.props;
     if (!uid) this.props.history.push("/");
-    const brand_name = brand.name;
-    if (profile) {
-      const property_id = profile.property_id;
-      console.log(property_id, uid);
-      Firebase.getPropertyById(property_id, brand_name).then((res) => {
-        console.log("property info", res);
-        this.setState({ property: res });
-      });
-    }
+    this.setState({properties});
   }
-  //   addProperty = async state => {
-  //     const { brand_id } = this.state;
-  //     this.setState({ adding: true });
-  //     const {
-  //       property_type,
-  //       rental_type,
-  //       price,
-  //       bedrooms,
-  //       property_address,
-  //       content
-  //     } = state;
-  //     const property = {
-  //       property_type: property_type.value,
-  //       rental_type: rental_type.value,
-  //       price,
-  //       brand: brand_id,
-  //       bedrooms,
-  //       property_address
-  //     };
-  //     console.log("property", property);
-  //     Firebase.addProperty(property, content)
-  //       .then(res => {
-  //         console.log("res", res);
-  //         this.setState({ adding: false });
-  //         if (res.length === 1) this.toggleModal("success");
-  //       })
-  //       .catch(err => {
-  //         alert(err);
-  //         this.setState({ adding: false });
-  //       });
-  //   };
+  componentDidUpdate(prevProps, prevState) {
+    const { properties } = this.props;
+    if(prevState.properties!==properties)
+      this.setState({properties});
+  }
+  addProperty = async property => {
+    const { uid } = this.props;
+    this.setState({ adding: true });
+    const {
+      property_type,
+      rental_type,
+      price,
+      bedrooms,
+      address,
+      content
+    } = property;
+    console.log("property in add",property);
+    let property_img_url = await Firebase.addPropertyImage(content);
+    let new_property={bedrooms:parseInt(bedrooms),
+      property_type,
+      rental_type,
+      month_price:parseInt(price),
+      property_address:address,
+      url:property_img_url,
+      status:"pending"
+    }
+    let property_id = await Firebase.addPropertyWishtoRenter(uid,new_property);
+    this.setState({adding:false});
+    console.log("property_id",property_id);
+  };
   toggleModal = () => {
     const { addproperty_visible } = this.state;
     this.setState({ addproperty_visible: !addproperty_visible });
@@ -63,24 +55,60 @@ class NewProperty extends React.Component {
   requestPropertyTest = () => {
     this.props.history.push("/referencing");
   };
+  Activate = (id)=>{
+    const {uid} = this.props;
+    const {properties} = this.state;
+    console.log("Activate this",id);
+    let active_properties = properties.filter(property=>property.status==="active");
+    if(!active_properties.length)
+      Firebase.updateRentersPropertyById(uid,id,{status:"active"});
+    else
+      alert("You can activate only one property at one moment.");
+  }
+  Deactivate = (id)=>{
+    const {uid} = this.props;
+    console.log("Deactivate this",id);
+    Firebase.updateRentersPropertyById(uid,id,{status:"pending"});
+  }
   render() {
-    const { addproperty_visible, property } = this.state;
+    const { addproperty_visible,adding,properties } = this.state;
     return (
       <div id="property-container">
-        {property && (
-          <PropertyThumbnail
-            property={property}
-            onRequestPropertyTest={() => this.requestPropertyTest()}
-          />
-        )}
-
         <AddProperty
           addProperty={this.addProperty}
           showModal={addproperty_visible}
           toggleModal={() => this.toggleModal()}
         />
+        {adding && (
+          <div
+            style={{
+              width: "100%",
+              display: "flex",
+              flexDirection: "column",
+              alignItems: "center",
+              justifyContent: "center",
+              marginTop: 10,
+            }}
+          >
+            <i className="fa fa-4x fa-sync fa-spin text-muted" />
+            <p>Please wait, this takes a few seconds..</p>
+          </div>
+        )}
+        {!adding &&
+          properties.length > 0 &&
+          properties.map((item, index) => {
+            return (
+              <PropertyThumbnail
+                property={item}
+                key={index}
+                onRequestPropertyTest={() => this.requestPropertyTest(item)}
+                Activate={this.Activate}
+                Deactivate={this.Deactivate}
+              />
+            );
+          })}
 
-        {property === "" && (
+        {!adding && (
           <button
             type="button"
             className="btn btn-secondary"
@@ -101,10 +129,9 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state) {
   return {
-    brand: state.brand,
     uid: state.uid,
     profile: state.profile,
-    renters: state.renters,
+    properties:state.properties
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NewProperty);

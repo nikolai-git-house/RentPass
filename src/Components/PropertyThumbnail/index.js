@@ -10,11 +10,11 @@ class PropertyThumbnail extends React.Component {
     super(props);
     this.state = {};
   }
-  async componentDidMount() {}
+  
   render() {
-    const { property, onRequestPropertyTest, isActive } = this.props;
-    const { url, property_address } = property;
-    const { first_address_line, second_address_line } = property_address;
+    const { property,Activate,Deactivate } = this.props;
+    const { url, property_address,status,id } = property;
+    const { line_1 ,county} = property_address;
     return (
       <div className="property-thumb">
         <div style={{ marginBottom: 10, width: "100%", height: "100%" }}>
@@ -25,21 +25,21 @@ class PropertyThumbnail extends React.Component {
             width="100%"
           />
           <div className="options-overlay bg-black-75">
-            <h6 className="text-white mb-2">{first_address_line}</h6>
-            <h6 className="text-white mb-2">{second_address_line}</h6>
+            <h6 className="text-white mb-2">{county}</h6>
+            <h6 className="text-white mb-2">{line_1}</h6>
           </div>
         </div>
         <img
-          src={isActive ? activeIcon : pendingIcon}
+          src={status==="active" ? activeIcon : pendingIcon}
           className="property-status"
           alt="status"
         />
         <button
-          className={`btn btn-warning`}
+          className={`btn ${status==="active"?"btn-warning":"btn-primary"}`}
           style={{ width: "100%" }}
-          onClick={onRequestPropertyTest}
+          onClick={status==="active"?()=>Deactivate(id):()=>Activate(id)}
         >
-          Take A Profile Test
+          {status==="active"?"Deactivate":"Activate"}
         </button>
       </div>
     );

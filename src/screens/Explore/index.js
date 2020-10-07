@@ -1,12 +1,10 @@
 import React from "react";
 import { connect } from "react-redux";
 import { withRouter, NavLink } from "react-router-dom";
-import { deviceDetect, isMobile } from "react-device-detect";
 import ProfileModal from "../../Components/ProfileModal";
 import TimelineModal from "../../Components/TimelineModal";
 import { removeAll } from "../../redux/actions";
 import Firebase from "../../firebasehelper";
-import * as Scroll from "react-scroll";
 import {
   Link,
   Element,
@@ -23,9 +21,9 @@ import pay_png from "../../images/explore/pay.png";
 import shopping_bag_png from "../../images/explore/shopping-bag.png";
 import security_png from "../../images/explore/security.png";
 import housemates_png from "../../images/explore/housemates.png";
-import tickets_png from "../../images/explore/tickets.png";
 import property_png from "../../images/explore/property.png";
-import propertypa_png from "../../images/explore/propertypa.png";
+import feeds_png from "../../images/explore/advertising.png";
+import polls_png from "../../images/explore/opinion.png";
 
 import "./index.css";
 import { TerritoryOptions, CurrencyOptions } from "../../Utils/Constants";
@@ -38,13 +36,14 @@ class Explore extends React.Component {
     this.state = {
       top10Retailers: [],
       timeToGo: 0,
+      territory:"UK"
     };
   }
 
   componentDidMount() {
-    const { uid, profile, brand } = this.props;
-    if (!uid) this.props.history.push("/");
-    const brandTerritory = brand.territory || TerritoryOptions[0];
+    const { profile} = this.props;
+    const territory = profile.phonenumber.includes("+44")?"UK":"USA";
+    this.setState({territory});
     Firebase.getAllDeactiveRetailers((res) => {
       let deactive = [];
       if (res) deactive = res;
@@ -54,7 +53,7 @@ class Explore extends React.Component {
             !deactive[obj.uid] &&
             obj.top10 &&
             obj.top10 != "none" &&
-            (obj.territory || TerritoryOptions[0]) === brandTerritory
+            (obj.territory || TerritoryOptions[0]) === territory
         );
         this.setState({ top10Retailers });
         if (top10Retailers.length > 0) {
@@ -92,75 +91,13 @@ class Explore extends React.Component {
   };
 
   signOut = () => {
-    localStorage.removeItem("uid");
     localStorage.removeItem("profile");
-    localStorage.removeItem("brand");
     this.props.dispatch(removeAll());
     this.props.history.push("/");
   };
 
   render() {
-    const { profile, brand } = this.props;
-    const { top10Retailers } = this.state;
-    const permissions =
-      brand && brand.permissions
-        ? {
-            tokenOffers:
-              brand.permissions.tokenOffers === undefined
-                ? true
-                : brand.permissions.tokenOffers,
-            earnTokens:
-              brand.permissions.earnTokens === undefined
-                ? true
-                : brand.permissions.earnTokens,
-            ecopay:
-              brand.permissions.ecopay === undefined
-                ? true
-                : brand.permissions.ecopay,
-            feeds:
-              brand.permissions.feeds === undefined
-                ? true
-                : brand.permissions.feeds,
-            friends:
-              brand.permissions.friends === undefined
-                ? true
-                : brand.permissions.friends,
-            community:
-              brand.permissions.community === undefined
-                ? true
-                : brand.permissions.community,
-            polls:
-              brand.permissions.polls === undefined
-                ? true
-                : brand.permissions.polls,
-            shop:
-              brand.permissions.shop === undefined
-                ? true
-                : brand.permissions.shop,
-            myId:
-              brand.permissions.myId === undefined
-                ? true
-                : brand.permissions.myId,
-            wallet:
-              brand.permissions.wallet === undefined
-                ? true
-                : brand.permissions.wallet,
-          }
-        : {
-            tokenOffers: true,
-            earnTokens: true,
-            ecopay: true,
-            feeds: true,
-            friends: true,
-            community: true,
-            polls: true,
-            shop: true,
-            myId: true,
-            wallet: true,
-          };
-
-    const territory = brand.territory || TerritoryOptions[0];
-
+    const { top10Retailers,territory } = this.state;
     return (
       <div id="page-container" className="explore-page-container">
         <div id="main-container">
@@ -207,17 +144,17 @@ class Explore extends React.Component {
               <img src={housemates_png} />
               <span className="nav-main-link-name">Housemates</span>
             </NavLink>
-            <NavLink to="/newproperty" className="explore-item-button">
+            <NavLink to="/property" className="explore-item-button">
               <img src={property_png} />
               <span className="nav-main-link-name">Property</span>
             </NavLink>
-            <NavLink to="/propertypa" className="explore-item-button">
-              <img src={propertypa_png} />
-              <span className="nav-main-link-name">Property PA</span>
+            <NavLink to="/feeds" className="explore-item-button">
+              <img src={feeds_png} />
+              <span className="nav-main-link-name">Feeds</span>
             </NavLink>
-            <NavLink to="/tickets" className="explore-item-button">
-              <img src={tickets_png} />
-              <span className="nav-main-link-name">Tickets</span>
+            <NavLink to="/polls" className="explore-item-button">
+              <img src={polls_png} />
+              <span className="nav-main-link-name">Polls</span>
             </NavLink>
             <NavLink
               to={{
@@ -279,9 +216,7 @@ function mapDispatchToProps(dispatch) {
 }
 function mapStateToProps(state) {
   return {
-    uid: state.uid,
     profile: state.profile,
-    brand: state.brand,
   };
 }
 export default withRouter(

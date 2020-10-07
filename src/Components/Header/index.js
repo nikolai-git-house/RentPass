@@ -14,9 +14,9 @@ import pay_png from "../../images/explore/pay.png";
 import shopping_bag_png from "../../images/explore/shopping-bag.png";
 import security_png from "../../images/explore/security.png";
 import housemates_png from "../../images/explore/housemates.png";
-import tickets_png from "../../images/explore/tickets.png";
 import property_png from "../../images/explore/property.png";
-import propertypa_png from "../../images/explore/propertypa.png";
+import feeds_png from "../../images/explore/advertising.png";
+import polls_png from "../../images/explore/opinion.png";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -139,7 +139,7 @@ class Header extends React.Component {
               </li>
               <li className="nav-main-item" onClick={this.click}>
                 <NavLink
-                  to="/newproperty"
+                  to="/property"
                   className={classnames("nav-main-link")}
                 >
                   <img
@@ -156,7 +156,7 @@ class Header extends React.Component {
                 >
                   <img
                     style={{ width: 12, marginRight: 10 }}
-                    src={property_png}
+                    src={feeds_png}
                   />
                   <span className="nav-main-link-name">Feeds</span>
                 </NavLink>
@@ -168,7 +168,7 @@ class Header extends React.Component {
                 >
                   <img
                     style={{ width: 12, marginRight: 10 }}
-                    src={property_png}
+                    src={polls_png}
                   />
                   <span className="nav-main-link-name">Polls</span>
                 </NavLink>

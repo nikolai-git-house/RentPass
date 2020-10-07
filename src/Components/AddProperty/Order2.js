@@ -81,7 +81,8 @@ class Order2 extends React.Component {
               <p
                 style={{
                   marginRight: -13,
-                  marginTop: 1,
+                  marginTop: 4,
+                  marginBottom:0,
                   color: "#495057",
                   zIndex: 10
                 }}
@@ -93,6 +94,7 @@ class Order2 extends React.Component {
                 name="price"
                 value={price}
                 className="form-control"
+                style={{fontSize:18}}
                 onChange={this.onChange}
               />
             </div>

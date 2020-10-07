@@ -2,7 +2,7 @@ import React, { Component } from "react";
 import Select from "react-select";
 import { getAddresses } from "../../functions/Auth";
 const Styles = {
-  control: styles => ({ ...styles, backgroundColor: "white", width: 500 })
+  control: styles => ({ ...styles, backgroundColor: "white", width: "100%" })
 };
 const property_types = [
   { value: 0, label: "Apartment" },
@@ -34,9 +34,11 @@ class Order1 extends React.Component {
     getAddresses(postcode)
       .then(res => {
         const arr = res.addresses.map(item => {
-          const address = this.modifyAddress(item);
+          const format = item.formatted_address;
+          const address = this.modifyAddress(format);
           return { value: item, label: address };
         });
+        console.log("address",arr);
         this.setState({ addresses: arr });
       })
       .catch(err => {
@@ -46,19 +48,17 @@ class Order1 extends React.Component {
         });
       });
   };
-  modifyAddress = text => {
-    let arr = text.split(", ");
-    let str = arr.reduce((result, item) => {
+  modifyAddress = formatted_address => {
+    let str = formatted_address.reduce((result, item) => {
       if (item) return result + item + ",";
       else return result;
-    }, "");
-    if (str[str.length - 1] === ",") {
-      str = str.substring(0, str.length - 1);
-    }
-    return str;
+      }, "");
+      
+    return str.slice(0, -1);
   };
   Next = () => {
     const { property_type, bedrooms, address } = this.state;
+    console.log("address",address);
     const { onNext } = this.props;
     onNext(property_type, bedrooms, address);
   };
@@ -104,7 +104,7 @@ class Order1 extends React.Component {
                 style={{ fontSize: 12 }}
                 onClick={this.chooseAddress}
               >
-                <p>Find address</p>
+                <p style={{margin:0}}>Find address</p>
               </button>
             </div>
           </div>

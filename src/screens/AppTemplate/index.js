@@ -43,19 +43,17 @@ class AppTemplate extends React.Component {
           <Route exact path="/home" component={Home} />
           <Route exact path="/properties" component={Properties} />
           <Route exact path="/housemates" component={Housemates} />
-          <Route exact path="/newproperty" component={NewProperty} />
+          <Route exact path="/property" component={NewProperty} />
           <Route exact path="/referencing" component={Referencing} />
           <Route exact path="/concierge" component={Concierge} />
-          <Route exact path="/tickets" component={Tickets} />
+          {/* <Route exact path="/tickets" component={Tickets} /> */}
           <Route exact path="/shop" component={Shop} />
           <Route path="/spend" component={Perks} />
           <Route path="/earn" component={EarnTokens} />
           <Route path="/wallets" component={Wallets} />
           <Route path="/ecopay" component={Ecopay} />
           <Route path="/explore" component={Explore} />
-          <Route path="/propertypa" component={PropertyPA} />
-          {/* <Route exact path="/yield" component={Yield} />
-          <Route exact path="/compliance" component={Compliance} /> */}
+          {/* <Route path="/propertypa" component={PropertyPA} /> */}
         </Switch>
       </div>
     );

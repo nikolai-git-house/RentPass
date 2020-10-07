@@ -2,7 +2,7 @@ import React from "react";
 import Modal from "react-modal";
 import Order1 from "./Order1";
 import Order2 from "./Order2";
-
+import Firebase from "../../firebasehelper";
 class AddProperty extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -37,43 +37,15 @@ class AddProperty extends React.PureComponent {
   addProperty = (rental_type, price, content) => {
     const { toggleModal } = this.props;
     const { property_type, bedrooms, address } = this.state;
-    this.setState({
-      rental_type: "",
-      price: "",
-      content: "",
-      property_type: "",
-      bedrooms: "",
-      address: ""
-    });
-    const address_arr = address.value.split(", ");
-    const first_address_line = address_arr[0];
-    const second_address_line = address_arr[1];
-    const third_address_line = address_arr[2];
-    const area =
-      !address_arr[3] && !address_arr[4]
-        ? ""
-        : address_arr[3] + " " + address_arr[4];
-    const town = address_arr[5];
-    const county = address_arr[6];
-    console.log("address", address.value);
-    let property_address = {
-      first_address_line,
-      second_address_line,
-      third_address_line,
-      area,
-      town,
-      county
-    };
     const property = {
-      property_type,
-      rental_type,
+      property_type:property_type.value,
+      rental_type:rental_type.value,
       price,
       bedrooms,
-      property_address,
+      address:address.value,
       content
     };
     toggleModal();
-    console.log("property", property);
     const { addProperty } = this.props;
     addProperty(property);
   };

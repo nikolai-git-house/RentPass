@@ -31,7 +31,7 @@ export function isDateValidate(date) {
 export const getAddresses = async (postcode) => {
   try {
     let response = await fetch(
-      `https://api.getAddress.io/find/${postcode}?api-key=TAOlpULvxkm8OUK_tN6RzA21029`,
+      `https://api.getAddress.io/find/${postcode}?api-key=TAOlpULvxkm8OUK_tN6RzA21029&expand=true`,
       {
         method: "GET",
       }

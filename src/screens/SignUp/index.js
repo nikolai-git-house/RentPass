@@ -4,6 +4,12 @@ import MessageItem from "../../Components/MessageItem";
 import MessageInput from "../../Components/MessageInput";
 import Firebase from "../../firebasehelper";
 import ErrorModal from "../../Components/ErrorModal";
+import { connect } from "react-redux";
+import {
+  saveUID,
+  saveProfile,
+  saveProperties,
+} from "../../redux/actions";
 import {
   getBotMessageGroup,
   getBetweenTimeoutValue,
@@ -22,7 +28,7 @@ import {
   registration_userMessages,
 } from "../../Constants/messages";
 
-class MessageList extends Component {
+class SignUp extends Component {
   constructor(props) {
     super(props);
     this.messages = [
@@ -137,36 +143,6 @@ class MessageList extends Component {
         });
         this.getBotMessageGroup();
       }, getBetweenTimeoutValue());
-    } else if (message.key === "signup") {
-      let profile = message.profile;
-      this.setState({ profile: profile });
-      const { brand } = this.state;
-      this.signup(profile)
-        .then((res) => {
-          if (res) {
-            const uid = res.id;
-            this.setState({ uid: uid });
-            this.getBotMessageGroup();
-            Firebase.getChatsById(res.id, (res) => {
-              if (res) {
-                this.openChat();
-              }
-            });
-          } else {
-            this.setState({
-              modalIsOpen: true,
-              caption: "Error",
-              content: `Your phone number is already existing in ${brand}!`,
-            });
-          }
-        })
-        .catch((err) => {
-          this.setState({
-            modalIsOpen: true,
-            caption: "Error",
-            content: err,
-          });
-        });
     }else if (message.key === "wrong_sms") {
       addUserMessage({
         type: "user",
@@ -228,33 +204,8 @@ class MessageList extends Component {
         firstname: profile.firstname,
         phonenumber: profile.phonenumber,
       };
-        this.signup(new_profile)
-        .then((res) => {
-          if (res) {
-            const uid = res.id;
-            this.setState({ uid: uid });
-            this.getBotMessageGroup();
-            Firebase.getChatsById(res.id, (res) => {
-              if (res) {
-                this.openChat();
-              }
-            });
-          } else {
-            this.setState({
-              modalIsOpen: true,
-              already_existing: true,
-              caption: "You are already a member",
-              content: `This phone number is registered to a member, I will take you to the members area.`,
-            });
-          }
-        })
-        .catch((err) => {
-          this.setState({
-            modalIsOpen: true,
-            caption: "Error",
-            content: err,
-          });
-        });
+      console.log("newprofile",new_profile);
+      this.signup(new_profile);
     } else {
       if (!message.finish) {
         setTimeout(() => {
@@ -267,12 +218,66 @@ class MessageList extends Component {
     this.toggleUserInput();
   };
   signup = (profile) => {
-    const { brand } = this.state;
-    if (brand !== "ecosystem") {
-      return Firebase.signup(profile, brand);
-    }
+    profile.renter_owner = "Renter";
+    Firebase.addEcosystemUser(profile).then(res=>{
+      let eco_id = res.id;
+      Firebase.addRenterByEcoId(eco_id,profile.phonenumber).then(res=>{
+        let renter_id = res.id;
+        profile.eco_id = eco_id;
+        profile.renter_id = renter_id;
+        this.start(profile);
+      })
+    });
   };
-
+  start = async (profile) => {
+    this.unsubscribeProperties = Firebase.firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("user")
+      .doc(profile.renter_id)
+      .collection("property")
+      .onSnapshot((snapshot) => {
+        let properties = [];
+        if (snapshot.size) {
+          snapshot.forEach((doc) => {
+            let property = doc.data();
+            property.id = doc.id;
+            properties.push(property);
+          });
+          console.log("properties in this user's wishlist", properties);
+        }
+        this.props.dispatch(saveProperties(properties));
+        localStorage.setItem("rentkey_users", JSON.stringify(properties));
+      });
+    // let brand_Data = await Firebase.getBrandDataByName(brand);
+    // console.log("brand_Data", brand_Data);
+    // this.props.dispatch(saveBrand(brand_Data));
+    // let result = await Firebase.getUserProfile(phonenumber, brand);
+    // let profile = result.data();
+    console.log("profile", profile);
+    // localStorage.setItem("rentkey_uid", result.id);
+    // localStorage.setItem("rentkey_profile", JSON.stringify(profile));
+    // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
+    this.props.dispatch(saveProfile(profile));
+    this.props.dispatch(saveUID(profile.renter_id));
+    this.props.history.push("/explore");
+  };
+  wantRenter = (profile)=>{
+    console.log("this wants to be renter",profile);
+    if(!profile.renter_owner){
+      Firebase.updateEcoUser(profile.eco_id,{renter_owner:"Renter"});
+      Firebase.addRenterByEcoId(profile.eco_id,profile.phonenumber).then(res=>{
+        let renter_id = res.id;
+        profile.renter_id = renter_id;
+        this.start(profile);
+      })
+    }else if(profile.renter_owner === "Renter"){
+      Firebase.getRenterbyPhonenumber(profile.phonenumber).then(res=>{
+        profile.renter_id = res.renter_id;
+        this.start(profile);
+      })
+    }
+  }
   goBack = () => {
     this.restart();
     this.getBotMessageGroup();
@@ -304,9 +309,9 @@ class MessageList extends Component {
             <MessageInput
               message={userMessage}
               addMessage={this.addMessage}
+              wantRenter={this.wantRenter}
               isIphoneX={isIphoneX}
               logo={logo}
-              brand={brand}
               profile={profile}
               uid={uid}
             />
@@ -323,5 +328,15 @@ class MessageList extends Component {
     );
   }
 }
-
-export default MessageList;
+function mapDispatchToProps(dispatch) {
+  return {
+    dispatch,
+  };
+}
+function mapStateToProps(state) {
+  return {
+    uid: state.uid,
+    users: state.users,
+  };
+}
+export default connect(mapStateToProps, mapDispatchToProps)(SignUp);

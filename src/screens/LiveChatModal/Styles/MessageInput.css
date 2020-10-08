@@ -63,7 +63,7 @@
           width: auto; }
     .message-input-container .message-input-wrapper .message-static {
       cursor: pointer;
-      background-color: #152439;
+      background-color: #000;
       color: #ffffff;
       font-weight: 600;
       width: 100%;
@@ -76,25 +76,13 @@
       display: flex;
       align-items: center; }
       .message-input-container .message-input-wrapper div .message-input-container input,
-      .message-input-container .message-input-wrapper div .message-input-container .send-button {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2); }
+      .message-input-container .message-input-wrapper div .message-input-container .company_site {
+        padding-left: 20px;
+        width: 80%;
+        font-family: "Graphik", sans-serif; }
       .message-input-container .message-input-wrapper div .message-input-container .phone {
         margin-left: -50px;
         padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .agentphone {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .salary {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .company_site {
-        padding-left: 105px;
-        width: 80%;
         font-family: "Graphik", sans-serif; }
       .message-input-container .message-input-wrapper div .message-input-container .year {
         margin-right: -100px;
@@ -111,47 +99,17 @@
         border: none;
         flex: 1;
         font-size: 1em; }
-      .message-input-container .message-input-wrapper div .message-input-container .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: #152439;
-        color: #ffffff;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s; }
-        .message-input-container .message-input-wrapper div .message-input-container .send-button.disabled {
-          opacity: 0.8; }
-        .message-input-container .message-input-wrapper div .message-input-container .send-button.notbolt {
-          background-color: #152439;
-          color: #ffffff; }
     .message-input-container .message-input-wrapper .message-input-container {
       width: 100%;
       display: flex;
       align-items: center; }
       .message-input-container .message-input-wrapper .message-input-container input,
-      .message-input-container .message-input-wrapper .message-input-container .send-button {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2); }
       .message-input-container .message-input-wrapper .message-input-container input {
         background-color: #f6f6f6;
         outline: none;
         border: none;
         flex: 1;
         font-size: 1em; }
-      .message-input-container .message-input-wrapper .message-input-container .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: #152439;
-        color: #ffffff;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s; }
-        .message-input-container .message-input-wrapper .message-input-container .send-button.disabled {
-          opacity: 0.8; }
-        .message-input-container .message-input-wrapper .message-input-container .send-button.notbolt {
-          background-color: #152439;
-          color: #ffffff; }
       .message-input-container .message-input-wrapper .message-input-container .addressbox {
         display: "flex";
         flex-direction: "column";

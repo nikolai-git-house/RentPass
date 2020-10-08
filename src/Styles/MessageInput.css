@@ -1,28 +1,19 @@
 .message-input-container {
   width: 100%;
   margin-top: auto;
-  z-index: 10;
   position: relative; }
   .message-input-container .message-input-wrapper {
     position: relative;
     width: 100%;
     top: 0;
-    left: -1em;
-    padding: 1em;
     display: flex;
     align-items: flex-end;
     justify-content: center;
     transition: top 300ms;
     animation-name: fadeIn;
     animation-duration: 700ms; }
-    .message-input-container .message-input-wrapper a {
-      text-decoration: none;
-      color: #152439; }
-    .message-input-container .message-input-wrapper.yesno {
-      justify-content: flex-end; }
     .message-input-container .message-input-wrapper.nation div .nationality {
       width: 80%;
-      padding: 1em;
       border-radius: 14px;
       border: none;
       background-color: #ffffff;
@@ -35,54 +26,75 @@
       font-size: 16px;
       color: #555;
       height: 2em; }
-    .message-input-container .message-input-wrapper.choice {
-      left: 0; }
-      .message-input-container .message-input-wrapper.choice div {
+    .message-input-container .message-input-wrapper.choice div {
+      display: flex;
+      flex-direction: column;
+      justify-content: center;
+      align-items: center; }
+      .message-input-container .message-input-wrapper.choice div .row {
         display: flex;
-        flex-direction: column;
-        justify-content: center;
-        align-items: center; }
-        .message-input-container .message-input-wrapper.choice div .row {
+        flex-direction: row;
+        align-items: center;
+        justify-content: space-around; }
+        .message-input-container .message-input-wrapper.choice div .row button {
+          width: 100%;
+          margin: 10px;
+          border-radius: 10px;
+          background-color: transparent;
+          border: none;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); }
+      .message-input-container .message-input-wrapper.choice div .gallery {
+        display: flex;
+        flex-direction: row;
+        flex-wrap: wrap; }
+        .message-input-container .message-input-wrapper.choice div .gallery button {
+          width: 100px;
+          height: 100px;
+          margin: 10px;
+          border-radius: 10px;
+          background-color: transparent;
+          border: none;
+          box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
+          cursor: pointer; }
+        .message-input-container .message-input-wrapper.choice div .gallery a {
+          text-decoration: none; }
+      @media screen and (max-width: 768px) {
+        .message-input-container .message-input-wrapper.choice div .gallery {
           display: flex;
           flex-direction: row;
-          align-items: center;
-          justify-content: space-around; }
-          .message-input-container .message-input-wrapper.choice div .row button {
-            width: 100%;
+          flex-wrap: wrap;
+          width: 340px; }
+          .message-input-container .message-input-wrapper.choice div .gallery button {
+            width: 130px;
+            height: 130px;
             margin: 10px;
             border-radius: 10px;
             background-color: transparent;
             border: none;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); }
-        .message-input-container .message-input-wrapper.choice div .gallery {
-          display: flex;
-          flex-direction: row;
-          flex-wrap: wrap; }
-          .message-input-container .message-input-wrapper.choice div .gallery button {
-            width: 100px;
-            height: 100px;
-            margin: 10px;
-            border-radius: 10px;
-            background-color: white;
-            border: none;
-            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2);
-            cursor: pointer; }
-          .message-input-container .message-input-wrapper.choice div .gallery a {
-            text-decoration: none; }
-        @media screen and (max-width: 768px) {
-          .message-input-container .message-input-wrapper.choice div .gallery {
-            display: flex;
-            flex-direction: row;
-            flex-wrap: wrap;
-            width: 340px; }
-            .message-input-container .message-input-wrapper.choice div .gallery button {
-              width: 130px;
-              height: 130px;
-              margin: 10px;
-              border-radius: 10px;
-              background-color: white;
-              border: none;
-              box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); } }
+            box-shadow: 0px 0px 5px rgba(0, 0, 0, 0.2); } }
+    .message-input-container .message-input-wrapper.wellnessSupport .option-item-wrapper {
+      flex: 1;
+      margin-right: 10px;
+      display: flex;
+      align-items: center;
+      flex-direction: column;
+      justify-content: center; }
+      .message-input-container .message-input-wrapper.wellnessSupport .option-item-wrapper.message {
+        padding-left: 10px;
+        padding-right: 10px;
+        text-align: center;
+        background-color: #ffffff;
+        cursor: pointer;
+        justify-content: space-between; }
+        .message-input-container .message-input-wrapper.wellnessSupport .option-item-wrapper.message img {
+          width: 30px;
+          height: 30px;
+          margin-bottom: 5px; }
+        .message-input-container .message-input-wrapper.wellnessSupport .option-item-wrapper.message p {
+          width: 120px;
+          margin: auto;
+          font-weight: 500;
+          color: #0b0b0b; }
     .message-input-container .message-input-wrapper.toggleButton {
       display: block; }
       .message-input-container .message-input-wrapper.toggleButton hr {
@@ -90,11 +102,26 @@
       .message-input-container .message-input-wrapper.toggleButton .message-item-wrapper {
         max-width: 100%; }
         .message-input-container .message-input-wrapper.toggleButton .message-item-wrapper .message {
+          padding-left: 20px;
+          padding-right: 20px;
+          text-align: center;
           background-color: #ffffff;
           color: #0b0b0b;
           cursor: pointer;
-          text-transform: capitalize;
           font-weight: 500; }
+    .message-input-container .message-input-wrapper.yesno {
+      display: block; }
+      .message-input-container .message-input-wrapper.yesno hr {
+        border: 1px solid #ffffff66; }
+      .message-input-container .message-input-wrapper.yesno .message-item-wrapper {
+        max-width: 100%; }
+        .message-input-container .message-input-wrapper.yesno .message-item-wrapper .message {
+          width: 120px;
+          text-align: center;
+          background-color: #ffffff;
+          color: #0b0b0b;
+          cursor: pointer;
+          text-transform: capitalize; }
     .message-input-container .message-input-wrapper.select {
       padding-bottom: 0;
       margin-bottom: -1em; }
@@ -114,46 +141,23 @@
           width: auto; }
     .message-input-container .message-input-wrapper .message-static {
       cursor: pointer;
-      background-color: #d0ffe0;
-      color: #152439;
+      background-color: #ffffff;
+      color: #0b0b0b;
       font-weight: 600;
       width: 100%;
       text-align: center; }
       .message-input-container .message-input-wrapper .message-static.notbolt {
-        background-color: #152439;
-        color: #ffffff; }
+        background-color: #ffffff;
+        color: #0b0b0b; }
     .message-input-container .message-input-wrapper div .message-input-container {
       width: 100%;
       display: flex;
       align-items: center; }
-      .message-input-container .message-input-wrapper div .message-input-container input,
-      .message-input-container .message-input-wrapper div .message-input-container .send-button {
+      .message-input-container .message-input-wrapper div .message-input-container input {
         padding: 1em 1.4em;
         border-radius: 4em;
-        box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2); }
-      .message-input-container .message-input-wrapper div .message-input-container .phone {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .agentphone {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .salary {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .company_site {
-        padding-left: 105px;
-        width: 80%;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .bill-price {
-        text-align: right;
-        font-family: "Graphik", sans-serif;
-        width: 150px;
-        margin-left: auto;
-        flex: 0;
-        background: white; }
+        box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
+        margin: 0px; }
       .message-input-container .message-input-wrapper div .message-input-container .year {
         margin-right: -100px;
         padding-right: 50px;
@@ -161,6 +165,8 @@
       .message-input-container .message-input-wrapper div .message-input-container p {
         font-size: 1em;
         margin-left: 50px;
+        font-family: "Graphik", sans-serif;
+        margin-bottom: 0px;
         z-index: 100;
         line-height: 1; }
       .message-input-container .message-input-wrapper div .message-input-container input {
@@ -169,65 +175,6 @@
         border: none;
         flex: 1;
         font-size: 1em; }
-      .message-input-container .message-input-wrapper div .message-input-container .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: #d0ffe0;
-        color: #152439;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s; }
-        .message-input-container .message-input-wrapper div .message-input-container .send-button.disabled {
-          opacity: 0.8; }
-        .message-input-container .message-input-wrapper div .message-input-container .send-button.notbolt {
-          background-color: #152439;
-          color: #ffffff; }
-    .message-input-container .message-input-wrapper .message-input-container {
-      width: 100%;
-      display: flex;
-      align-items: center; }
-      .message-input-container .message-input-wrapper .message-input-container input,
-      .message-input-container .message-input-wrapper .message-input-container .send-button {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2); }
-      .message-input-container .message-input-wrapper .message-input-container input {
-        background-color: #f6f6f6;
-        outline: none;
-        border: none;
-        flex: 1;
-        font-size: 1em; }
-      .message-input-container .message-input-wrapper .message-input-container .send-button {
-        margin-left: 1em;
-        padding: 1em 1.6em;
-        background-color: #d0ffe0;
-        color: #152439;
-        font-weight: 600;
-        opacity: 1;
-        transition: opacity 0.15s; }
-        .message-input-container .message-input-wrapper .message-input-container .send-button.disabled {
-          opacity: 0.8; }
-        .message-input-container .message-input-wrapper .message-input-container .send-button.notbolt {
-          background-color: #152439;
-          color: #ffffff; }
-      .message-input-container .message-input-wrapper .message-input-container .addressbox {
-        display: "flex";
-        flex-direction: "column";
-        width: 250px;
-        padding: 15px;
-        border-radius: 20px;
-        border: 2px solid #f6f6f6; }
-        .message-input-container .message-input-wrapper .message-input-container .addressbox .address {
-          border: 0;
-          border-bottom: 1px solid #f6f6f6;
-          outline: 0;
-          border-width: 0 0 2px;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: unset;
-          padding: 10px; }
-  .message-input-container.select-brand input {
-    padding: 0.6em 1.4em !important; }
 
 .swal-overlay .swal-modal .swal-footer .swal-button-container .swal-button--confirm {
   background-color: #2b2b2b;
@@ -263,24 +210,24 @@
   margin-top: 1em;
   opacity: 0.6; }
 
-.send-button-pay {
+.send-button {
   display: flex;
-  background-color: #152439;
+  background-color: #000;
   opacity: 1;
   transition: opacity 0.15s;
   width: 50px;
   height: 50px;
-  background-color: #152439;
+  background-color: #000;
   border-radius: 4em;
-  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
   z-index: 1;
   padding: 0; }
-  .send-button-pay img {
+  .send-button img {
     width: 30px;
     height: 30px;
     margin: auto; }
-  .send-button-pay.disabled {
+  .send-button.disabled {
     opacity: 0.8; }
-  .send-button-pay.notbolt {
-    background-color: #152439;
+  .send-button.notbolt {
+    background-color: #000;
     color: #ffffff; }

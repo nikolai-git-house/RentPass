@@ -1,8 +1,8 @@
 .typing-loader {
-  padding: 0.7em;
-  border-radius: 7px;
+  padding: 1em;
+  border-radius: 14px;
   background-color: #ffffff;
-  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
   position: relative;
   text-align: center; }
   .typing-loader .dot {

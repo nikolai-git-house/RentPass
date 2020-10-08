@@ -334,11 +334,13 @@ class MessageInput extends Component {
           isNext: message.isNext,
         });
       }
-    } else if (message.key !== "email") {
-      if (message.key === "phone") {
+    } else if (message.key === "phone") {
         let number = clearZero(value);
         let phone = "+44" + number;
-        if (profile["is_member"] === "No") {
+        this.setState({ checking_phone: true });
+        let result = await Firebase.getEcoUserbyPhonenumber(phone);
+        this.setState({ checking_phone: false });
+        if (!result) {
           let pin = this.createPincode();
           pin = pin.toString();
           console.log("pin", pin);
@@ -350,39 +352,20 @@ class MessageInput extends Component {
           addMessage({
             type: "user",
             message: phone,
-            profile: profile,
+            profile: result.data(),
             key: "phone",
             inputType: "input",
             isNext: message.isNext,
           });
         } else {
-          this.setState({ checking_phone: true });
-          let profile = await Firebase.getProfile(phone, logo);
-          this.setState({ checking_phone: false });
-          if (profile) {
-            let pin = this.createPincode();
-            pin = pin.toString();
-            console.log("pin", pin);
-            localStorage.setItem("phone", phone);
-            localStorage.setItem("pin", pin);
-            let response = doSMS(phone, pin, logo);
-            console.log("response", response);
-
-            addMessage({
-              type: "user",
-              message: phone,
-              profile: profile,
-              key: "phone",
-              inputType: "input",
-              isNext: message.isNext,
-            });
-          } else {
-            this.setState({
-              modalIsOpen: true,
-              caption: "Error",
-              content: `You aren't registered with that mobile number. Please register as a member now. You will get 30 a day free trial.`,
-            });
-          }
+          let eco_id = result.id;
+          let profile = result.data();
+          profile.eco_id = eco_id;
+          this.setState({
+            modalIsOpen: true,
+            caption: "profile_exist",
+            content: profile,
+          });
         }
       } else if (message.key === "sms") {
         let phone = localStorage.getItem("phone");
@@ -420,7 +403,6 @@ class MessageInput extends Component {
           isCommunicationLayer: message.isCommunicationLayer
         });
       }
-    }
   };
   componentWillLeave(callback) {
     const { message } = this.props;
@@ -439,6 +421,11 @@ class MessageInput extends Component {
     this.setState({ modalIsOpen: false });
     window.location.reload();
   };
+  wantRenter = (profile) =>{
+    const {wantRenter} = this.props;
+    this.setState({ modalIsOpen: false });
+    wantRenter(profile);
+  }
   goBack = () => {
     const { goBack } = this.props;
     goBack();
@@ -453,6 +440,7 @@ class MessageInput extends Component {
           content={content}
           closeModal={this.closeModal}
           modalIsOpen={modalIsOpen}
+          wantRenter={this.wantRenter}
         />
         {message && (
           <div

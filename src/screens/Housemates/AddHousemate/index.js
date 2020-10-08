@@ -1,35 +1,67 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-import Firebase from "../../../firebasehelper";
+import Select from "react-select";
 import "./index.css";
+const Styles = {
+  control: styles => ({ ...styles, backgroundColor: "white", width: "100%" })
+};
 class AddHousemate extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
       phonenumber: "",
-      username: "",
+      firstname: "",
+      properties:[],
     };
   }
-
+  componentDidMount(){
+    const {properties} = this.props;
+    let new_properties = properties.map(item=>{
+      let property_id = item.id;
+      let formatted_address = item.property_address.formatted_address;
+      let property_address = this.modifyAddress(formatted_address);
+      return {value:property_id,label:property_address}
+    });
+    console.log("new properties",new_properties);
+    this.setState({properties:new_properties});
+  }
   componentDidUpdate(prevProps) {
     if (prevProps.showModal && !this.props.showModal) {
       this.setState({
         phonenumber: "",
-        username: "",
+        firstname: "",
       });
     }
   }
+  modifyAddress = formatted_address => {
+    let str = formatted_address.reduce((result, item) => {
+      if (item) return result + item + ",";
+      else return result;
+      }, "");
+      
+    return str.slice(0, -1);
+  };
+  
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   addHousemate = () => {
-    const { addHousemate } = this.props;
-    const { phonenumber, username } = this.state;
-    addHousemate(username, phonenumber);
-    this.setState({ username: "", phonenumber: "" });
+    const { addHousemate,toggleModal } = this.props;
+    const { phonenumber, firstname,property } = this.state;
+    if(phonenumber&&firstname&&property){
+      addHousemate(firstname, phonenumber,property);
+      this.setState({ firstname: "", phonenumber: "",property:{} });
+      toggleModal();
+    }
+    else{
+      alert("Please fill all fields.");
+    }
+  };
+  handleChangeProperty = property => {
+    this.setState({ property });
   };
   render() {
-    const { username, phonenumber } = this.state;
+    const { firstname, phonenumber,property,properties } = this.state;
     const { showModal, toggleModal } = this.props;
     return (
       <Modal
@@ -39,20 +71,20 @@ class AddHousemate extends React.Component {
         onRequestClose={toggleModal}
       >
         <div className="modal-header">
-          <h5 className="modal-title">Add Tenants</h5>
+          <h5 className="modal-title">Add Housemate</h5>
           <button type="button" className="close" onClick={toggleModal}>
             <span aria-hidden="true">&times;</span>
           </button>
         </div>
         <div className="modal-body pb-1">
           <div className="form-group">
-            <label htmlFor="example-text-input">Name</label>
+            <label htmlFor="example-text-input">FirstName</label>
             <input
               type="text"
-              name="username"
-              value={username}
+              name="firstname"
+              value={firstname}
               className="form-control"
-              placeholder="Name"
+              placeholder="FirstName"
               onChange={this.onChange}
             />
           </div>
@@ -68,9 +100,11 @@ class AddHousemate extends React.Component {
             >
               <p
                 style={{
-                  marginRight: -29,
-                  marginTop: 1,
+                  marginRight: -34,
+                  marginTop: 0,
+                  marginBottom:0,
                   color: "#495057",
+                  fontSize:18,
                   zIndex: 0,
                 }}
               >
@@ -81,10 +115,21 @@ class AddHousemate extends React.Component {
                 name="phonenumber"
                 value={phonenumber}
                 className="form-control"
-                style={{ paddingLeft: 28 }}
+                style={{ paddingLeft: 34,fontSize:18 }}
                 onChange={this.onChange}
               />
             </div>
+          </div>
+          <div className="form-group">
+            <label htmlFor="example-text-input">Property</label>
+            <Select
+              className="select-custom-class"
+              name="property"
+              value={property}
+              onChange={this.handleChangeProperty}
+              options={properties}
+              styles={Styles}
+            />
           </div>
         </div>
         <div className="modal-footer">
@@ -98,14 +143,15 @@ class AddHousemate extends React.Component {
           <button
             type="button"
             className="btn btn-sm"
-            onClick={this.addTenant}
+            onClick={this.addHousemate}
             style={{ backgroundColor: "#bbffa8" }}
           >
-            Invite
+            Add
           </button>
         </div>
       </Modal>
     );
   }
 }
+
 export default AddHousemate;

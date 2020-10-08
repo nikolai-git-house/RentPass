@@ -172,7 +172,7 @@ class LogIn extends React.PureComponent {
                                     marginBottom: 32,
                                   }}
                                 >
-                                  <p style={{ fontSize: 20,marginBottom:-7 }}>+44</p>
+                                  <p style={{ fontSize: 20,marginBottom:0 }}>+44</p>
                                   <input
                                     type="text"
                                     className="form-control form-control-lg form-control-alt"

@@ -1,6 +1,6 @@
 import React, { Component } from "react";
 import Modal from "react-modal";
-
+import Firebase from "../firebasehelper";
 const customStyles = {
   content: {
     width: "94%",
@@ -21,7 +21,15 @@ class ErrorModal extends Component {
     super(props);
     this.state = {};
   }
+  registertoRenter = ()=>{
+    const { closeModal,content,wantRenter } = this.props;
+    // if(!content.renter_owner){
+    //   Firebase.addRenterByEcoId(content.eco_id,content.phonenumber).then(res=>{
 
+    //   })
+    // }
+    wantRenter(content);
+  }
   render() {
     const { modalIsOpen, closeModal } = this.props;
     const { caption, content } = this.props;
@@ -33,7 +41,7 @@ class ErrorModal extends Component {
         style={customStyles}
         ariaHideApp={false}
       >
-        <div
+        {caption!="profile_exist"&&<div
           style={{
             display: "flex",
             flexDirection: "column",
@@ -75,7 +83,52 @@ class ErrorModal extends Component {
               OK
             </p>
           </button>
-        </div>
+        </div>}
+        {caption==="profile_exist"&&<div
+          style={{
+            display: "flex",
+            flexDirection: "column",
+            alignItems: "center",
+            justifyContent: "center",
+            paddingTop: 20
+          }}
+        >
+          <img
+            src={content.avatar_url?content.avatar_url:require("../assets/media/logo/avatar.png")}
+            width="82"
+            height="82"
+            alt="error"
+          />
+          <p
+            style={{
+              fontSize: 27,
+              padding: 10,
+              margin: 0,
+              color: "rgb(0,0,0,.65)"
+            }}
+          >
+            {content.firstname}
+          </p>
+          <p style={{ fontSize: 16, margin: 0, color: "rgb(0,0,0,.65)",textAlign:"center" }}>
+            {!content.renter_owner&&`${content.firstname}, you are Ecosystem user but not a renter yet. Would you like to be renter?`}
+            {content.renter_owner==="Renter"&&`${content.firstname}, you have joined already. You will be entered to Rental Community.`}
+          </p>
+          <button
+            style={{
+              width: 200,
+              background: "#f9ff66",
+              borderRadius: 20,
+              border: "none",
+              margin: 20
+            }}
+            onClick={this.registertoRenter}
+          >
+            <p style={{ fontSize: 16, margin: 10, color: "rgb(0,0,0,.65)" }}>
+                {!content.renter_owner&&`I want to be a renter`}
+                {content.renter_owner==="Renter"&&`OK`}
+            </p>
+          </button>
+        </div>}
       </Modal>
     );
   }

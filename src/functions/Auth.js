@@ -46,8 +46,8 @@ export const sendInvitation = async (
   phoneNumber,
   username,
   property_name,
-  brand
 ) => {
+  let brand = "Rental Community";
   try {
     let response = await fetch(
       `https://apricot-mole-2227.twil.io/property_invite?phoneNumber=${phoneNumber}&username=${username}&property_name=${property_name}&brand_name=${brand}`,

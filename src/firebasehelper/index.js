@@ -207,6 +207,61 @@ class Firebase {
         resolve(users);
     })
   }
+  static addHousemate(uid,property_id,renter_id,firstname){
+    console.log("uid",uid);
+    console.log("property_id",property_id);
+    console.log("renter_id",renter_id);
+    console.log("firstname",firstname);
+    return new Promise((resolve,reject)=>{
+      firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .doc(uid)
+        .collection("property")
+        .doc(property_id)
+        .collection("housemates")
+        .add({renter_id,firstname})
+        .then(res=>{
+          resolve(renter_id);
+        })
+        .catch(err=>reject(err));
+    });
+  }
+  static getHousemates(uid,property){
+    let property_id = property.id;
+    let property_address = property.property_address;
+    let property_status = property.status;
+    return new Promise((resolve,reject)=>{
+      firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("user")
+        .doc(uid)
+        .collection("property")
+        .doc(property_id)
+        .collection("housemates")
+        .get()
+        .then(res=>{
+          console.log("res.size", res.size);
+          let housemates = [];
+          if(res.size){
+            housemates = res.docs.map((item) => {
+              let housemate = item.data();
+              housemate.status = property_status;
+              housemate.address = property_address.line_1;
+              return housemate;
+            });
+            resolve(housemates);
+          }
+          else
+            resolve(housemates);
+        })
+        .catch(err=>reject(err));
+    });
+  }
   static setActiveUser = (invitation_data) => {
     const { brand, uid, property_id, phonenumber } = invitation_data;
     return new Promise((resolve, reject) => {

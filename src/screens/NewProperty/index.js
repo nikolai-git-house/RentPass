@@ -25,6 +25,7 @@ class NewProperty extends React.Component {
   }
   addProperty = async property => {
     const { uid } = this.props;
+    const {properties} = this.state;
     this.setState({ adding: true });
     const {
       property_type,
@@ -34,7 +35,6 @@ class NewProperty extends React.Component {
       address,
       content
     } = property;
-    console.log("property in add",property);
     let property_img_url = await Firebase.addPropertyImage(content);
     let new_property={bedrooms:parseInt(bedrooms),
       property_type,
@@ -42,7 +42,7 @@ class NewProperty extends React.Component {
       month_price:parseInt(price),
       property_address:address,
       url:property_img_url,
-      status:"pending"
+      status:properties.length?"pending":"active"
     }
     let property_id = await Firebase.addPropertyWishtoRenter(uid,new_property);
     this.setState({adding:false});
@@ -73,52 +73,68 @@ class NewProperty extends React.Component {
   render() {
     const { addproperty_visible,adding,properties } = this.state;
     return (
-      <div id="property-container">
+      <React.Fragment>
         <AddProperty
           addProperty={this.addProperty}
           showModal={addproperty_visible}
           toggleModal={() => this.toggleModal()}
         />
-        {adding && (
-          <div
-            style={{
-              width: "100%",
-              display: "flex",
-              flexDirection: "column",
-              alignItems: "center",
-              justifyContent: "center",
-              marginTop: 10,
-            }}
-          >
-            <i className="fa fa-4x fa-sync fa-spin text-muted" />
-            <p>Please wait, this takes a few seconds..</p>
+        {properties.length===0&&!adding&&
+          <div id="comment-container">
+              <img src={require("../../assets/media/property_status/home.png")} width="90"/>
+              You are yet to add any properties
+              <button
+                type="button"
+                className="btn btn-success"
+                onClick={() => this.toggleModal()}
+                style={{ margin: 20 }}
+              >
+                Add your current property
+              </button>
           </div>
-        )}
-        {!adding &&
-          properties.length > 0 &&
-          properties.map((item, index) => {
-            return (
-              <PropertyThumbnail
-                property={item}
-                key={index}
-                onRequestPropertyTest={() => this.requestPropertyTest(item)}
-                Activate={this.Activate}
-                Deactivate={this.Deactivate}
-              />
-            );
-          })}
+        }
+        <div id="property-container">
+          {adding && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+            >
+              <i className="fa fa-4x fa-sync fa-spin text-muted" />
+              <p>Please wait, this takes a few seconds..</p>
+            </div>
+          )}
+          {!adding &&
+            properties.length > 0 &&
+            properties.map((item, index) => {
+              return (
+                <PropertyThumbnail
+                  property={item}
+                  key={index}
+                  onRequestPropertyTest={() => this.requestPropertyTest(item)}
+                  Activate={this.Activate}
+                  Deactivate={this.Deactivate}
+                />
+              );
+            })}
 
-        {!adding && (
-          <button
-            type="button"
-            className="btn btn-secondary"
-            onClick={() => this.toggleModal()}
-            style={{ margin: 20 }}
-          >
-            Add Property
-          </button>
-        )}
-      </div>
+          {!adding && properties.length!==0&&(
+            <button
+              type="button"
+              className="btn btn-secondary"
+              onClick={() => this.toggleModal()}
+              style={{ margin: 20 }}
+            >
+              Add Property
+            </button>
+          )}
+        </div>
+      </React.Fragment>
     );
   }
 }

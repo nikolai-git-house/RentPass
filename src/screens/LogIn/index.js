@@ -76,6 +76,7 @@ class LogIn extends React.PureComponent {
         this.props.dispatch(saveProperties(properties));
         localStorage.setItem("rentkey_users", JSON.stringify(properties));
       });
+      
     // let brand_Data = await Firebase.getBrandDataByName(brand);
     // console.log("brand_Data", brand_Data);
     // this.props.dispatch(saveBrand(brand_Data));

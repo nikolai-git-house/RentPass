@@ -121,7 +121,10 @@ class AddHousemate extends React.Component {
             </div>
           </div>
           <div className="form-group">
-            <label htmlFor="example-text-input">Property</label>
+            <label htmlFor="example-text-input">
+              {properties.length==0&&<p style={{color:"red",marginBottom:0,lineHeight:1.2}}>Please add your property to add housemate..</p>}
+              Property
+              </label>
             <Select
               className="select-custom-class"
               name="property"

@@ -27,6 +27,7 @@ class PropertyThumbnail extends React.Component {
           <div className="options-overlay bg-black-75">
             <h6 className="text-white mb-2">{county}</h6>
             <h6 className="text-white mb-2">{line_1}</h6>
+            <p style={{marginBottom:0,color:status==="active"?"#00ff00":"#ff9900"}}>{status==="active"?"My active property":"Pending property"}</p>
           </div>
         </div>
         <img

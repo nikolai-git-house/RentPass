@@ -81,7 +81,7 @@ class Order2 extends React.Component {
               <p
                 style={{
                   marginRight: -13,
-                  marginTop: 4,
+                  marginTop: 0,
                   marginBottom:0,
                   color: "#495057",
                   zIndex: 10

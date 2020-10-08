@@ -14,40 +14,41 @@ class Housemates extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      property_data: {},
       housemates: [],
       addModal: false,
       statusModal: false,
-      tenant: {}
+      adding:false,
     };
   }
   async componentDidMount() {
-    const { uid} = this.props;
-    console.log("uid in Housemates", uid);
+    const { uid,properties} = this.props;
     if (!uid) this.props.history.push("/");
     else {
-      let _this = this;
-      this.unsubscribeHousemates = Firebase.firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .doc(uid)
-        .collection("housemates")
-        .onSnapshot(querySnapshot => {
-          var housemates = [];
-          querySnapshot.forEach(function(doc) {
-              housemates.push(doc.data());
-          });
-          console.log("current housemates:", housemates);
-          _this.setState({ housemates });
-          this.props.dispatch(saveHousemates(housemates));
-        });
+      let promises = properties.map(async property=>{
+        let housemates = await Firebase.getHousemates(uid,property);
+        return housemates;
+      });
+      Promise.all(promises).then(result=>{
+        let housemates = result.reduce((housemates,current)=>housemates.concat(current));
+        console.log("housemates",housemates);
+        this.setState({housemates});
+      })
     }
   }
-  componentDidUpdate(prevProps,prevState) {
-    const { housemates } = this.props;
-    if(prevState.housemates!==housemates)
-      this.setState({housemates });
+  async componentDidUpdate(prevProps,prevState){
+    const {properties,uid} = this.props;
+    if(prevState.adding!==this.state.adding){
+      let promises = properties.map(async property=>{
+        let housemates = await Firebase.getHousemates(uid,property);
+        return housemates;
+      });
+      Promise.all(promises).then(result=>{
+        let housemates = result.reduce((housemates,current)=>housemates.concat(current));
+        console.log("housemates",housemates);
+        this.setState({housemates});
+      })
+    }
+    
   }
   getRentalText = rental_type => {
     if (rental_type) return "Owner";
@@ -61,62 +62,44 @@ class Housemates extends React.Component {
       });
     }
   };
-  // showTenants = () => {
-  //   const { housemates } = this.state;
-  //   console.log("housemates", housemates);
-  //   return housemates.map((item, index) => {
-  //     if (!item.status) {
-  //       Firebase.updateUserById(brand.name, item.uid, {
-  //         status: {
-  //           kyc: "none",
-  //           credit_rating: "none",
-  //           right_to_rent: "none",
-  //           employer: "none",
-  //           accountant: "none",
-  //           affordability: "none",
-  //           rental_history: "none",
-  //           rent_with_pets: "none",
-  //           rent_without_a_deposit: "none",
-  //           rent_a_serviced_home: "none"
-  //         }
-  //       });
-  //     }
-  //     return (
-  //       <TenantThumbnail
-  //         tenant={item}
-  //         key={index}
-  //         onClick={() => this.showStatusRenter(item)}
-  //       />
-  //     );
-  //   });
-  // };
-  showStatusRenter = tenant => {
-    this.setState({ tenant });
-    this.toggleModal("status");
-  };
-  addHousemate = (firstname, phonenumber,property) => {
-    const {  profile } = this.props;
+  addHousemate = async (firstname, phonenumber,property) => {
+    const { uid, profile } = this.props;
     let phone = "+44" + clearZero(phonenumber);
-    console.log("phone",phone);
-    console.log("firstname",firstname);
-    console.log("property",property);
-    // sendInvitation(phone, firstname, property_name, brand_name);
-    // let add_result = await Firebase.addTenant(
-    //   property_id,
-    //   property_name,
-    //   phone,
-    //   username,
-    //   brand_name
-    // );
-    // let uid = add_result.id;
-    // Firebase.createInvitation(
-    //   uid,
-    //   phone,
-    //   brand_name,
-    //   property_id,
-    //   property_name,
-    //   username
-    // );
+    this.setState({adding:true});
+    let property_id = property.value;
+    let property_name = property.label;
+    sendInvitation(phone, firstname,property_name);
+    let renter = await Firebase.getRenterbyPhonenumber(phone);
+    if(renter){
+      //if invited man is already a renter
+      await Firebase.addHousemate(uid,property_id,renter.renter_id,firstname);
+      this.setState({adding:false});
+    }
+    else{
+      Firebase.getEcoUserbyPhonenumber(phone).then(res=>{
+        if(res){
+          //if invited man is already a ecosystem user
+          let eco_id = res.id;
+          Firebase.addRenterByEcoId(eco_id,phone).then(async res=>{
+            let renter_id = res.id;
+            await Firebase.addHousemate(uid,property_id,renter_id,firstname);
+            this.setState({adding:false});
+          })
+        }
+        else{
+          let profile={firstname,phonenumber:phone,renter_owner:"Renter"}
+          //if not signed up from ecosystem
+          Firebase.addEcosystemUser(profile).then(res=>{
+            let eco_id = res.id;
+            Firebase.addRenterByEcoId(eco_id,phone).then(async res=>{
+              let renter_id = res.id;
+              await Firebase.addHousemate(uid,property_id,renter_id,firstname);
+              this.setState({adding:false});
+            })
+          })
+        }
+      });
+    }
       
   };
   toggleModal = type => {
@@ -125,7 +108,7 @@ class Housemates extends React.Component {
     else if (type === "status") this.setState({ statusModal: !statusModal });
   };
   render() {
-    const { addModal } = this.state;
+    const { addModal,adding } = this.state;
     const {properties} = this.props;
     return (
       <div id="housemates-container">
@@ -135,17 +118,23 @@ class Housemates extends React.Component {
           properties={properties}
           toggleModal={() => this.toggleModal("add")}
         />
-        {this.showHousemates()}
-        {properties.length===0&&<button
-          type="button"
-          className="btn btn-success"
-          onClick={() => this.props.history.push("/property")}
-          style={{ margin: 20 }}
-        >
-          You have not added properties.<br/> 
-          Add Property
-        </button>}
-        {properties.length!==0&&<button
+        {adding && (
+            <div
+              style={{
+                width: "100%",
+                display: "flex",
+                flexDirection: "column",
+                alignItems: "center",
+                justifyContent: "center",
+                marginTop: 10,
+              }}
+            >
+              <i className="fa fa-4x fa-sync fa-spin text-muted" />
+              <p>Please wait, this takes a few seconds..</p>
+            </div>
+        )}
+        {!adding&&this.showHousemates()}
+        {!adding&&<button
           type="button"
           className="btn btn-secondary"
           onClick={() => this.toggleModal("add")}

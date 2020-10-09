@@ -1,4 +1,4 @@
-# Profile Test Chat Bot
+# Rental Community
 
 # Get Started
 
@@ -12,3 +12,4 @@ You need Node.js v4.0+ to run these commands. Prefer using `yarn` over `npm`.
 
 - Copy all from `build` folder to `firebase_hosting` folder.
 - `firebase deploy`
+- `deployed url: https://rentalhub.io`

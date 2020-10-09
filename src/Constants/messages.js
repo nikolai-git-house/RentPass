@@ -15,12 +15,6 @@ export const registration_botMessages = [
       message: "May I take your first name please?",
     },
   ],
-  [
-    {
-      type: "bot",
-      message: "What is your date of birth?",
-    },
-  ],
 
   [
     {
@@ -34,6 +28,12 @@ export const registration_botMessages = [
       message: "Please confirm the sms code received.",
     },
   ],
+  [
+    {
+      type: "bot",
+      message: "What is your date of birth?",
+    },
+  ],
 ];
 export const registration_userMessages = [
   {
@@ -42,11 +42,6 @@ export const registration_userMessages = [
     key: "firstname",
     placeholder: "First Name Only",
     isNext: true,
-  },
-  {
-    type: "user",
-    inputType: "date",
-    key: "dob",
   },
   {
     type: "user",
@@ -59,6 +54,11 @@ export const registration_userMessages = [
     inputType: "input",
     placeholder: "6-digits",
     key: "sms",
+  },
+  {
+    type: "user",
+    inputType: "date",
+    key: "dob",
   },
 ];
 export const registered_botMessages = [

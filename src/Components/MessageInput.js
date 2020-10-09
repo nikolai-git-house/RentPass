@@ -257,6 +257,7 @@ class MessageInput extends Component {
     let status = profile["addressType"];
     addMessage({
       message: date,
+      profile:profile,
       status: status,
       ...message,
     });
@@ -309,6 +310,7 @@ class MessageInput extends Component {
           type: "user",
           message: value,
           inputType: "input",
+          profile:profile,
           isNext: message.isNext,
           isCommunication: message.isCommunication
         });
@@ -352,7 +354,6 @@ class MessageInput extends Component {
           addMessage({
             type: "user",
             message: phone,
-            profile: result.data(),
             key: "phone",
             inputType: "input",
             isNext: message.isNext,

@@ -199,13 +199,12 @@ class SignUp extends Component {
       let phone = message.phone;
       let profile = message.profile;
       this.setState({ profile, phone });
-      let new_profile = {
-        dob: profile.dob,
-        firstname: profile.firstname,
-        phonenumber: profile.phonenumber,
-      };
-      console.log("newprofile",new_profile);
-      this.signup(new_profile);
+      this.getBotMessageGroup();
+      // this.signup(new_profile);
+    }else if (message.key === "dob") {
+      console.log("message",message);
+      let profile = message.profile;
+      this.signup(profile);
     } else {
       if (!message.finish) {
         setTimeout(() => {

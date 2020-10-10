@@ -1158,44 +1158,6 @@ class Firebase {
     }
   };
 
-  static getAllPaymentMethods(brand, uid, callback) {
-    let fbInstance;
-    if (brand === "Ecosystem") {
-      fbInstance = firebase.firestore().collection("user");
-    } else {
-      fbInstance = firebase
-        .firestore()
-        .collection(brand)
-        .doc("data")
-        .collection("user");
-    }
-    fbInstance
-      .doc(uid)
-      .collection("braintree_payment_method")
-      .onSnapshot((snapshot) => {
-        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-  }
-
-  static getAllSubscriptions(brand, uid, callback) {
-    let fbInstance;
-    if (brand === "Ecosystem") {
-      fbInstance = firebase.firestore().collection("user");
-    } else {
-      fbInstance = firebase
-        .firestore()
-        .collection(brand)
-        .doc("data")
-        .collection("user");
-    }
-    fbInstance
-      .doc(uid)
-      .collection("subscriptions")
-      .onSnapshot((snapshot) => {
-        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
-      });
-  }
-
   static getAllRetailersOnce = (callback) => {
     let path = "retailers/all";
     firebase
@@ -1449,6 +1411,150 @@ class Firebase {
         adjective: ticket.adjective ? ticket.adjective : null,
         response_sla: ticket.response_sla ? ticket.response_sla : null,
         repair_sla: ticket.repair_sla ? ticket.repair_sla : null,
+      });
+  };
+  /*
+   * Payment Methods
+   */
+
+  ////////////////////////////////////////////////////////////////////////////////////
+  ////////////////////////////////////////////////////////////////////////////////////
+  static addPaymentMethod(brand, uid, method) {
+    return new Promise((resolve, reject) => {
+      let fbInstance;
+      if (brand === "Ecosystem") {
+        fbInstance = firebase.firestore().collection("user");
+      } else {
+        fbInstance = firebase
+          .firestore()
+          .collection(brand)
+          .doc("data")
+          .collection("user");
+      }
+      fbInstance
+        .doc(uid)
+        .collection("braintree_payment_method")
+        .add(method)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static getAllPaymentMethods(brand, uid, callback) {
+    let fbInstance;
+    if (brand === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user");
+    }
+    fbInstance
+      .doc(uid)
+      .collection("braintree_payment_method")
+      .onSnapshot((snapshot) => {
+        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+  }
+
+  static removePaymentMethod(brand, userId, paymentId) {
+    let fbInstance;
+    if (brand === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user");
+    }
+    return fbInstance
+      .doc(userId)
+      .collection("braintree_payment_method")
+      .doc(paymentId)
+      .delete();
+  }
+
+  static addSubscription(
+    brand,
+    userId,
+    productId,
+    status,
+    type,
+    creditCard,
+    amount
+  ) {
+    return new Promise((resolve, reject) => {
+      let fbInstance;
+      if (brand === "Ecosystem") {
+        fbInstance = firebase.firestore().collection("user");
+      } else {
+        fbInstance = firebase
+          .firestore()
+          .collection(brand)
+          .doc("data")
+          .collection("user");
+      }
+      fbInstance
+        .doc(userId)
+        .collection("subscriptions")
+        .add({
+          product_id: productId,
+          type,
+          status,
+          credit_card: creditCard,
+          amount,
+        })
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((err) => {
+          reject(err);
+        });
+    });
+  }
+
+  static getAllSubscriptions(brand, uid, callback) {
+    let fbInstance;
+    if (brand === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand)
+        .doc("data")
+        .collection("user");
+    }
+    fbInstance
+      .doc(uid)
+      .collection("subscriptions")
+      .onSnapshot((snapshot) => {
+        callback(snapshot.docs.map((doc) => ({ ...doc.data(), id: doc.id })));
+      });
+  }
+  static getTokenHistory = (brand_name, uid, callback) => {
+    let fbInstance;
+    if (brand_name === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand_name)
+        .doc("data")
+        .collection("user");
+    }
+
+    fbInstance
+      .doc(`${uid}`)
+      .collection("token_history")
+      .onSnapshot((res) => {
+        callback(res.docs.map((obj) => obj.data()));
       });
   };
 }

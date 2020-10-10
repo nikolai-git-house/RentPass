@@ -5,7 +5,7 @@
   flex-wrap: wrap;
   height: 100%; }
   #housemates-container button {
-    height: 220px; }
+    height: 200px; }
 
 @media (max-width: 767px) {
   #housemates-container {

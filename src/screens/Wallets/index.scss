@@ -1,47 +1,13 @@
 .wallets-page-container {
   height: 100vh !important;
+  width: 100% !important;
   #main-container {
     display: flex;
     flex-direction: column;
     align-items: center;
-    margin: 20px 20px 0;
-    width: 100%;
+    margin: 100px 20px 0;
     flex: 1;
     overflow: hidden;
-
-    .card-container {
-      position: relative;
-      display: flex;
-      width: fit-content;
-      margin: 0 auto;
-
-      .card {
-        height: 200px;
-      }
-
-      .card-remove {
-        width: 30px;
-        height: 30px;
-        left: 30px;
-        bottom: 30px;
-        position: absolute;
-      }
-
-      .card-index {
-        width: 30px;
-        height: 30px;
-        right: 30px;
-        top: 20px;
-        position: absolute;
-      }
-
-      .card-number {
-        right: 30px;
-        bottom: 30px;
-        position: absolute;
-        margin-bottom: 0;
-      }
-    }
 
     .fullwidth-container {
       overflow: auto;
@@ -56,25 +22,33 @@
       }
     }
 
+    .wallet-empty {
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      justify-content: space-between;
+      min-height: 350px;
+      .wallet-empty-placeholder {
+        width: 100px;
+        height: 100px;
+      }
+
+      .wallet-uploading {
+        margin-top: 30px;
+        width: 200px;
+        height: 200px;
+      }
+
+      p {
+        margin-bottom: 10px;
+        text-align: center;
+      }
+    }
+
     .subscriptions-container {
       width: 360px;
       max-width: 100%;
       padding: 5px;
-
-      .subscription-empty {
-        display: flex;
-        flex-direction: column;
-        align-items: center;
-        .subscription-empty-placeholder {
-          width: 100px;
-          height: 100px;
-        }
-
-        p {
-          margin-bottom: 10px;
-          text-align: center;
-        }
-      }
 
       .subscription-container {
         position: relative;
@@ -110,23 +84,6 @@
             -webkit-box-orient: vertical;
           }
         }
-      }
-    }
-
-    .wallet-empty {
-      display: flex;
-      flex-direction: column;
-      align-items: center;
-      justify-content: space-between;
-      min-height: 350px;
-      .wallet-empty-placeholder {
-        width: 100px;
-        height: 100px;
-      }
-
-      p {
-        margin-bottom: 10px;
-        text-align: center;
       }
     }
 
@@ -181,13 +138,17 @@
         position: relative;
         height: 100px;
         display: flex;
-        flex-direction: column;
+        flex-direction: row;
         justify-content: center;
-        padding: 0 15px;
+        padding: 0 10px;
         margin-right: 100px;
         border-radius: 16px;
         width: 285px;
         margin-bottom: 30px;
+
+        &:hover {
+          background-color: #faff87;
+        }
 
         img {
           position: absolute;
@@ -197,18 +158,32 @@
           left: -50px;
         }
 
-        &__title {
-          margin-bottom: 0;
-          font-size: 20px;
-          line-height: 24px;
+        .token-info-container {
+          width: 50%;
+          padding-left: 40px;
+          &__title {
+            margin-bottom: 0;
+            font-size: 18px;
+            line-height: 22px;
+            text-align: center;
+            font-weight: 500;
+          }
+
+          &__number {
+            margin-bottom: 0;
+            font-size: 14px;
+            text-align: center;
+            b {
+              font-size: 22px;
+            }
+          }
         }
 
-        &__number {
-          margin-bottom: 0;
-          font-size: 16px;
-          b {
-            font-size: 24px;
-          }
+        .token-info-description {
+          padding-left: 5px;
+          font-size: 10px;
+          width: 45%;
+          margin: auto 0;
         }
 
         &:nth-child(2n) {
@@ -222,8 +197,10 @@
       flex: 1;
       overflow: auto;
       display: flex;
-      flex-direction: column;
-      align-items: center;
+      flex-direction: row;
+      flex-wrap: wrap;
+      align-items: flex-start;
+      justify-content: space-evenly;
       padding: 5px;
 
       .btn-green {
@@ -269,18 +246,21 @@
             height: 70px;
             left: -35px;
           }
+          .token-info-container {
+            width: 50%;
+            padding-left: 20px;
+            &__title {
+              margin-bottom: 0;
+              font-size: 14px;
+              line-height: 18px;
+            }
 
-          &__title {
-            margin-bottom: 0;
-            font-size: 18px;
-            line-height: 20px;
-          }
-
-          &__number {
-            margin-bottom: 0;
-            font-size: 14px;
-            b {
-              font-size: 22px;
+            &__number {
+              margin-bottom: 0;
+              font-size: 14px;
+              b {
+                font-size: 22px;
+              }
             }
           }
         }
@@ -299,16 +279,4 @@
       margin-right: 0;
     }
   }
-}
-
-.btn-green {
-  background-color: #d5fec6;
-  cursor: pointer;
-  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
-  border: none;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-  margin-right: 15px;
-  border-radius: 4px;
 }

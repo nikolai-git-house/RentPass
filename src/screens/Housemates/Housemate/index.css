@@ -1,44 +1,22 @@
 .housemate-view {
-  width: 45%;
   display: flex;
   flex-direction: column;
-  justify-content: center;
   align-items: center;
-  margin-top: 50px;
-  border: 2px solid grey;
-  background-color: white;
-  border-radius: 10px;
-  padding: 20px;
+  justify-content: center;
+  width: 200px;
+  height: fit-content;
+  border-radius: 5px;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
   margin: 20px; }
-  .housemate-view .privateinfo_row {
+  .housemate-view .info {
     display: flex;
-    flex-direction: row;
+    flex-direction: column;
     align-items: center;
-    justify-content: flex-start;
+    justify-content: center;
+    background: rgba(0, 0, 0, 0.6);
     width: 100%;
-    padding-left: 30px;
-    padding-right: 30px;
-    margin-bottom: 20px; }
-    .housemate-view .privateinfo_row .info {
-      display: flex;
-      flex-direction: column;
-      align-items: flex-start;
-      justify-content: center;
-      margin-left: 10px; }
-  .housemate-view .housemate_row {
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: space-between;
-    width: 100%;
-    padding-left: 30px;
-    padding-right: 30px;
-    margin-bottom: 10px; }
-    .housemate-view .housemate_row .description {
-      display: flex;
-      flex-direction: row;
-      align-items: center;
-      justify-content: flex-start; }
-      .housemate-view .housemate_row .description p {
-        margin-left: 5px;
-        margin-bottom: 0px; }
+    margin-top: -75px; }
+    .housemate-view .info p {
+      text-align: center;
+      margin-bottom: 0px !important;
+      color: white; }

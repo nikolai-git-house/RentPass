@@ -1,0 +1,11 @@
+#list_user_token_ledgers {
+  .member-row {
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    margin-bottom: 10px;
+    .member-name {
+      flex: 1;
+    }
+  }
+}

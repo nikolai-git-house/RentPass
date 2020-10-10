@@ -40,6 +40,33 @@ export const braintreeCheckout = async (paymentMethodToken, amount) => {
   }
 };
 
+export const braintreeSendWegift = async (
+  paymentMethodToken,
+  amount,
+  retailerId,
+  idempotencyKey
+) => {
+  try {
+    let requestUrl =
+      "https://us-central1-boltconcierge-2f0f9.cloudfunctions.net/braintree-sendWegift";
+    let result = await axios.post(requestUrl, {
+      environment: process.env.REACT_APP_ENVIRONMENT,
+      payment_method_token: paymentMethodToken,
+      retailer_id: retailerId,
+      amount: amount,
+      idempotency_key: idempotencyKey,
+    });
+    if (result.status === 200) {
+      // console.log('//// ' + JSON.stringify(result.data));
+      return result.data;
+    } else {
+      return result;
+    }
+  } catch (err) {
+    return err;
+  }
+};
+
 export const braintreeCreateCustomer = async (
   customerId,
   paymentMethodNonce

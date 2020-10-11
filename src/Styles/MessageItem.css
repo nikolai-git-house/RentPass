@@ -42,16 +42,12 @@
   margin-bottom: 1em;
   min-height: 1.4em; }
   .message-item-wrapper.bot .typing-loader {
-    height: 50px;
+    width: 70px;
     transition: all 0.3s;
     opacity: 1;
     position: relative;
-    animation-name: slideInRight;
-    animation-duration: 300ms;
-    display: flex;
-    flex-direction: row;
-    align-items: center;
-    justify-content: center; }
+    animation-name: slideInLeft;
+    animation-duration: 300ms; }
   .message-item-wrapper.bot .message {
     position: absolute;
     opacity: 0;
@@ -66,6 +62,7 @@
     .message-item-wrapper.bot .progress p {
       font-size: 14px; }
   .message-item-wrapper.bot.loaded .typing-loader {
+    width: 70px;
     position: absolute;
     opacity: 0;
     transform: translateY(2em); }
@@ -100,28 +97,103 @@
         .message-item-wrapper.bot.loaded .progress .circle {
           height: 15px;
           width: 15px; } }
-  .message-item-wrapper.user {
-    width: 100%;
-    display: flex;
-    flex-direction: row;
-    align-items: flex-start;
-    justify-content: flex-end; }
-    .message-item-wrapper.user .message {
-      background-color: #d9d9d9;
+  .message-item-wrapper.user .typing-loader {
+    width: 70px;
+    transition: all 0.3s;
+    opacity: 1;
+    position: relative;
+    animation-name: slideInRight;
+    animation-duration: 300ms; }
+  .message-item-wrapper.user .message {
+    position: absolute;
+    opacity: 0;
+    transform: scale(0);
+    font-weight: 100;
+    background-color: white; }
+  .message-item-wrapper.user.loaded .typing-loader {
+    width: 40px;
+    position: absolute;
+    opacity: 0;
+    transform: translateY(2em); }
+  .message-item-wrapper.user.loaded .message {
+    position: relative;
+    opacity: 1;
+    transform: scale(1); }
+  .message-item-wrapper.user .typing-loader {
+    display: block; }
+  .message-item-wrapper.agency {
+    align-self: flex-end; }
+    .message-item-wrapper.agency .typing-loader {
+      width: 70px;
+      transition: all 0.3s;
+      opacity: 1;
+      position: relative;
+      animation-name: slideInRight;
+      animation-duration: 300ms; }
+    .message-item-wrapper.agency .message {
+      background-color: #152439;
       color: #000;
-      font-weight: 300;
+      font-weight: 100;
       opacity: 0;
       transform: scale(0); }
-      .message-item-wrapper.user .message.notbolt {
-        background-color: #DCF8C4;
+      .message-item-wrapper.agency .message.notbolt {
+        background-color: #fdffd0;
         color: #000; }
-    .message-item-wrapper.user.loaded .message {
+    .message-item-wrapper.agency.loaded .typing-loader {
+      width: 40px;
+      position: absolute;
+      opacity: 0;
+      transform: translateY(2em); }
+    .message-item-wrapper.agency.loaded .message {
       opacity: 1;
       transform: scale(1); }
-    .message-item-wrapper.user .typing-loader {
+    .message-item-wrapper.agency .typing-loader {
+      display: block; }
+  .message-item-wrapper.landlord {
+    align-self: flex-end; }
+    .message-item-wrapper.landlord .message {
+      background-color: #daffda;
+      color: #000;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.landlord .message.notbolt {
+        background-color: #daffda;
+        color: #000; }
+    .message-item-wrapper.landlord.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.landlord .typing-loader {
       display: none; }
+  .message-item-wrapper.contractor {
+    align-self: flex-end; }
+    .message-item-wrapper.contractor .typing-loader {
+      width: 70px;
+      transition: all 0.3s;
+      opacity: 1;
+      position: relative;
+      animation-name: slideInRight;
+      animation-duration: 300ms; }
+    .message-item-wrapper.contractor .message {
+      background-color: #ffeaf9;
+      color: #000;
+      font-weight: 100;
+      opacity: 0;
+      transform: scale(0); }
+      .message-item-wrapper.contractor .message.notbolt {
+        background-color: #ffeaf9;
+        color: #000; }
+    .message-item-wrapper.contractor.loaded .typing-loader {
+      width: 40px;
+      position: absolute;
+      opacity: 0;
+      transform: translateY(2em); }
+    .message-item-wrapper.contractor.loaded .message {
+      opacity: 1;
+      transform: scale(1); }
+    .message-item-wrapper.contractor .typing-loader {
+      display: block; }
 
 .avatar {
-  border-radius: 40px;
-  box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
-  margin-right: 5px; }
+  box-shadow: 0 0px 7px 0px rgba(0, 0, 0, 0.2);
+  border-radius: 20px; }

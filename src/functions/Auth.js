@@ -45,12 +45,12 @@ export const getAddresses = async (postcode) => {
 export const sendInvitation = async (
   phoneNumber,
   username,
-  property_name,
+  friend_name,
 ) => {
   let brand = "Rental Community";
   try {
     let response = await fetch(
-      `https://apricot-mole-2227.twil.io/property_invite?phoneNumber=${phoneNumber}&username=${username}&property_name=${property_name}&brand_name=${brand}`,
+      `https://apricot-mole-2227.twil.io/property_invite?phoneNumber=${phoneNumber}&username=${username}&friend_name=${friend_name}`,
       {
         method: "GET",
       }

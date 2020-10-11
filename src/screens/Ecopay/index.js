@@ -5,7 +5,7 @@ import { animateScroll } from "react-scroll";
 import qs from "qs";
 import "./index.css";
 import "../../Styles/Common.css";
-import MessageItem from "../../Components/EcopayMessageItem/MessageItem";
+import MessageItem from "../../Components/MessageItem";
 import MessageInput from "../../Components/MessageInput";
 import TokenGuide from "../../Components/TokenGuide";
 import { removeAll, saveProfile } from "../../redux/actions";
@@ -16,6 +16,8 @@ import {
 } from "../../Utils/botMessages";
 import { TerritoryOptions, CurrencyOptions } from "../../Utils/Constants";
 import Firebase from "../../firebasehelper";
+import { braintreeSendWegift } from "../../functions/BraintreeHelper";
+import Purchasing from "../../images/ecopay/purchasing.gif";
 
 class Ecopay extends React.Component {
   botMessages = [
@@ -35,6 +37,7 @@ class Ecopay extends React.Component {
     selectedRetailer: {},
     showInput: false,
     billPrice: 0,
+    loading: false,
   };
 
   componentDidMount() {
@@ -44,7 +47,7 @@ class Ecopay extends React.Component {
       return;
     }
 
-    const brandTerritory = brand.territory || TerritoryOptions[0];
+    const brandTerritory = "UK";
     Firebase.getAllRetailersOnce((res) => {
       Firebase.getAllDeactiveRetailersOnce((deactiveRes) => {
         let deactive = [];
@@ -73,7 +76,7 @@ class Ecopay extends React.Component {
         if (retailerId) {
           const retailer = retailers.find((item) => item.uid === retailerId);
           if (retailer) {
-            const { territory = TerritoryOptions[0] } = brand || {};
+            const territory = "UK";
             this.setState({ selectedRetailer: retailer });
             this.setState({
               messages: [
@@ -117,28 +120,64 @@ class Ecopay extends React.Component {
         this.processBotMessageGroup();
       });
     });
+
+    Firebase.getAllPaymentMethods("Rental Community", uid, (methods) => {
+      this.setState({ paymentMethods: methods });
+    });
   }
 
   profileTokenUpdate = async (delta) => {
-    const { uid, profile, brand, dispatch } = this.props;
-    await Firebase.updateUserData(brand.name, uid, {
-      tokenSpent: (profile.tokenSpent || 0) + delta,
-    });
-    await Firebase.saveTokenSpentHistory(brand.name, uid, {
-      created: new Date(),
-      amount: delta,
-      type: "ecopay",
-    });
-    dispatch(
-      saveProfile({ ...profile, tokenSpent: (profile.tokenSpent || 0) + delta })
-    );
-    localStorage.setItem(
-      "profile",
-      JSON.stringify({
-        ...profile,
-        tokenSpent: (profile.tokenSpent || 0) + delta,
-      })
-    );
+    this.setState({ loading: true });
+    let message = "";
+    let data = null;
+    try {
+      const { uid, profile, brand, dispatch } = this.props;
+      const { paymentMethods } = this.state;
+
+      const proValue =
+        1 -
+        (this.state.selectedRetailer.redeemed
+          ? this.state.selectedRetailer.redeemed.fullTokens / 100
+          : 0.1);
+      const price = (this.state.billPrice * proValue).toFixed(2);
+
+      const result = await braintreeSendWegift(
+        paymentMethods[0].token,
+        price,
+        this.state.selectedRetailer.retailerID,
+        uid
+      );
+      if (result.status === "SUCCESS") {
+        await Firebase.updateUserData("Rental Community", uid, {
+          tokenSpent: (profile.tokenSpent || 0) + delta,
+        });
+        await Firebase.saveTokenHistory("Rental Community", uid, {
+          created: new Date(),
+          amount: delta,
+          type: "ecopay",
+        });
+        dispatch(
+          saveProfile({
+            ...profile,
+            tokenSpent: (profile.tokenSpent || 0) + delta,
+          })
+        );
+        localStorage.setItem(
+          "profile",
+          JSON.stringify({
+            ...profile,
+            tokenSpent: (profile.tokenSpent || 0) + delta,
+          })
+        );
+      } else {
+        message = result.error || result.error_details;
+      }
+      data = result;
+    } catch (e) {
+      message = e.message;
+    }
+    this.setState({ loading: false });
+    return { error: message, data: data };
   };
 
   getBotMessageGroup = () => {
@@ -200,11 +239,11 @@ class Ecopay extends React.Component {
     });
   };
 
-  addMessage = (message) => {
+  addMessage = async (message) => {
     const { brand } = this.props;
-    const { territory = TerritoryOptions[0] } = brand || {};
+    const territory = "UK";
     if (message.inputType === "selectbrand") {
-      const retailer = message.message;
+      const retailer = message.retailer;
       this.setState({ selectedRetailer: retailer });
       this.addBotMessageGroup([
         {
@@ -243,33 +282,33 @@ class Ecopay extends React.Component {
           )} tokens`,
         },
         // Added it temporary for Notting Hill Carnival
-        {
-          type: "bot",
-          message: `EcoPay launches next week. You can spend your tokens soon with over 50 top retailers.`,
-        },
+        // {
+        //   type: "bot",
+        //   message: `EcoPay launches next week. You can spend your tokens soon with over 50 top retailers.`,
+        // },
       ]);
-
-      this.addUserMessage({
-        type: "user",
-        inputType: "static",
-        message: `Explore my Ecosystem`,
-        subType: "shopping_completed",
-      });
 
       // this.addUserMessage({
       //   type: "user",
-      //   inputType: "toggleButton",
-      //   options: [
-      //     { text: "Decline", value: "No", backgroundColor: "#ff9caa" },
-      //     {
-      //       text: "Pay",
-      //       value: "I accept the payment",
-      //       backgroundColor: "#DCF8C3",
-      //     },
-      //   ],
-      //   directionRow: true,
-      //   key: "bill-pay-button",
+      //   inputType: "static",
+      //   message: `Explore my Ecosystem`,
+      //   subType: "shopping_completed",
       // });
+
+      this.addUserMessage({
+        type: "user",
+        inputType: "toggleButton",
+        options: [
+          { text: "Decline", value: "No", backgroundColor: "#ff9caa" },
+          {
+            text: "Pay",
+            value: "I accept the payment",
+            backgroundColor: "#DCF8C3",
+          },
+        ],
+        directionRow: true,
+        key: "bill-pay-button",
+      });
       this.processBotMessageGroup();
     } else if (
       message.inputType === "toggleInput" &&
@@ -291,47 +330,68 @@ class Ecopay extends React.Component {
         const { profile } = this.props;
         const currentBalance =
           (profile.tokens || 0) - (profile.tokenSpent || 0);
-        if (currentBalance < delta) {
+        const { paymentMethods } = this.state;
+        if (paymentMethods.length === 0 || currentBalance < delta) {
           this.addBotMessageGroup([
             {
               type: "bot",
-              message: `You need to earn ${
-                delta - currentBalance
-              } tokens to complete this payment. You can do this by answering the latest poll or helping another member.`,
+              message:
+                paymentMethods.length === 0
+                  ? `You don't have any registered payment methods`
+                  : `You need to earn ${
+                      delta - currentBalance
+                    } tokens to complete this payment. You can do this by answering the latest poll or helping another member.`,
             },
           ]);
           this.addUserMessage({
             type: "user",
             inputType: "static",
-            message: `OK`,
-            subType: "shopping_completed",
+            style: { backgroundColor: "#FEFD9D", color: "#152439" },
+            message: paymentMethods.length === 0 ? `Add a saved card` : `OK`,
+            subType:
+              paymentMethods.length === 0
+                ? "add_saved_card"
+                : "shopping_completed",
           });
+          this.processBotMessageGroup();
         } else {
-          this.profileTokenUpdate(delta);
-          this.addBotMessageGroup([
-            {
-              type: "bot",
-              message: `Paid ${CurrencyOptions[territory]}${(
-                this.state.billPrice * proValue
-              ).toFixed(2)} on card 4567`,
-            },
-            {
-              type: "bot",
-              key: "barcode",
-              message: `A1234567890A`,
-              inputType: "input",
-            },
-          ]);
-          this.addUserMessage({
-            type: "user",
-            inputType: "static",
-            message: `Shopping Completed.`,
-            style: { backgroundColor: "#FEFD9D" },
-            subType: "shopping_completed",
+          this.setState({ showInput: false });
+          this.profileTokenUpdate(delta).then((res) => {
+            if (res.error === "" && res.data) {
+              this.addBotMessageGroup([
+                {
+                  type: "bot",
+                  message: `Paid ${CurrencyOptions[territory]}${(
+                    this.state.billPrice * proValue
+                  ).toFixed(2)} on card ${paymentMethods[0].details.lastFour}`,
+                },
+                {
+                  type: "bot",
+                  key: "barcode",
+                  message: res.data.order_id,
+                  inputType: "input",
+                },
+              ]);
+            } else {
+              this.addBotMessageGroup([
+                {
+                  type: "bot",
+                  message: `Error occured doing payment: ${res.error} on card ${paymentMethods[0].details.lastFour}`,
+                },
+              ]);
+            }
+
+            this.addUserMessage({
+              type: "user",
+              inputType: "static",
+              message: `Shopping Completed.`,
+              style: { backgroundColor: "#FEFD9D", color: "#152439" },
+              subType: "shopping_completed",
+            });
+
+            this.processBotMessageGroup();
           });
         }
-
-        this.processBotMessageGroup();
       } else {
         window.location.reload();
       }
@@ -339,9 +399,13 @@ class Ecopay extends React.Component {
       message.inputType === "static" &&
       message.subType === "shopping_completed"
     ) {
-      this.props.history.push("/profile");
+      this.props.history.push("/explore");
+    } else if (
+      message.inputType === "static" &&
+      message.subType === "add_saved_card"
+    ) {
+      this.props.history.push("/wallets?section=cards");
     }
-
     this.setMessageInState(message);
     this.toggleUserInput();
   };
@@ -363,7 +427,7 @@ class Ecopay extends React.Component {
           message={message}
           key={i}
           logo={brand && brand.logo}
-          icon="https://firebasestorage.googleapis.com/v0/b/boltconcierge-2f0f9.appspot.com/o/brand_icon%2FRental%20Community?alt=media&token=2e96bade-f7f1-4dbd-afd9-6f7caa9d4dc8"
+          icon={brand && brand.icon}
           timeoutValue={getTimeoutValue()}
         />
       );
@@ -391,13 +455,15 @@ class Ecopay extends React.Component {
   };
 
   render() {
-    const { showInput, userMessage } = this.state;
+    const { showInput, userMessage, loading } = this.state;
     const { profile, brand } = this.props;
     return (
-      <div id="page-container">
         <div id="ecopay-container">
-          <TokenGuide territory={brand.territory || TerritoryOptions[0]} />
+          <TokenGuide territory="UK" />
           {this.setMessages()}
+          {loading && (
+            <img src={Purchasing} alt="purchasing" className="purchasing" />
+          )}
           <div component="div" className="message-input-container">
             {showInput ? (
               <MessageInput
@@ -407,13 +473,12 @@ class Ecopay extends React.Component {
                 // logo={logo}
                 onRestart={this.goBack}
                 profile={profile}
-                territory={(brand && brand.territory) || TerritoryOptions[0]}
+                territory="UK"
                 // uid={uid}
               />
             ) : null}
           </div>
         </div>
-      </div>
     );
   }
 }

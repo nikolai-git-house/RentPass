@@ -149,7 +149,7 @@ class AddHousemate extends React.Component {
             onClick={this.addHousemate}
             style={{ backgroundColor: "#bbffa8" }}
           >
-            Add
+            Invite
           </button>
         </div>
       </Modal>

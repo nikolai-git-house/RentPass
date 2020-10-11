@@ -1,10 +1,10 @@
 import React, { Fragment } from "react";
 import Select from "react-select";
-// import companies from "../assets/constants/company.json";
+import companies from "../assets/constants/company.json";
 
 const IconSendImg = require("../assets/images/computer-icons-send.png");
 
-// const options = companies.map((obj) => ({ label: obj, value: obj }));
+const options = companies.map((obj) => ({ label: obj, value: obj }));
 const Styles = {
   control: (styles) => ({
     ...styles,
@@ -40,7 +40,7 @@ export default class SelectBrand extends React.Component {
     return (
       <Fragment>
         <div
-          className="message-input-container select-brand"
+          className="message-input-container"
           style={{
             display: "flex",
             flexDirection: "row",
@@ -62,9 +62,10 @@ export default class SelectBrand extends React.Component {
             placeholder="Select your store..."
             noOptionsMessage={() => null}
             isSearchable={false}
+            className="select-brand-options"
           />
           <div
-            className={`send-button-pay ${this.isFull() ? "" : "disabled"}`}
+            className={`send ${this.isFull() ? "" : "disabled"}`}
             onClick={(e) => {
               if (this.isFull()) {
                 this.props.addMessage(this.state.selectedOption.value);

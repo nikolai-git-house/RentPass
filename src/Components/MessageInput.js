@@ -1,14 +1,26 @@
 import React, { Component, Fragment } from "react";
-import Progress from "react-progressbar";
+import ReactSelect from "react-select";
 import Select from "./Select";
-import ToggleButton from "./ToggleButton";
-import YesNoButton from "./YesNoButton";
+import SelectBrand from "./SelectBrand";
 import DateInput from "./DateInput";
-import IssueInput from "./IssueInput";
+import YesNoButton from "./YesNoButton";
+import ToggleButton from "./ToggleButton";
 import { doSMS, clearZero } from "../functions/Auth";
 import { animateScroll } from "react-scroll";
 import Firebase from "../firebasehelper";
 import ErrorModal from "./ErrorModal";
+import { TerritoryOptions, CurrencyOptions } from "../Utils/Constants";
+
+const IconSendImg = require("../assets/images/computer-icons-send.png");
+
+const countryCodeOptions = [
+  { value: "+44", label: "+44" },
+  { value: "+1", label: "+1" },
+];
+
+function numberWithCommas(x) {
+  return x.toString().replace(/\B(?=(\d{3})+(?!\d))/g, ",");
+}
 let profile = {};
 class MessageInput extends Component {
   state = {
@@ -36,11 +48,13 @@ class MessageInput extends Component {
       addressType: "",
     },
     fileupload: 0,
+    countryCode: { value: "+44", label: "+44" },
   };
   handleTouchStart = false;
 
   getStaticMessage() {
     const { addMessage, message, logo } = this.props;
+
     if (Array.isArray(message.message)) {
       return (
         <div className="message-array">
@@ -70,6 +84,7 @@ class MessageInput extends Component {
         className={`message message-static ${
           logo === "ecosystem" ? " " : "notbolt"
         }`}
+        style={message.style}
         onClick={() => {
           if (message.signup) {
             const signup_profile = {
@@ -87,9 +102,20 @@ class MessageInput extends Component {
     );
   }
 
+  handleCountryCode = (countryCode) => {
+    this.setState({ countryCode });
+  };
+
   getInputMessage() {
-    const { value, isFocused, checking_phone } = this.state;
-    const { message, logo, isIphoneX, addMessage } = this.props;
+    const { value, isFocused, checking_phone, countryCode } = this.state;
+    const {
+      message,
+      logo,
+      isIphoneX,
+      addMessage,
+      territory = TerritoryOptions[0],
+    } = this.props;
+
     return (
       <div className="message-input-outer">
         {message.key === "sms" && (
@@ -108,16 +134,63 @@ class MessageInput extends Component {
             I didn't receive a code
           </div>
         )}
+        {message.key === "company_site" && (
+          <div
+            className={`button ${logo === "ecosystem" ? "" : "notbolt"}`}
+            onClick={(e) => {
+              this.handleTouchStart = true;
+              profile[message.key] = "I don't have one.";
+
+              addMessage({
+                type: "user",
+                message: "I don't have one.",
+                inputType: "input",
+                key: "company_site",
+              });
+            }}
+          >
+            I don't have one
+          </div>
+        )}
         <div className="message-input-container">
-          {message.key.includes("phone") && <p>+44</p>}
+          {message.key.includes("phone") && (
+            <ReactSelect
+              value={countryCode}
+              onChange={this.handleCountryCode}
+              options={countryCodeOptions}
+              styles={{
+                control: (styles) => ({
+                  ...styles,
+                  backgroundColor: "white",
+                  width: 80,
+                  marginLeft: 10,
+                }),
+              }}
+            />
+          )}
+          {message.key === "salary" && <p>{CurrencyOptions[territory]}</p>}
+          {message.key === "company_site" && (
+            <p
+              style={{ marginLeft: 0, position: "absolute", top: 3, left: 20 }}
+            >
+              http://www
+            </p>
+          )}
           <input
             type="text"
             value={value}
             placeholder={message.placeholder}
-            className={`${message.key.includes("phone") ? "phone" : ""}  ${
-              message.key === "salary" ? "salary" : ""
-            } ${message.key === "company_site" ? "company_site" : ""}`}
-            onChange={this.onChange}
+            className={`
+              ${message.key.includes("phone") ? "phone" : ""} 
+              ${message.key === "salary" ? "salary" : ""} 
+              ${message.key === "company_site" ? "company_site" : ""} 
+              ${message.key === "bill-price" ? "bill-price" : ""}
+            `}
+            onChange={
+              message.key === "bill-price"
+                ? this.onChangeBillPrice
+                : this.onChange
+            }
             onKeyPress={(e) => {
               if (e.charCode === 13) this.addMessage();
             }}
@@ -139,11 +212,12 @@ class MessageInput extends Component {
                 isFocused: false,
               });
             }}
+            maxLength={message.maxLength}
           />
 
           {!checking_phone && (
-            <div
-              className={`send-button ${value ? "" : "disabled"} ${
+              <div
+              className={`send ${value ? "" : "disabled"} ${
                 logo === "ecosystem" ? "" : "notbolt"
               }`}
               onClick={(e) => {
@@ -158,58 +232,21 @@ class MessageInput extends Component {
                   this.handleTouchStart = true;
                   this.addMessage();
                 } else
-                  this.setState({
-                    modalIsOpen: true,
-                    caption: "Warning",
-                    content: "All fields are required!",
-                  });
-              }}
-            >
-              <img
-                src={require("../images/computer-icons-send.png")}
-                alt="send-icon"
-              />
+                    this.setState({
+                      modalIsOpen: true,
+                      caption: "Warning",
+                      content: "All fields are required!",
+                    });
+                }}
+              >
+                <img src={IconSendImg} alt="send-icon" />
             </div>
           )}
           {checking_phone && (
-            <p style={{ fontSize: 15 }}>Checking phone number..</p>
+            <p style={{ fontSize: 15,marginLeft:0 }}>Checking phone number..</p>
           )}
         </div>
       </div>
-    );
-  }
-
-  getSelectInput() {
-    const { addMessage, message } = this.props;
-    const { options } = message;
-    return <Select options={options} addMessage={addMessage} />;
-  }
-
-  setSelectedOption = (index) => {
-    const { addMessage, message } = this.props;
-    const selectedOption = message.options[index]["value"];
-
-    profile[message.key] = selectedOption;
-    if (message.ticket)
-      addMessage({
-        type: "user",
-        message: selectedOption,
-        inputType: "toggleInput",
-        key: message.key,
-        ticket: message.ticket,
-      });
-    else
-      addMessage({
-        type: "user",
-        message: selectedOption,
-        inputType: "toggleInput",
-        key: message.key,
-      });
-  };
-  getDateMessage() {
-    const { addMessage, logo, message } = this.props;
-    return (
-      <DateInput addMessage={this.addDate} logo={logo} message={message} />
     );
   }
   getToggleButton() {
@@ -217,39 +254,99 @@ class MessageInput extends Component {
     return (
       <ToggleButton
         options={options}
-        setSelectedOption={this.setSelectedOption}
         row={directionRow}
+        setSelectedOption={this.setSelectedOption}
       />
     );
   }
   getYesNoInput() {
     return <YesNoButton setSelectedOption={this.chooseOption} />;
   }
-  onStartChat = (ticket_id) => {
-    const { onStartChat } = this.props;
-    onStartChat(ticket_id);
+  getSelectInput() {
+    const { addMessage, message } = this.props;
+    const { options } = message;
+    return <Select options={options} addMessage={addMessage} />;
+  }
+  getSelectBrand() {
+    const { addMessage, message } = this.props;
+    return (
+      <SelectBrand
+        addMessage={(message) =>{
+          addMessage({
+            type: "user",
+            retailer:message,
+            message: message.retailerName,
+            inputType: "selectbrand",
+            isNext: true,
+          })
+        } 
+        }
+        message={message}
+      />
+    );
+  }
+
+  setSelectedOption = (index) => {
+    const { addMessage, message } = this.props;
+    const selectedOption = message.options[index]["value"];
+
+    profile[message.key] = selectedOption;
+    addMessage({
+      type: "user",
+      message: selectedOption,
+      inputType: "toggleInput",
+      key: message.key,
+    });
   };
+  chooseOption = (result) => {
+    const { addMessage, message } = this.props;
+    profile[message.key] = result;
+    addMessage({
+      type: "user",
+      message: result,
+      inputType: "yesno",
+      key: message.key,
+    });
+  };
+  getDateMessage() {
+    const { addMessage, logo, message } = this.props;
+    return (
+      <DateInput addMessage={this.addDate} logo={logo} message={message} />
+    );
+  }
   onChange = (e) => {
     this.setState({
       value: e.target.value,
     });
   };
 
+  onChangeBillPrice = ({ target: { value } }) => {
+    const { territory = TerritoryOptions[0] } = this.props;
+    let newValue = value.split(".");
+    if (newValue.length > 1) {
+      newValue =
+        newValue.slice(0, -1).join("") + "." + newValue[newValue.length - 1];
+    } else {
+      newValue = value;
+    }
+    const countDecimals = function (number) {
+      if (Math.floor(number) === Number(number)) return 0;
+      return number.toString().split(".")[1].length || 0;
+    };
+    let number = Number(newValue.replace(/[^0-9\.]+/g, ""));
+    const decimalPoints = countDecimals(newValue);
+    if (decimalPoints >= 3) {
+      number = number * 10;
+    } else {
+      number = number / Math.pow(10, 2 - decimalPoints);
+    }
+    this.setState({
+      value: `${CurrencyOptions[territory]}${number.toFixed(2)}`,
+    });
+  };
+
   createPincode = () => {
     return Math.floor(100000 + Math.random() * 900000);
-  };
-  addAddress = (address) => {
-    const { addMessage, message } = this.props;
-    profile[message.key] = address;
-    let add = address.split(", ");
-    profile["number"] = add[0];
-    profile["street"] = add[1];
-    profile["city"] = add[2];
-    profile["postcode"] = add[3];
-    addMessage({
-      message: address,
-      ...message,
-    });
   };
   addDate = (date) => {
     const { addMessage, message } = this.props;
@@ -257,7 +354,6 @@ class MessageInput extends Component {
     let status = profile["addressType"];
     addMessage({
       message: date,
-      profile:profile,
       status: status,
       ...message,
     });
@@ -266,33 +362,9 @@ class MessageInput extends Component {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   addMessage = async () => {
-    const { addMessage, message, is_member, logo,setTicket } = this.props;
+    const { addMessage, message, is_member, logo } = this.props;
     const { value } = this.state;
-    if (message.key === "email") {
-      if (value && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
-        this.setState({
-          modalIsOpen: true,
-          caption: "Invalid Email",
-          content: "Please enter valid email address!",
-        });
-      else if (value) {
-        profile[message.key] = value;
-        addMessage({
-          type: "user",
-          message: value,
-          inputType: "input",
-          isNext: message.isNext,
-        });
-      } else {
-        profile[message.key] = null;
-        addMessage({
-          type: "user",
-          message: "not now",
-          inputType: "input",
-          isNext: message.isNext,
-        });
-      }
-    } else if (message.key === "dob") {
+    if (message.key === "dob") {
       if (
         value &&
         !/^(?:(?:31(\/|-|\.)(?:0?[13578]|1[02]))\1|(?:(?:29|30)(\/|-|\.)(?:0?[1,3-9]|1[0-2])\2))(?:(?:1[6-9]|[2-9]\d)?\d{2})$|^(?:29(\/|-|\.)0?2\3(?:(?:(?:1[6-9]|[2-9]\d)?(?:0[48]|[2468][048]|[13579][26])|(?:(?:16|[2468][048]|[3579][26])00))))$|^(?:0?[1-9]|1\d|2[0-8])(\/|-|\.)(?:(?:0?[1-9])|(?:1[0-2]))\4(?:(?:1[6-9]|[2-9]\d)?\d{2})$/.test(
@@ -310,39 +382,15 @@ class MessageInput extends Component {
           type: "user",
           message: value,
           inputType: "input",
-          profile:profile,
-          isNext: message.isNext,
-          isCommunication: message.isCommunication
-        });
-      }
-    } else if (message.key === "password") {
-      if (
-        value &&
-        !/(?=^.{8,}$)(?=.*\d)(?=.*[a-z])(?=.*[A-Z])(?!.*\s)[0-9a-zA-Z!@#$%^&*()]*$/.test(
-          value
-        )
-      )
-        this.setState({
-          modalIsOpen: true,
-          caption: "Password is not strong",
-          content: "Please enter stronger password!",
-        });
-      else if (value) {
-        profile["password"] = value;
-        addMessage({
-          type: "user",
-          message: value,
-          inputType: "input",
           isNext: message.isNext,
         });
       }
-    } else if (message.key === "phone") {
+    } else if (message.key !== "email") {
+      if (message.key === "phone") {
         let number = clearZero(value);
-        let phone = "+44" + number;
-        this.setState({ checking_phone: true });
-        let result = await Firebase.getEcoUserbyPhonenumber(phone);
-        this.setState({ checking_phone: false });
-        if (!result) {
+        let phone = this.state.countryCode.value + number;
+
+        if (profile["is_member"] === "No") {
           let pin = this.createPincode();
           pin = pin.toString();
           console.log("pin", pin);
@@ -354,19 +402,41 @@ class MessageInput extends Component {
           addMessage({
             type: "user",
             message: phone,
+            profile: profile,
             key: "phone",
             inputType: "input",
             isNext: message.isNext,
           });
         } else {
-          let eco_id = result.id;
-          let profile = result.data();
-          profile.eco_id = eco_id;
-          this.setState({
-            modalIsOpen: true,
-            caption: "profile_exist",
-            content: profile,
-          });
+          this.setState({ checking_phone: true });
+          console.log("logo",logo);
+          let profile = await Firebase.getProfile(phone, logo);
+          console.log("profile",profile);
+          this.setState({ checking_phone: false });
+          if (profile) {
+            let pin = this.createPincode();
+            pin = pin.toString();
+            console.log("pin", pin);
+            localStorage.setItem("phone", phone);
+            localStorage.setItem("pin", pin);
+            let response = doSMS(phone, pin, logo);
+            console.log("response", response);
+
+            addMessage({
+              type: "user",
+              message: phone,
+              profile: profile,
+              key: "phone",
+              inputType: "input",
+              isNext: message.isNext,
+            });
+          } else {
+            this.setState({
+              modalIsOpen: true,
+              caption: "Error",
+              content: `Your mobile number is not registered to an account. Please register now for free to access your community.`,
+            });
+          }
         }
       } else if (message.key === "sms") {
         let phone = localStorage.getItem("phone");
@@ -392,6 +462,16 @@ class MessageInput extends Component {
             isNext: message.isNext,
           });
         }
+      } else if (message.key === "bill-price") {
+        profile[message.key] = value;
+        addMessage({
+          type: "user",
+          message: value,
+          profile: profile,
+          key: message.key,
+          inputType: "input",
+          isNext: message.isNext,
+        });
       } else {
         profile[message.key] = value;
         addMessage({
@@ -401,9 +481,10 @@ class MessageInput extends Component {
           key: message.key,
           inputType: "input",
           isNext: message.isNext,
-          isCommunicationLayer: message.isCommunicationLayer
         });
       }
+    }
+    console.log("profile", profile);
   };
   componentWillLeave(callback) {
     const { message } = this.props;
@@ -422,17 +503,8 @@ class MessageInput extends Component {
     this.setState({ modalIsOpen: false });
     window.location.reload();
   };
-  wantRenter = (profile) =>{
-    const {wantRenter} = this.props;
-    this.setState({ modalIsOpen: false });
-    wantRenter(profile);
-  }
-  goBack = () => {
-    const { goBack } = this.props;
-    goBack();
-  };
   render() {
-    const { leaving, modalIsOpen, caption, content, fileupload } = this.state;
+    const { leaving, modalIsOpen, caption, content } = this.state;
     const { message } = this.props;
     return (
       <Fragment>
@@ -441,7 +513,6 @@ class MessageInput extends Component {
           content={content}
           closeModal={this.closeModal}
           modalIsOpen={modalIsOpen}
-          wantRenter={this.wantRenter}
         />
         {message && (
           <div
@@ -451,14 +522,15 @@ class MessageInput extends Component {
           >
             {message.inputType === "static" ? this.getStaticMessage() : null}
             {message.inputType === "input" ? this.getInputMessage() : null}
-            {message.inputType === "address" ? this.getAddress() : null}
             {message.inputType === "date" ? this.getDateMessage() : null}
-            {message.inputType === "issue" ? this.getIssueInput() : null}
             {message.inputType === "select" ? this.getSelectInput() : null}
+            {message.inputType === "selectBrand" ? this.getSelectBrand() : null}
             {message.inputType === "yesno" ? this.getYesNoInput() : null}
+            {message.inputType === "toggleButton"
+              ? this.getToggleButton()
+              : null}
           </div>
         )}
-        <Progress completed={fileupload} />
       </Fragment>
     );
   }

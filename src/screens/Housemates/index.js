@@ -68,7 +68,7 @@ class Housemates extends React.Component {
     this.setState({adding:true});
     let property_id = property.value;
     let property_name = property.label;
-    sendInvitation(phone, firstname,property_name);
+    sendInvitation(phone, profile.firstname,firstname);
     let renter = await Firebase.getRenterbyPhonenumber(phone);
     if(renter){
       //if invited man is already a renter

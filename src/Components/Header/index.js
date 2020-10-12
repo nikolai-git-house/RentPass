@@ -149,7 +149,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Property</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item" onClick={this.click}>
+              {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink
                   to="#"
                   className={classnames("nav-main-link")}
@@ -172,7 +172,7 @@ class Header extends React.Component {
                   />
                   <span className="nav-main-link-name">Polls</span>
                 </NavLink>
-              </li>
+              </li> */}
               {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink
                   to="/propertypa"

@@ -148,14 +148,14 @@ class Explore extends React.Component {
               <img src={property_png} />
               <span className="nav-main-link-name">Property</span>
             </NavLink>
-            <NavLink to="/feeds" className="explore-item-button">
+            {/* <NavLink to="/feeds" className="explore-item-button">
               <img src={feeds_png} />
               <span className="nav-main-link-name">Feeds</span>
             </NavLink>
             <NavLink to="/polls" className="explore-item-button">
               <img src={polls_png} />
               <span className="nav-main-link-name">Polls</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to={{
                 pathname: "/spend",

@@ -36,7 +36,8 @@
   outline: none !important;
   padding: 20px !important;
   transform: translate(-50%, -50%) !important;
-  height: fit-content; }
+  height: fit-content;
+  max-height: 600px; }
 
 @media (min-width: 768px) {
   .ReactModal__Content {
@@ -44,4 +45,8 @@
 
 @media (max-width: 767px) {
   .ReactModal__Content {
-    width: 90%; } }
+    width: 90%; }
+    .ReactModal__Content .css-1dlipep-control {
+      width: 100%; }
+    .ReactModal__Content .css-1anjorh-control {
+      width: 100%; } }

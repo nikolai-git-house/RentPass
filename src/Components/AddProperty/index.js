@@ -2,21 +2,6 @@ import React from "react";
 import Modal from "react-modal";
 import Order1 from "./Order1";
 import Order2 from "./Order2";
-const customStyles = {
-  zIndex: 1000,
-  content: {
-    top: "50%",
-    left: "50%",
-    width: "50%",
-    height: "fit-content",
-    maxHeight: "600px",
-    right: "10%",
-    bottom: "10%",
-    borderRadius: 20,
-    transform: "translate(-50%, -50%)",
-    overflow: "visible",
-  },
-};
 class AddProperty extends React.PureComponent {
   constructor(props) {
     super(props);
@@ -82,7 +67,6 @@ class AddProperty extends React.PureComponent {
         closeTimeoutMS={200}
         isOpen={showModal}
         contentLabel="modal"
-        style={customStyles}
         onRequestClose={toggleModal}
       >
         <Order1

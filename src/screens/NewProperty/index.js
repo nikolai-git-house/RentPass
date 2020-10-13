@@ -81,11 +81,11 @@ class NewProperty extends React.Component {
         />
         {properties.length===0&&!adding&&
           <div id="comment-container">
-              <img src={require("../../assets/media/property_status/home.png")} width="90"/>
+              <img src={require("../../assets/media/property_status/home.png")} width="90" style={{marginBottom:20}}/>
               You are yet to add any properties
               <button
                 type="button"
-                className="btn btn-success"
+                className="btn btn-green"
                 onClick={() => this.toggleModal()}
                 style={{ margin: 20 }}
               >

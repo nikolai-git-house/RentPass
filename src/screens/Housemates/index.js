@@ -24,15 +24,18 @@ class Housemates extends React.Component {
     const { uid,properties} = this.props;
     if (!uid) this.props.history.push("/");
     else {
-      let promises = properties.map(async property=>{
-        let housemates = await Firebase.getHousemates(uid,property);
-        return housemates;
-      });
-      Promise.all(promises).then(result=>{
-        let housemates = result.reduce((housemates,current)=>housemates.concat(current));
-        console.log("housemates",housemates);
-        this.setState({housemates});
-      })
+      if(properties.length>0){
+        let promises = properties.map(async property=>{
+          let housemates = await Firebase.getHousemates(uid,property);
+          return housemates;
+        });
+        Promise.all(promises).then(result=>{
+          let housemates = result.reduce((housemates,current)=>housemates.concat(current));
+          console.log("housemates",housemates);
+          this.setState({housemates});
+        })
+      }
+      
     }
   }
   async componentDidUpdate(prevProps,prevState){
@@ -133,8 +136,8 @@ class Housemates extends React.Component {
               <p>Please wait, this takes a few seconds..</p>
             </div>
         )}
-        {!adding&&this.showHousemates()}
-        {!adding&&<button
+        {properties.length!==0&&!adding&&this.showHousemates()}
+        {properties.length!==0&&!adding&&<button
           type="button"
           className="btn btn-secondary"
           onClick={() => this.toggleModal("add")}
@@ -142,6 +145,20 @@ class Housemates extends React.Component {
         >
           Add Housemate
         </button>}
+        {properties.length===0&&!adding&&
+          <div id="comment-container">
+              <img src={require("../../assets/media/property_status/home.png")} width="90" style={{marginBottom:20}}/>
+              Please first add a property to be able to invite active or pending tenants
+              <button
+                type="button"
+                className="btn btn-green"
+                onClick={() => this.props.history.push("/property")}
+                style={{ margin: 20 }}
+              >
+                Add a property
+              </button>
+          </div>
+        }
       </div>
     );
   }

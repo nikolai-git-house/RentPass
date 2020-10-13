@@ -110,7 +110,7 @@ class ErrorModal extends Component {
             {content.firstname}
           </p>
           <p style={{ fontSize: 16, margin: 0, color: "rgb(0,0,0,.65)",textAlign:"center" }}>
-            {!content.renter_owner&&`${content.firstname}, you are Ecosystem user but not a renter yet. Would you like to be renter?`}
+            {!content.renter_owner&&`You are an Ecosystem member but not a renter yet. Would you like to use your EcoiD to register as a renter?`}
             {content.renter_owner==="Renter"&&`${content.firstname}, you have joined already. You will be entered to Rental Community.`}
           </p>
           <button

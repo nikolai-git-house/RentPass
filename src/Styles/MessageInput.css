@@ -139,6 +139,8 @@
           margin-right: 0; }
         .message-input-container .message-input-wrapper .message-array .message.message-static {
           width: auto; }
+    .message-input-container .message-input-wrapper .select-brand-options input {
+      padding: 8px !important; }
     .message-input-container .message-input-wrapper .message-static {
       cursor: pointer;
       background-color: #ffffff;
@@ -156,23 +158,8 @@
       .message-input-container .message-input-wrapper div .message-input-container input {
         padding: 1em 1.4em;
         border-radius: 4em;
-        box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2); }
-      .message-input-container .message-input-wrapper div .message-input-container .phone {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .agentphone {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .salary {
-        margin-left: -50px;
-        padding-left: 50px;
-        font-family: "Graphik", sans-serif; }
-      .message-input-container .message-input-wrapper div .message-input-container .company_site {
-        padding-left: 105px;
-        width: 80%;
-        font-family: "Graphik", sans-serif; }
+        box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
+        margin: 0px; }
       .message-input-container .message-input-wrapper div .message-input-container .year {
         margin-right: -100px;
         padding-right: 50px;
@@ -190,57 +177,6 @@
         border: none;
         flex: 1;
         font-size: 1em; }
-    .message-input-container .message-input-wrapper .message-input-container {
-      width: 100%;
-      display: flex;
-      align-items: center; }
-      .message-input-container .message-input-wrapper .message-input-container input {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: 0 0px 4px 0px rgba(0, 0, 0, 0.2);
-        -webkit-appearance: none; }
-      .message-input-container .message-input-wrapper .message-input-container .cuisine-card {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        width: 270px;
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        color: #000;
-        background-color: white;
-        font-weight: 300;
-        opacity: 1;
-        transition: opacity 0.15s; }
-        .message-input-container .message-input-wrapper .message-input-container .cuisine-card .logo-part {
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between; }
-      .message-input-container .message-input-wrapper .message-input-container input {
-        background-color: #f6f6f6;
-        outline: none;
-        border: none;
-        flex: 1;
-        font-size: 1em; }
-      .message-input-container .message-input-wrapper .message-input-container .addressbox {
-        display: "flex";
-        flex-direction: "column";
-        width: 250px;
-        padding: 15px;
-        border-radius: 20px;
-        border: 2px solid #f6f6f6; }
-        .message-input-container .message-input-wrapper .message-input-container .addressbox .address {
-          border: 0;
-          border-bottom: 1px solid #f6f6f6;
-          outline: 0;
-          border-width: 0 0 2px;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: unset;
-          padding: 10px; }
 
 .swal-overlay .swal-modal .swal-footer .swal-button-container .swal-button--confirm {
   background-color: #2b2b2b;
@@ -260,7 +196,7 @@
     border-radius: 4em;
     padding: 1em;
     font-size: 15px;
-    background-color: #fff;
+    background-color: #f6f6f6;
     color: #152439;
     font-weight: 600;
     opacity: 1;

@@ -7,6 +7,7 @@
     position: relative;
     width: 100%;
     top: 0;
+    //padding: 1em;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -177,6 +178,11 @@
         }
       }
     }
+    .select-brand-options {
+      input {
+        padding: 8px !important;
+      }
+    }
     .message-static {
       cursor: pointer;
       background-color: #ffffff;
@@ -198,27 +204,15 @@
           padding: 1em 1.4em;
           border-radius: 4em;
           box-shadow: $box-shadow;
+          margin: 0px;
+          
         }
-        .phone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .agentphone {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .salary {
-          margin-left: -50px;
-          padding-left: 50px;
-          font-family: "Graphik", sans-serif;
-        }
-        .company_site {
-          padding-left: 105px;
-          width: 80%;
-          font-family: "Graphik", sans-serif;
-        }
+        // .phone {
+        //   margin-left: -50px;
+        //   padding-left: 50px;
+        //   font-family: "Graphik", sans-serif;
+        // }
+       
         .year {
           margin-right: -100px;
           padding-right: 50px;
@@ -241,66 +235,7 @@
         }
       }
     }
-    .message-input-container {
-      width: 100%;
-      display: flex;
-      align-items: center;
-      input {
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        box-shadow: $box-shadow;
-        -webkit-appearance: none;
-      }
-      .cuisine-card {
-        margin-top: 20px;
-        display: flex;
-        flex-direction: column;
-        align-items: flex-start;
-        justify-content: center;
-        width: 270px;
-        padding: 1em 1.4em;
-        border-radius: 4em;
-        color: $black;
-        background-color: white;
-        font-weight: 300;
-        opacity: 1;
-        transition: opacity 0.15s;
-        .logo-part {
-          width: 100%;
-          display: flex;
-          flex-direction: row;
-          align-items: center;
-          justify-content: space-between;
-        }
-      }
-      input {
-        background-color: $greywhite;
-        outline: none;
-        border: none;
-        flex: 1;
-        font-size: 1em;
-      }
-
-      .addressbox {
-        display: "flex";
-        flex-direction: "column";
-        width: 250px;
-        padding: 15px;
-
-        border-radius: 20px;
-        border: 2px solid $greywhite;
-        .address {
-          border: 0;
-          border-bottom: 1px solid $greywhite;
-          outline: 0;
-          border-width: 0 0 2px;
-          border-radius: 0;
-          background: transparent;
-          box-shadow: unset;
-          padding: 10px;
-        }
-      }
-    }
+    
   }
 }
 .swal-overlay {
@@ -329,7 +264,7 @@
     border-radius: 4em;
     padding: 1em;
     font-size: 15px;
-    background-color: #fff;
+    background-color: #f6f6f6;
     color: #152439;
     font-weight: 600;
     opacity: 1;
@@ -346,7 +281,6 @@
   margin-top: 1em;
   opacity: 0.6;
 }
-
 .send {
   display: flex;
   background-color: $black;

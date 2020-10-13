@@ -7,8 +7,6 @@
     position: relative;
     width: 100%;
     top: 0;
-    left: -1em;
-    padding: 1em;
     display: flex;
     align-items: flex-end;
     justify-content: center;
@@ -94,7 +92,7 @@
         z-index: 100;
         line-height: 1; }
       .message-input-container .message-input-wrapper div .message-input-container input {
-        background-color: #f6f6f6;
+        background-color: #fff;
         outline: none;
         border: none;
         flex: 1;
@@ -105,7 +103,7 @@
       align-items: center; }
       .message-input-container .message-input-wrapper .message-input-container input,
       .message-input-container .message-input-wrapper .message-input-container input {
-        background-color: #f6f6f6;
+        background-color: #fff;
         outline: none;
         border: none;
         flex: 1;

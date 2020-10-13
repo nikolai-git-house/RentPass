@@ -1,29 +1,16 @@
 import React, { Component } from "react";
 import "./index.css";
+import { TerritoryOptions, CurrencyOptions } from "../../Utils/Constants";
 class Package extends Component {
-  constructor(props) {
-    super(props);
-    this.state = {
-      data: props.data,
-    };
-  }
-  componentWillReceiveProps(nextProps) {
-    const { data } = nextProps;
-    this.setState({ data });
-  }
   render() {
-    const { data } = this.state;
     const {
-      caption,
-      description,
-      image,
-      contents,
-      type,
-      active,
-      saleType,
-      price,
-    } = data;
-    const { profile } = this.props;
+      data,
+      territory = TerritoryOptions[0],
+      purchased,
+      onSubscribe,
+    } = this.props;
+    const { caption, description, image, contents, type, price } = data;
+
     return (
       <div className="package_container">
         <div className="img_container">
@@ -60,20 +47,24 @@ class Package extends Component {
               <p
                 style={{ fontWeight: "500", fontSize: 14, textAlign: "center" }}
               >
-                £{price} cost {type === 0 && "pcm"}
+                {CurrencyOptions[territory]}
+                {price} cost {type === 0 && "pcm"}
               </p>
             </div>
             <button
               className="btn"
               type="button"
-              data-toggle="modal"
-              data-target="#subscribe_modal"
+              // data-toggle="modal"
+              // data-target="#subscribe_modal"
               style={{
                 marginTop: 10,
-                backgroundColor: saleType === 0 ? "#bbffa8" : "#FFE366",
+                backgroundColor: "#d5fec6",
               }}
+              onClick={onSubscribe}
+              disabled={purchased}
             >
-              {saleType === 0 ? "Subscribe" : "Pre register"}
+              {type === 0 ? "Subscribe" : "Purchase"}
+              {purchased && "d"}
             </button>
           </div>
           {/* <div className="footer">

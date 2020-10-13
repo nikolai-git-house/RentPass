@@ -14,8 +14,9 @@
 body {
   margin: 0;
   padding: 0;
-  font-family: "Graphik", sans-serif;
+  // font-family: "Graphik", sans-serif;
   line-height: 1.4;
+  background-color: white !important;
   * {
     -webkit-tap-highlight-color: rgba(0, 0, 0, 0);
     -webkit-touch-callout: none;
@@ -31,5 +32,19 @@ body {
     -moz-user-select: text;
     -ms-user-select: text;
     user-select: text;
+  }
+  .btn-green {
+    background-color: #d5fec6;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+    border: none;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    margin-right: 15px;
+    border-radius: 4px;
+    p{
+      margin-bottom: 0px;
+    }
   }
 }

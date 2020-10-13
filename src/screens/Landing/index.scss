@@ -1,0 +1,38 @@
+#landing-container {
+  margin-top: 80px;
+  margin-left: 20px;
+  margin-right: 20px;
+
+  .landing-message-item {
+    margin-top: 16px;
+    .avatar {
+      align-self: unset !important;
+    }
+
+    .message-item-wrapper {
+      margin-top: 0;
+    }
+  }
+}
+
+.landing-control.landing-page {
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start;
+  padding: 10px;
+  margin-left: 0px;
+  button.btn {
+    height: 55px;
+    padding: 5px 20px;
+    margin-top: 15px;
+    background-color: #d5fec6;
+    cursor: pointer;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+    border-radius: 8px;
+  }
+
+  p {
+    margin-bottom: 0px;
+  }
+}

@@ -117,33 +117,30 @@ class Firebase {
         callback(result);
       });
   };
-  static addEcosystemUser(user){
-    let firstname = user.firstname||"demo";
-    let dob = user.dob||"demo";
-    let phonenumber = user.phonenumber?user.phonenumber:"demo";
-    let renter_owner = user.renter_owner||null;
-    let new_user = {firstname,dob,phonenumber,renter_owner};
+  static addEcosystemUser(user) {
+    let firstname = user.firstname || "demo";
+    let dob = user.dob || "demo";
+    let phonenumber = user.phonenumber ? user.phonenumber : "demo";
+    let renter_owner = user.renter_owner || null;
+    let new_user = { firstname, dob, phonenumber, renter_owner };
     console.log("added");
-    return firebase
-        .firestore()
-        .collection("ecosystem_user")
-        .add(new_user);
+    return firebase.firestore().collection("ecosystem_user").add(new_user);
   }
-  static addRenterByEcoId(eco_id,phonenumber){
-    let new_user = {eco_id,phonenumber};
+  static addRenterByEcoId(eco_id, phonenumber) {
+    let new_user = { eco_id, phonenumber };
     return firebase
-        .firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .add(new_user);
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("user")
+      .add(new_user);
   }
-  static getEcoUserbyPhonenumber(phonenumber){
+  static getEcoUserbyPhonenumber(phonenumber) {
     return new Promise((resolve, reject) => {
       return firebase
         .firestore()
         .collection("ecosystem_user")
-        .where("phonenumber","==",phonenumber)
+        .where("phonenumber", "==", phonenumber)
         .limit(1)
         .get()
         .then((res) => {
@@ -155,30 +152,30 @@ class Firebase {
         });
     });
   }
-  static getRenterbyPhonenumber(phonenumber){
+  static getRenterbyPhonenumber(phonenumber) {
     return new Promise((resolve, reject) => {
       return firebase
         .firestore()
         .collection("Rental Community")
         .doc("data")
         .collection("user")
-        .where("phonenumber","==",phonenumber)
+        .where("phonenumber", "==", phonenumber)
         .limit(1)
         .get()
         .then((res) => {
           if (res.size === 0) resolve(false);
-          else{
+          else {
             let renter = res.docs[0].data();
             renter.renter_id = res.docs[0].id;
             resolve(renter);
-          } 
+          }
         })
         .catch((err) => {
           reject(err);
         });
     });
   }
-  static getEcoUserbyId(eco_id){
+  static getEcoUserbyId(eco_id) {
     return new Promise((resolve, reject) => {
       return firebase
         .firestore()
@@ -193,8 +190,8 @@ class Firebase {
         });
     });
   }
-  static getAllEcoUsers(){
-    return new Promise((resolve,reject)=>{
+  static getAllEcoUsers() {
+    return new Promise((resolve, reject) => {
       let users = Firebase.firestore()
         .collection("ecosystem_user")
         .get()
@@ -204,15 +201,15 @@ class Firebase {
             id: doc.id,
           }));
         });
-        resolve(users);
-    })
+      resolve(users);
+    });
   }
-  static addHousemate(uid,property_id,renter_id,firstname){
-    console.log("uid",uid);
-    console.log("property_id",property_id);
-    console.log("renter_id",renter_id);
-    console.log("firstname",firstname);
-    return new Promise((resolve,reject)=>{
+  static addHousemate(uid, property_id, renter_id, firstname) {
+    console.log("uid", uid);
+    console.log("property_id", property_id);
+    console.log("renter_id", renter_id);
+    console.log("firstname", firstname);
+    return new Promise((resolve, reject) => {
       firebase
         .firestore()
         .collection("Rental Community")
@@ -222,18 +219,18 @@ class Firebase {
         .collection("property")
         .doc(property_id)
         .collection("housemates")
-        .add({renter_id,firstname})
-        .then(res=>{
+        .add({ renter_id, firstname })
+        .then((res) => {
           resolve(renter_id);
         })
-        .catch(err=>reject(err));
+        .catch((err) => reject(err));
     });
   }
-  static getHousemates(uid,property){
+  static getHousemates(uid, property) {
     let property_id = property.id;
     let property_address = property.property_address;
     let property_status = property.status;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
       firebase
         .firestore()
         .collection("Rental Community")
@@ -244,10 +241,10 @@ class Firebase {
         .doc(property_id)
         .collection("housemates")
         .get()
-        .then(res=>{
+        .then((res) => {
           console.log("res.size", res.size);
           let housemates = [];
-          if(res.size){
+          if (res.size) {
             housemates = res.docs.map((item) => {
               let housemate = item.data();
               housemate.status = property_status;
@@ -255,11 +252,9 @@ class Firebase {
               return housemate;
             });
             resolve(housemates);
-          }
-          else
-            resolve(housemates);
+          } else resolve(housemates);
         })
-        .catch(err=>reject(err));
+        .catch((err) => reject(err));
     });
   }
   static setActiveUser = (invitation_data) => {
@@ -363,7 +358,7 @@ class Firebase {
       .doc(uid)
       .set(data, { merge: true });
   }
-  static updateEcoUser(eco_id,data){
+  static updateEcoUser(eco_id, data) {
     return firebase
       .firestore()
       .collection("ecosystem_user")
@@ -392,11 +387,11 @@ class Firebase {
         });
     });
   }
-  static addPropertyWishtoRenter(renter_id,property){
-    console.log("new property",property);
+  static addPropertyWishtoRenter(renter_id, property) {
+    console.log("new property", property);
     const created_time = new Date().getTime();
     property.created_time = created_time;
-    return new Promise((resolve,reject)=>{
+    return new Promise((resolve, reject) => {
       firebase
         .firestore()
         .collection("Rental Community")
@@ -491,7 +486,7 @@ class Firebase {
         .set(data, { merge: true });
     });
   }
-  static updateRentersPropertyById(renter_id,property_id,data){
+  static updateRentersPropertyById(renter_id, property_id, data) {
     return new Promise((resolve, reject) => {
       firebase
         .firestore()
@@ -1556,6 +1551,65 @@ class Firebase {
       .onSnapshot((res) => {
         callback(res.docs.map((obj) => obj.data()));
       });
+  };
+
+  static updateUserData = (brand_name, uid, data) => {
+    return new Promise((resolve, reject) => {
+      let fbInstance;
+      if (brand_name === "Ecosystem") {
+        fbInstance = firebase.firestore().collection("user");
+      } else {
+        fbInstance = firebase
+          .firestore()
+          .collection(brand_name)
+          .doc("data")
+          .collection("user");
+      }
+
+      fbInstance
+        .doc(`${uid}`)
+        .set(data, { merge: true })
+        .then((res) => {
+          fbInstance
+            .doc(`${uid}`)
+            .get()
+            .then((res) => {
+              resolve(res.data());
+            })
+            .catch((err) => {
+              reject(err);
+            });
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
+  };
+
+  static saveTokenHistory = (brand_name, uid, data) => {
+    return new Promise((resolve, reject) => {
+      let fbInstance;
+      if (brand_name === "Ecosystem") {
+        fbInstance = firebase.firestore().collection("user");
+      } else {
+        fbInstance = firebase
+          .firestore()
+          .collection(brand_name)
+          .doc("data")
+          .collection("user");
+      }
+
+      fbInstance
+        .doc(`${uid}`)
+        .collection("token_history")
+        .add(data)
+        .then((res) => {
+          resolve(res);
+        })
+        .catch((error) => {
+          reject(error);
+        });
+    });
   };
 }
 Firebase.initialize();

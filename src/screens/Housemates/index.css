@@ -5,11 +5,12 @@
   flex-wrap: wrap;
   height: 100%; }
   #housemates-container button {
-    height: 200px; }
+    height: 200px;
+    box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }
 
 @media (max-width: 767px) {
   #housemates-container {
     margin-top: 20px;
     justify-content: center; }
     #housemates-container button {
-      height: 150px; } }
+      height: auto; } }

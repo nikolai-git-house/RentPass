@@ -19,6 +19,7 @@ import Ecopay from "../Ecopay";
 import Header from "../../Components/Header";
 import Explore from "../Explore";
 import PropertyPA from "../PropertyPA";
+import Landing from "../Landing";
 import { removeAll } from "../../redux/actions";
 import "./index.css";
 
@@ -39,6 +40,7 @@ class AppTemplate extends React.Component {
       <div id="page-container">
         <Header logout={this.logout} {...this.props} />
         <Switch>
+          <Route exact path="/landing" component={Landing} />
           <Route exact path="/profile" component={Profile} />
           <Route exact path="/home" component={Home} />
           <Route exact path="/properties" component={Properties} />

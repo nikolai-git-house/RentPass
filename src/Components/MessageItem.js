@@ -3,13 +3,14 @@ import ReactHtmlParser from "react-html-parser";
 import { animateScroll } from "react-scroll";
 import Loader from "./Loader";
 
-const icon = "https://firebasestorage.googleapis.com/v0/b/aiconcierge.appspot.com/o/icons%2Fagency_logo.png?alt=media&token=3b61781e-1f2b-4136-b26d-2edbed2a6034";
+const default_icon =
+  "https://firebasestorage.googleapis.com/v0/b/aiconcierge.appspot.com/o/icons%2Fagency_logo.png?alt=media&token=3b61781e-1f2b-4136-b26d-2edbed2a6034";
 class MessageItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
-      user_img: require("../images/livechat/user.png")
+      user_img: require("../images/livechat/user.png"),
     };
   }
 
@@ -20,10 +21,10 @@ class MessageItem extends Component {
       () => {
         if (type === "bot")
           animateScroll.scrollToBottom({
-            duration: 0
+            duration: 0,
           });
         this.setState({
-          loaded: true
+          loaded: true,
         });
       },
       type === "bot" ? timeoutValue : 0
@@ -31,7 +32,7 @@ class MessageItem extends Component {
   }
 
   render() {
-    const { firstChild, logo } = this.props;
+    const { firstChild, logo, icon } = this.props;
     const { type, message, mark, end } = this.props.message;
     const { loaded, user_img } = this.state;
     return (
@@ -39,23 +40,23 @@ class MessageItem extends Component {
         style={
           type === "bot"
             ? {
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              justifyContent: "flex-start"
-            }
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "flex-start",
+              }
             : {
-              width: "100%",
-              display: "flex",
-              flexDirection: "row",
-              alignItems: "flex-start",
-              justifyContent: "flex-end"
-            }
+                width: "100%",
+                display: "flex",
+                flexDirection: "row",
+                alignItems: "flex-start",
+                justifyContent: "flex-end",
+              }
         }
       >
         {type === "bot" && (
           <img
-            src={icon}
+            src={icon || default_icon}
             style={{ width: 40, height: 40 }}
             alt="concierge"
             className="avatar"
@@ -65,7 +66,7 @@ class MessageItem extends Component {
         <div
           className={`message-item-wrapper ${loaded ? "loaded" : ""} ${type} ${
             firstChild ? "first-child" : ""
-            }`}
+          }`}
         >
           <Loader />
 

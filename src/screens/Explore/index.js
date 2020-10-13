@@ -36,14 +36,15 @@ class Explore extends React.Component {
     this.state = {
       top10Retailers: [],
       timeToGo: 0,
-      territory:"UK"
+      territory: "UK",
     };
   }
 
   componentDidMount() {
-    const { profile} = this.props;
-    const territory = profile.phonenumber.includes("+44")?"UK":"USA";
-    this.setState({territory});
+    const { profile } = this.props;
+    const territory =
+      profile && profile.phonenumber.includes("+44") ? "UK" : "USA";
+    this.setState({ territory });
     Firebase.getAllDeactiveRetailers((res) => {
       let deactive = [];
       if (res) deactive = res;
@@ -76,7 +77,7 @@ class Explore extends React.Component {
       delay: 0,
       smooth: "easeInOutQuart",
       containerId: "containerElement",
-      offset: 30
+      offset: 30,
     });
 
     var next = timeIndex == top10Retailers.length - 1 ? 0 : timeIndex + 1;
@@ -97,7 +98,7 @@ class Explore extends React.Component {
   };
 
   render() {
-    const { top10Retailers,territory } = this.state;
+    const { top10Retailers, territory } = this.state;
     return (
       <div id="page-container" className="explore-page-container">
         <div id="main-container">

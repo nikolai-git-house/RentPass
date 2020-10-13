@@ -10,7 +10,7 @@ import {
   saveProperties,
   saveUsers,
   saveBrand,
-  saveHousemates, 
+  saveHousemates,
 } from "../../redux/actions";
 import "./index.css";
 import logoImg from "../../images/login/logo.png";
@@ -76,7 +76,7 @@ class LogIn extends React.PureComponent {
         this.props.dispatch(saveProperties(properties));
         localStorage.setItem("rentkey_users", JSON.stringify(properties));
       });
-      
+
     let brand_Data = await Firebase.getBrandDataByName("Rental Community");
     console.log("brand_Data", brand_Data);
     this.props.dispatch(saveBrand(brand_Data));
@@ -85,7 +85,12 @@ class LogIn extends React.PureComponent {
     // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
     this.props.dispatch(saveProfile(profile));
     this.props.dispatch(saveUID(profile.renter_id));
-    this.props.history.push("/explore");
+
+    if (profile.tokens !== null && profile.tokens !== undefined) {
+      this.props.history.push("/explore");
+    } else {
+      this.props.history.push("/landing");
+    }
   };
   SignIn = () => {
     this.setState({ send_sms: true });
@@ -104,21 +109,21 @@ class LogIn extends React.PureComponent {
       console.log("response", response);
     }
   };
-  SignUp = ()=>{
+  SignUp = () => {
     this.props.history.push("/signup");
-  }
+  };
   Confirm = async () => {
     const { pin, sms, phonenumber } = this.state;
     if (pin !== sms) {
       alert("SMS code is not matching.");
       this.setState({ send_sms: false });
     } else {
-        let profile = await Firebase.getRenterbyPhonenumber(phonenumber);
-        const{eco_id} = profile;
-        console.log("eco_id",eco_id);
-        let result = await Firebase.getEcoUserbyId(eco_id);
-        profile = Object.assign({}, profile, result);
-        this.start(profile);
+      let profile = await Firebase.getRenterbyPhonenumber(phonenumber);
+      const { eco_id } = profile;
+      console.log("eco_id", eco_id);
+      let result = await Firebase.getEcoUserbyId(eco_id);
+      profile = Object.assign({}, profile, result);
+      this.start(profile);
     }
   };
   Login = () => {
@@ -170,7 +175,9 @@ class LogIn extends React.PureComponent {
                                     marginBottom: 32,
                                   }}
                                 >
-                                  <p style={{ fontSize: 20,marginBottom:0 }}>+44</p>
+                                  <p style={{ fontSize: 20, marginBottom: 0 }}>
+                                    +44
+                                  </p>
                                   <input
                                     type="text"
                                     className="form-control form-control-lg form-control-alt"

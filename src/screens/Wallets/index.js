@@ -68,7 +68,7 @@ class Wallets extends React.Component {
       this.setState({ subscriptions })
     );
     Firebase.getBoltPackages((res) => {
-      const {brand} = this.props;
+      const { brand } = this.props;
       const { inactiveBoltPackages } = brand;
       let boltPackages = Object.keys(res)
         .filter(
@@ -163,6 +163,76 @@ class Wallets extends React.Component {
             </div>
           ))}
         </div>
+      </div>
+    );
+  };
+
+  renderCards = () => {
+    const { paymentMethods, loading } = this.state;
+    const showPaymentMethod =
+      paymentMethods &&
+      paymentMethods.slice(0, 2).map((item, index) => {
+        return (
+          <div className="card-container" key={item.id}>
+            <img src={CreditCardIcon} className="card" alt="credit-bg"></img>
+            <img
+              src={index === 0 ? OneIcon : TwoIcon}
+              className="card-index"
+              alt="card-index"
+            ></img>
+            <img
+              src={CloseIcon}
+              className="card-remove"
+              alt="card-remove"
+              onClick={this.removePaymentMethod(item.id, item.token)}
+            ></img>
+            <p className="card-number">{item.details.lastFour}</p>
+          </div>
+        );
+      });
+    return (
+      <div className="cards-container">
+        <div className="wallet-empty">
+          <div>
+            <img
+              className="wallet-empty-placeholder"
+              src={MarketplaceIcon}
+              alt="placeholder"
+            />
+            <button
+              className="btn btn-green mobile-linked-cards"
+              onClick={() => this.setState({ paymentModal: true })}
+            >
+              Add linked cards
+            </button>
+          </div>
+
+          {paymentMethods.length > 0 && (
+            <div className="payment-methods mobile-payment-methods">
+              {showPaymentMethod}
+            </div>
+          )}
+          {loading ? (
+            <img className="wallet-uploading" src={Uploading} alt="uploading" />
+          ) : (
+            <div>
+              <p>Spend with EcoPay</p>
+              <p>Earn tokens with retailers</p>
+              <p>Purchase in the Marketplace</p>
+              <p>Subscribe in the Marketplace</p>
+            </div>
+          )}
+
+          <button
+            className="btn btn-green"
+            onClick={() => this.setState({ paymentModal: true })}
+          >
+            Add linked cards
+          </button>
+        </div>
+        {paymentMethods.length > 0 && (
+          <div className="payment-methods">{showPaymentMethod}</div>
+        )}
       </div>
     );
   };
@@ -350,73 +420,7 @@ class Wallets extends React.Component {
               </button>
             </div>
           )}
-          {selectedTab === 1 && (
-            <div className="cards-container">
-              <div className="wallet-empty">
-                <img
-                  className="wallet-empty-placeholder"
-                  src={MarketplaceIcon}
-                  alt="placeholder"
-                />
-
-                {loading ? (
-                  <img
-                    className="wallet-uploading"
-                    src={Uploading}
-                    alt="uploading"
-                  />
-                ) : (
-                  <React.Fragment>
-                    <div>
-                      <p>Spend with EcoPay</p>
-                      <p>Earn tokens with retailers</p>
-                      <p>Purchase in the Marketplace</p>
-                      <p>Subscribe in the Marketplace</p>
-                    </div>
-                    <button
-                      className="btn btn-green"
-                      onClick={() => this.setState({ paymentModal: true })}
-                    >
-                      Add linked cards
-                    </button>
-                  </React.Fragment>
-                )}
-              </div>
-              <div>
-                {paymentMethods &&
-                  paymentMethods.slice(0, 2).map((item, index) => {
-                    return (
-                      <div
-                        className="card-container"
-                        key={item.id}
-                        style={{ marginTop: 10 }}
-                      >
-                        <img
-                          src={CreditCardIcon}
-                          className="card"
-                          alt="credit-bg"
-                        ></img>
-                        <img
-                          src={index === 0 ? OneIcon : TwoIcon}
-                          className="card-index"
-                          alt="card-index"
-                        ></img>
-                        <img
-                          src={CloseIcon}
-                          className="card-remove"
-                          alt="card-remove"
-                          onClick={this.removePaymentMethod(
-                            item.id,
-                            item.token
-                          )}
-                        ></img>
-                        <p className="card-number">{item.details.lastFour}</p>
-                      </div>
-                    );
-                  })}
-              </div>
-            </div>
-          )}
+          {selectedTab === 1 && this.renderCards()}
           {selectedTab === 2 && this.renderSubscriptions()}
         </div>
         <AddPaymentMethodModal

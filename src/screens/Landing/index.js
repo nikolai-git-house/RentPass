@@ -143,11 +143,12 @@ class Landing extends React.Component {
   }
 
   onClickGetStarted = async () => {
-    const { brand, uid, dispatch } = this.props;
-    const profile = await Firebase.updateUserData(brand.name, uid, {
+    const { brand, uid, dispatch,profile } = this.props;
+    profile.tokens = 200;
+    await Firebase.updateUserData("Rental Community", uid, {
       tokens: 200,
     });
-    await Firebase.saveTokenHistory(brand.name, uid, {
+    await Firebase.saveTokenHistory("Rental Community", uid, {
       created: new Date(),
       amount: -200,
       type: "started",

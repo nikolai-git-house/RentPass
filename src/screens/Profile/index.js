@@ -167,7 +167,7 @@ class Profile extends React.Component {
     const territory = (phonenumber || "").startsWith("+1") ? "USA" : "UK";
     return (
       <div id="profile-container" className="row no-gutters">
-        <div className="view-controls">
+        {/* <div className="view-controls">
           <button
             className={`btn btn-switch ${
               viewMode === "profile" ? "active" : ""
@@ -185,7 +185,7 @@ class Profile extends React.Component {
           >
             Referencing
           </button>
-        </div>
+        </div> */}
         <div
           className={`row no-gutters ${
             this.state.viewMode !== "profile" ? "mobile-hide" : "mobile-show"
@@ -401,7 +401,7 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
-        <div
+        {/* <div
           className={`col-md-10 col-lg-10 col-xl-10 ${
             this.state.viewMode === "profile" ? "mobile-hide" : ""
           }`}
@@ -412,7 +412,7 @@ class Profile extends React.Component {
             title="rent robot"
             className="rentbot-iframe"
           />
-        </div>
+        </div> */}
       </div>
     );
   }

@@ -207,7 +207,7 @@ class Wallets extends React.Component {
             </button>
           </div>
 
-          {paymentMethods.length > 0 && (
+          {paymentMethods && paymentMethods.length > 0 && (
             <div className="payment-methods mobile-payment-methods">
               {showPaymentMethod}
             </div>
@@ -230,7 +230,7 @@ class Wallets extends React.Component {
             Add linked cards
           </button>
         </div>
-        {paymentMethods.length > 0 && (
+        {paymentMethods && paymentMethods.length > 0 && (
           <div className="payment-methods">{showPaymentMethod}</div>
         )}
       </div>

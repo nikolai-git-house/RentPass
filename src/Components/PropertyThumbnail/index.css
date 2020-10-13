@@ -27,3 +27,14 @@
 @media (max-width: 767px) {
   .property-thumb {
     width: 100%; } }
+
+.btn-activated {
+  color: black;
+  background-color: #ff9900;
+  cursor: pointer;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }
+
+.btn-deactivated {
+  background-color: #d5fec6;
+  cursor: pointer;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }

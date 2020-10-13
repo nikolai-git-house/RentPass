@@ -125,7 +125,12 @@ class NewProperty extends React.Component {
             <button
               type="button"
               className="btn btn-secondary"
-              onClick={() => this.toggleModal()}
+              onClick={() => {
+                if(properties.length===4)
+                  alert("You cannot add properties more.");
+                else
+                  this.toggleModal()
+              }}
               style={{ margin: 20 }}
             >
               Add a wishlist property

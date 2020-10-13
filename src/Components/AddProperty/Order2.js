@@ -52,12 +52,12 @@ class Order2 extends React.Component {
     }
   };
   Add = () => {
-    const { rental_type, img_content, price, content } = this.state;
+    const { rental_type, price } = this.state;
     const { onAdd } = this.props;
-    onAdd(rental_type, img_content, price, content);
+    onAdd(rental_type, price);
   };
   render() {
-    const { rental_type, img_content, price } = this.state;
+    const { rental_type, price } = this.state;
     const { onBack, onClose } = this.props;
     return (
       <div>
@@ -110,7 +110,7 @@ class Order2 extends React.Component {
               styles={Styles}
             />
           </div>
-          <div className="form-group">
+          {/* <div className="form-group">
             <label htmlFor="example-text-input">Property Image</label>
             <input
               type="file"
@@ -122,7 +122,7 @@ class Order2 extends React.Component {
             {img_content && (
               <img src={img_content} width="40%" height="100%" alt="property" />
             )}
-          </div>
+          </div> */}
         </div>
         <div className="modal-footer">
           <button

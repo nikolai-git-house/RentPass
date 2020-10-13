@@ -21,19 +21,17 @@ class AddProperty extends React.PureComponent {
       this.setState({ isOnOrder2: true });
     else alert("All fields are required.");
   };
-  onAdd = (rental_type, img_content, price, content) => {
+  onAdd = (rental_type, price) => {
     this.setState({
       rental_type,
-      img_content,
       price,
-      content,
       isOnOrder2: false,
     });
-    if (rental_type && price && content)
-      this.addProperty(rental_type, price, content);
+    if (rental_type && price)
+      this.addProperty(rental_type, price);
     else alert("All fields are required.");
   };
-  addProperty = (rental_type, price, content) => {
+  addProperty = (rental_type, price) => {
     const { toggleModal } = this.props;
     const { property_type, bedrooms, address } = this.state;
     const property = {
@@ -41,8 +39,7 @@ class AddProperty extends React.PureComponent {
       rental_type:rental_type.value,
       price,
       bedrooms,
-      address:address.value,
-      content
+      address:address.value
     };
     toggleModal();
     console.log("property", property);
@@ -78,8 +75,8 @@ class AddProperty extends React.PureComponent {
         />
         {isOnOrder2 && (
           <Order2
-            onAdd={(rental_type, img_content, price, content) =>
-              this.onAdd(rental_type, img_content, price, content)
+            onAdd={(rental_type, price) =>
+              this.onAdd(rental_type,price)
             }
             onClose={this.onToggle}
             onBack={() => this.setState({ isOnOrder2: false })}

@@ -69,7 +69,10 @@ class LogIn extends React.PureComponent {
           snapshot.forEach((doc) => {
             let property = doc.data();
             property.id = doc.id;
-            properties.push(property);
+            if(property.status==="active")
+              properties.unshift(property)
+            else
+              properties.push(property);
           });
           console.log("properties in this user's wishlist", properties);
         }

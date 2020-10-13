@@ -32,16 +32,13 @@ class NewProperty extends React.Component {
       rental_type,
       price,
       bedrooms,
-      address,
-      content
+      address
     } = property;
-    let property_img_url = await Firebase.addPropertyImage(content);
     let new_property={bedrooms:parseInt(bedrooms),
       property_type,
       rental_type,
       month_price:parseInt(price),
       property_address:address,
-      url:property_img_url,
       status:properties.length?"pending":"active"
     }
     let property_id = await Firebase.addPropertyWishtoRenter(uid,new_property);
@@ -115,6 +112,7 @@ class NewProperty extends React.Component {
               return (
                 <PropertyThumbnail
                   property={item}
+                  order={index}
                   key={index}
                   onRequestPropertyTest={() => this.requestPropertyTest(item)}
                   Activate={this.Activate}
@@ -123,14 +121,14 @@ class NewProperty extends React.Component {
               );
             })}
 
-          {!adding && properties.length!==0&&(
+          {!adding && properties.length > 0 &&(
             <button
               type="button"
               className="btn btn-secondary"
               onClick={() => this.toggleModal()}
               style={{ margin: 20 }}
             >
-              Add Property
+              Add a wishlist property
             </button>
           )}
         </div>

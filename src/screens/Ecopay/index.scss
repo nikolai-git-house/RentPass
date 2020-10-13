@@ -154,6 +154,19 @@ $inputAnimationDuration: 700ms;
     margin-left: 10px;
     align-self: center;
   }
+
+  .purchasing {
+    width: 100%;
+    max-width: 350px;
+    display: block;
+    margin: auto;
+
+    @media only screen and (max-width: 768px) {
+      margin-left: -20px;
+      max-width: calc(100vw);
+      width: calc(100vw);
+    }
+  }
 }
 
 .landing-control {

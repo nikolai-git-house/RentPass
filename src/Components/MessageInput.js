@@ -54,6 +54,7 @@ class MessageInput extends Component {
 
   getStaticMessage() {
     const { addMessage, message, logo } = this.props;
+
     if (Array.isArray(message.message)) {
       return (
         <div className="message-array">
@@ -83,6 +84,7 @@ class MessageInput extends Component {
         className={`message message-static ${
           logo === "ecosystem" ? " " : "notbolt"
         }`}
+        style={message.style}
         onClick={() => {
           if (message.signup) {
             const signup_profile = {
@@ -208,16 +210,15 @@ class MessageInput extends Component {
     const { addMessage, message } = this.props;
     return (
       <SelectBrand
-        addMessage={(message) =>{
+        addMessage={(message) => {
           addMessage({
             type: "user",
-            retailer:message,
+            retailer: message,
             message: message.retailerName,
             inputType: "selectbrand",
             isNext: true,
-          })
-        } 
-        }
+          });
+        }}
         message={message}
       />
     );
@@ -318,7 +319,7 @@ class MessageInput extends Component {
     let status = profile["addressType"];
     addMessage({
       message: date,
-      profile:profile,
+      profile: profile,
       status: status,
       ...message,
     });
@@ -327,7 +328,7 @@ class MessageInput extends Component {
     return string.charAt(0).toUpperCase() + string.slice(1);
   }
   addMessage = async () => {
-    const { addMessage, message, is_member, logo,setTicket } = this.props;
+    const { addMessage, message, is_member, logo, setTicket } = this.props;
     const { value } = this.state;
     if (message.key === "email") {
       if (value && !/^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/.test(value))
@@ -371,9 +372,9 @@ class MessageInput extends Component {
           type: "user",
           message: value,
           inputType: "input",
-          profile:profile,
+          profile: profile,
           isNext: message.isNext,
-          isCommunication: message.isCommunication
+          isCommunication: message.isCommunication,
         });
       }
     } else if (message.key === "password") {
@@ -398,83 +399,83 @@ class MessageInput extends Component {
         });
       }
     } else if (message.key === "phone") {
-        let number = clearZero(value);
-        let phone = "+44" + number;
-        this.setState({ checking_phone: true });
-        let result = await Firebase.getEcoUserbyPhonenumber(phone);
-        this.setState({ checking_phone: false });
-        if (!result) {
-          let pin = this.createPincode();
-          pin = pin.toString();
-          console.log("pin", pin);
-          localStorage.setItem("phone", phone);
-          localStorage.setItem("pin", pin);
-          let response = doSMS(phone, pin, logo);
-          console.log("response", response);
+      let number = clearZero(value);
+      let phone = "+44" + number;
+      this.setState({ checking_phone: true });
+      let result = await Firebase.getEcoUserbyPhonenumber(phone);
+      this.setState({ checking_phone: false });
+      if (!result) {
+        let pin = this.createPincode();
+        pin = pin.toString();
+        console.log("pin", pin);
+        localStorage.setItem("phone", phone);
+        localStorage.setItem("pin", pin);
+        let response = doSMS(phone, pin, logo);
+        console.log("response", response);
 
-          addMessage({
-            type: "user",
-            message: phone,
-            key: "phone",
-            inputType: "input",
-            isNext: message.isNext,
-          });
-        } else {
-          let eco_id = result.id;
-          let profile = result.data();
-          profile.eco_id = eco_id;
-          this.setState({
-            modalIsOpen: true,
-            caption: "profile_exist",
-            content: profile,
-          });
-        }
-      } else if (message.key === "sms") {
-        let phone = localStorage.getItem("phone");
-        let pin = localStorage.getItem("pin");
-        if (pin === value) {
-          profile["phonenumber"] = phone;
-          addMessage({
-            type: "user",
-            message: value,
-            key: message.key,
-            inputType: "input",
-            is_member: is_member,
-            profile: profile,
-            phone: phone,
-            isNext: message.isNext,
-          });
-        } else {
-          addMessage({
-            type: "user",
-            message: value,
-            key: "wrong_sms",
-            inputType: "input",
-            isNext: message.isNext,
-          });
-        }
-      } else if (message.key === "bill-price") {
-        profile[message.key] = value;
         addMessage({
           type: "user",
-          message: value,
-          profile: profile,
-          key: message.key,
+          message: phone,
+          key: "phone",
           inputType: "input",
           isNext: message.isNext,
         });
-      }else {
-        profile[message.key] = value;
-        addMessage({
-          type: "user",
-          message: value,
-          profile: profile,
-          key: message.key,
-          inputType: "input",
-          isNext: message.isNext,
-          isCommunicationLayer: message.isCommunicationLayer
+      } else {
+        let eco_id = result.id;
+        let profile = result.data();
+        profile.eco_id = eco_id;
+        this.setState({
+          modalIsOpen: true,
+          caption: "profile_exist",
+          content: profile,
         });
       }
+    } else if (message.key === "sms") {
+      let phone = localStorage.getItem("phone");
+      let pin = localStorage.getItem("pin");
+      if (pin === value) {
+        profile["phonenumber"] = phone;
+        addMessage({
+          type: "user",
+          message: value,
+          key: message.key,
+          inputType: "input",
+          is_member: is_member,
+          profile: profile,
+          phone: phone,
+          isNext: message.isNext,
+        });
+      } else {
+        addMessage({
+          type: "user",
+          message: value,
+          key: "wrong_sms",
+          inputType: "input",
+          isNext: message.isNext,
+        });
+      }
+    } else if (message.key === "bill-price") {
+      profile[message.key] = value;
+      addMessage({
+        type: "user",
+        message: value,
+        profile: profile,
+        key: message.key,
+        inputType: "input",
+        isNext: message.isNext,
+      });
+    } else {
+      profile[message.key] = value;
+      addMessage({
+        type: "user",
+        message: value,
+        profile: profile,
+        key: message.key,
+        inputType: "input",
+        isNext: message.isNext,
+        isCommunicationLayer: message.isCommunicationLayer,
+      });
+    }
   };
   componentWillLeave(callback) {
     const { message } = this.props;
@@ -493,11 +494,11 @@ class MessageInput extends Component {
     this.setState({ modalIsOpen: false });
     window.location.reload();
   };
-  wantRenter = (profile) =>{
-    const {wantRenter} = this.props;
+  wantRenter = (profile) => {
+    const { wantRenter } = this.props;
     this.setState({ modalIsOpen: false });
     wantRenter(profile);
-  }
+  };
   goBack = () => {
     const { goBack } = this.props;
     goBack();

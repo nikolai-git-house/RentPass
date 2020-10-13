@@ -2,10 +2,16 @@ import React, { Component } from "react";
 
 class ToggleButton extends Component {
   render() {
-    const { options } = this.props;
+    const { options, row } = this.props;
     return (
-      <div>
-        <hr />
+      <div
+        style={{
+          display: "flex",
+          flexDirection: row ? "row" : "column-reverse",
+          alignItems: "center",
+          justifyContent: "space-around",
+        }}
+      >
         {options &&
           options.map((message, index) => (
             <div
@@ -13,7 +19,12 @@ class ToggleButton extends Component {
               key={index}
               onClick={() => this.props.setSelectedOption(index)}
             >
-              <div className="message">{message.text}</div>
+              <div
+                className="message"
+                style={{ backgroundColor: message.backgroundColor }}
+              >
+                {message.text}
+              </div>
             </div>
           ))}
       </div>

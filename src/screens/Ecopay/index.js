@@ -127,7 +127,7 @@ class Ecopay extends React.Component {
   }
 
   profileTokenUpdate = async (delta) => {
-    this.setState({ loading: true });
+    this.setState({ loading: true }, () => this.scrollToBottom(500));
     let message = "";
     let data = null;
     try {
@@ -270,16 +270,18 @@ class Ecopay extends React.Component {
       this.addBotMessageGroup([
         {
           type: "bot",
-          message: `That costs you ${CurrencyOptions[territory]}${(
-            value * proValue
-          ).toFixed(2)}`,
-        },
-        {
-          type: "bot",
           message: `You spend ${parseInt(
             (value - (value * proValue).toFixed(2)).toFixed(2) * 100,
             10
-          )} tokens`,
+          )} of your tokens, which is equivalent to ${
+            CurrencyOptions[territory]
+          }${(value - (value * proValue).toFixed(2)).toFixed(2)}`,
+        },
+        {
+          type: "bot",
+          message: `That costs you ${CurrencyOptions[territory]}${(
+            value * proValue
+          ).toFixed(2)}`,
         },
         // Added it temporary for Notting Hill Carnival
         // {
@@ -458,27 +460,27 @@ class Ecopay extends React.Component {
     const { showInput, userMessage, loading } = this.state;
     const { profile, brand } = this.props;
     return (
-        <div id="ecopay-container">
-          <TokenGuide territory="UK" />
-          {this.setMessages()}
-          {loading && (
-            <img src={Purchasing} alt="purchasing" className="purchasing" />
-          )}
-          <div component="div" className="message-input-container">
-            {showInput ? (
-              <MessageInput
-                message={userMessage}
-                addMessage={this.addMessage}
-                isIphoneX
-                // logo={logo}
-                onRestart={this.goBack}
-                profile={profile}
-                territory="UK"
-                // uid={uid}
-              />
-            ) : null}
-          </div>
+      <div id="ecopay-container">
+        <TokenGuide territory="UK" />
+        {this.setMessages()}
+        {loading && (
+          <img src={Purchasing} alt="purchasing" className="purchasing" />
+        )}
+        <div component="div" className="message-input-container">
+          {showInput ? (
+            <MessageInput
+              message={userMessage}
+              addMessage={this.addMessage}
+              isIphoneX
+              // logo={logo}
+              onRestart={this.goBack}
+              profile={profile}
+              territory="UK"
+              // uid={uid}
+            />
+          ) : null}
         </div>
+      </div>
     );
   }
 }

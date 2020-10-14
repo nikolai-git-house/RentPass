@@ -146,7 +146,7 @@ class Header extends React.Component {
                     style={{ width: 12, marginRight: 10 }}
                     src={property_png}
                   />
-                  <span className="nav-main-link-name">Property</span>
+                  <span className="nav-main-link-name">Properties</span>
                 </NavLink>
               </li>
               {/* <li className="nav-main-item" onClick={this.click}>

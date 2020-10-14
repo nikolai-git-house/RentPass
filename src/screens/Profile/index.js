@@ -376,7 +376,7 @@ class Profile extends React.Component {
                   <div className="row_editable_item">
                     <img src={employment_img} width="30" alt="employment"></img>
                     <p className="row_item_value">
-                      Employment, affordability & income
+                      Employment & affordability
                     </p>
                     <div className="edit">
                       <img src={pause_img} alt="pause" />

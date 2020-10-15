@@ -141,13 +141,13 @@ class Explore extends React.Component {
               <img src={security_png} />
               <span className="nav-main-link-name">ID</span>
             </NavLink>
-            <NavLink to="/housemates" className="explore-item-button">
+            {/* <NavLink to="/housemates" className="explore-item-button">
               <img src={housemates_png} />
               <span className="nav-main-link-name">Housemates</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink to="/property" className="explore-item-button">
               <img src={property_png} />
-              <span className="nav-main-link-name">Property</span>
+              <span className="nav-main-link-name">Properties</span>
             </NavLink>
             {/* <NavLink to="/feeds" className="explore-item-button">
               <img src={feeds_png} />
@@ -166,7 +166,7 @@ class Explore extends React.Component {
               <img src={token_img} />
               <span className="nav-main-link-name">Token Offers</span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to={{
                 pathname: "/earn",
               }}
@@ -174,7 +174,7 @@ class Explore extends React.Component {
             >
               <img src={chip_png} />
               <span className="nav-main-link-name">Earn Tokens</span>
-            </NavLink>
+            </NavLink> */}
             <NavLink
               to={{
                 pathname: "/wallets",

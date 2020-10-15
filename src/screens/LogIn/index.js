@@ -8,6 +8,7 @@ import {
   saveUID,
   saveProfile,
   saveProperties,
+  saveGroups,
   saveUsers,
   saveBrand,
   saveHousemates,
@@ -57,32 +58,47 @@ class LogIn extends React.PureComponent {
     this.setState({ [e.target.name]: e.target.value });
   };
   start = async (profile) => {
-    this.unsubscribeProperties = Firebase.firestore()
+    let renter_id = profile.renter_id;
+    this.unsubscribeGroups = Firebase.firestore()
       .collection("Rental Community")
       .doc("data")
-      .collection("user")
-      .doc(profile.renter_id)
-      .collection("property")
-      .onSnapshot((snapshot) => {
-        let properties = [];
-        if (snapshot.size) {
-          snapshot.forEach((doc) => {
-            let property = doc.data();
-            property.id = doc.id;
-            if(property.status==="active")
-              properties.unshift(property)
-            else
-              properties.push(property);
-          });
-          console.log("properties in this user's wishlist", properties);
-        }
-        this.props.dispatch(saveProperties(properties));
-        localStorage.setItem("rentkey_users", JSON.stringify(properties));
-      });
+      .collection("group")
+      .onSnapshot(async (snapshot) => {
+        let linked_groups = await Firebase.getAllGroupswithRenter(renter_id);
+        this.props.dispatch(saveGroups(linked_groups));
+        let promises = linked_groups.map(async group=>{
+          let property_id = group.property_id;
+          let property = await Firebase.getProperty(property_id);
+          property.id = property_id;
+          property.status = group.status;
+          property.group_id = group.id;
+          return property;
+        });
+        Promise.all(promises).then(res=>{
+          console.log("properties",res);
+          this.props.dispatch(saveProperties(res));
+        })
+    });
+    // this.unsubscribeProperties = Firebase.firestore()
+    //   .collection("Rental Community")
+    //   .doc("data")
+    //   .collection("property")
+    //   .onSnapshot(async (snapshot) => {
+    //     let linked_properties = await Firebase.getAllRentersProperties(renter_id);
+    //     let properties = [];
+    //     linked_properties.map(property=>{
+    //       if(property.status==="active")
+    //         properties.unshift(property);
+    //       else
+    //         properties.push(property);
 
-    let brand_Data = await Firebase.getBrandDataByName("Rental Community");
-    console.log("brand_Data", brand_Data);
-    this.props.dispatch(saveBrand(brand_Data));
+    //     });
+    //     this.props.dispatch(saveProperties(properties));
+    //   });
+
+    // let brand_Data = await Firebase.getBrandDataByName("Rental Community");
+    // console.log("brand_Data", brand_Data);
+    // this.props.dispatch(saveBrand(brand_Data));
     // localStorage.setItem("rentkey_uid", result.id);
     // localStorage.setItem("rentkey_profile", JSON.stringify(profile));
     // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));

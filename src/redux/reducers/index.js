@@ -6,7 +6,8 @@ export const initialState = {
   users: [],
   brand: {},
   housemates: [],
-  properties: []
+  properties: [],
+  groups: []
 };
 
 const saveProfileReducer = (state, action) => ({
@@ -16,6 +17,10 @@ const saveProfileReducer = (state, action) => ({
 const savePropertiesReducer = (state, action) => ({
   ...state,
   properties: action.properties
+});
+const saveGroupsReducer = (state, action) => ({
+  ...state,
+  groups: action.groups
 });
 const saveUIDReducer = (state, action) => ({
   ...state,
@@ -39,6 +44,7 @@ const removeAllReducer = (state, action) => ({
   ...state,
   profile: null,
   properties: [],
+  groups: [],
   renters: [],
   brand: {},
   housemates: [],
@@ -47,6 +53,7 @@ const removeAllReducer = (state, action) => ({
 const actionHandlers = {
   SAVE_PROFILE: saveProfileReducer,
   SAVE_PROPERTIES: savePropertiesReducer,
+  SAVE_GROUPS: saveGroupsReducer,
   SAVE_UID: saveUIDReducer,
   SAVE_USERS: saveUsersReducer,
   SAVE_HOUSEMATES: saveHousematesReducer,

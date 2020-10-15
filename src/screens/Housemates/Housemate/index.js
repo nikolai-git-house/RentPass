@@ -25,7 +25,6 @@ class Housemate extends React.Component {
   }
   componentDidMount() {
     const { profile } = this.props;
-    console.log("profile in componentDidMount", profile);
     this.setState({ profile });
   }
   componentWillReceiveProps(nextProps) {
@@ -33,20 +32,18 @@ class Housemate extends React.Component {
     this.setState({ profile });
   }
   render() {
-    const { profile } = this.props;
-    const { avatar_url, status,address, firstname } = profile;
+    const { profile ,self,active,showProfile} = this.props;
+    const { firstname } = profile;
     return (
       
-        <div className="housemate-view">
+        <div className="housemate-view" onClick={showProfile}>
           <img
-            src={avatar_url ? avatar_url : status==="pending"?avatar_pending_img:avatar_complete_img}
+            src={active?avatar_complete_img:avatar_pending_img}
             width="200"
             alt="avatar"
           />
           <div className="info">
-            <p>{firstname}</p>
-            <p>{address}</p>
-            <p style={{color:status==="active"?"#00ff00":"#ff9900"}}>{status==="active"?"Active":"Pending"} housemate</p>
+            <p>{self?"Me":`${firstname}`}</p>
           </div>
         </div>
       

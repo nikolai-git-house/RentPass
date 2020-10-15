@@ -204,59 +204,6 @@ class Firebase {
       resolve(users);
     });
   }
-  static addHousemate(uid, property_id, renter_id, firstname) {
-    console.log("uid", uid);
-    console.log("property_id", property_id);
-    console.log("renter_id", renter_id);
-    console.log("firstname", firstname);
-    return new Promise((resolve, reject) => {
-      firebase
-        .firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .doc(uid)
-        .collection("property")
-        .doc(property_id)
-        .collection("housemates")
-        .add({ renter_id, firstname })
-        .then((res) => {
-          resolve(renter_id);
-        })
-        .catch((err) => reject(err));
-    });
-  }
-  static getHousemates(uid, property) {
-    let property_id = property.id;
-    let property_address = property.property_address;
-    let property_status = property.status;
-    return new Promise((resolve, reject) => {
-      firebase
-        .firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .doc(uid)
-        .collection("property")
-        .doc(property_id)
-        .collection("housemates")
-        .get()
-        .then((res) => {
-          console.log("res.size", res.size);
-          let housemates = [];
-          if (res.size) {
-            housemates = res.docs.map((item) => {
-              let housemate = item.data();
-              housemate.status = property_status;
-              housemate.address = property_address.line_1;
-              return housemate;
-            });
-            resolve(housemates);
-          } else resolve(housemates);
-        })
-        .catch((err) => reject(err));
-    });
-  }
   static setActiveUser = (invitation_data) => {
     const { brand, uid, property_id, phonenumber } = invitation_data;
     return new Promise((resolve, reject) => {
@@ -387,56 +334,35 @@ class Firebase {
         });
     });
   }
-  static addPropertyWishtoRenter(renter_id, property) {
-    console.log("new property", property);
-    const created_time = new Date().getTime();
-    property.created_time = created_time;
-    return new Promise((resolve, reject) => {
-      firebase
-        .firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .doc(renter_id)
-        .collection("property")
-        .add(property)
-        .then((res) => {
-          resolve(res.id);
-        })
-        .catch((err) => {
-          reject(err);
-        });
-    });
-  }
-  static addProperty(landlord_id, property, content) {
-    const { property_address } = property;
-    const { first_address_line } = property_address;
-    return new Promise(async (resolve, reject) => {
-      try {
-        let url = await this.addPropertyImage(first_address_line, content);
-        property.url = url;
-        property.landlord_id = landlord_id;
-        firebase
-          .firestore()
-          .collection("property")
-          .add(property)
-          .then((res) => {
-            Firebase.addPropertytoProfile(landlord_id, property, res.id, url)
-              .then((result) => {
-                if (result) resolve(result);
-              })
-              .catch((err) => {
-                reject(err);
-              });
-          })
-          .catch((err) => {
-            reject(err);
-          });
-      } catch (error) {
-        console.log("error", error);
-      }
-    });
-  }
+  // static addProperty(landlord_id, property, content) {
+  //   const { property_address } = property;
+  //   const { first_address_line } = property_address;
+  //   return new Promise(async (resolve, reject) => {
+  //     try {
+  //       let url = await this.addPropertyImage(first_address_line, content);
+  //       property.url = url;
+  //       property.landlord_id = landlord_id;
+  //       firebase
+  //         .firestore()
+  //         .collection("property")
+  //         .add(property)
+  //         .then((res) => {
+  //           Firebase.addPropertytoProfile(landlord_id, property, res.id, url)
+  //             .then((result) => {
+  //               if (result) resolve(result);
+  //             })
+  //             .catch((err) => {
+  //               reject(err);
+  //             });
+  //         })
+  //         .catch((err) => {
+  //           reject(err);
+  //         });
+  //     } catch (error) {
+  //       console.log("error", error);
+  //     }
+  //   });
+  // }
   static getPropertyById(property_id, brand) {
     return new Promise((resolve, reject) => {
       firebase
@@ -1408,6 +1334,237 @@ class Firebase {
         repair_sla: ticket.repair_sla ? ticket.repair_sla : null,
       });
   };
+  /*
+    Renter Methods
+  */
+ static getRenterById(renter_id){
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("user")
+      .doc(renter_id)
+      .get()
+      .then((res) => {
+        resolve(res.data());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+ }
+ static createGroup(leader_id,leader_name,property_id,status){
+  let tenants=[
+    {renter_id:leader_id,firstname:leader_name}
+  ];
+  let group={leader_id,property_id,tenants,status}
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .add(group)
+      .then((res) => {
+        resolve(res.id);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+ }
+ static getGroup(group_id){
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .doc(group_id)
+      .get()
+      .then((res) => {
+        resolve(res.data());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+ }
+ static updateGroupStatus(group_id,status){
+  return firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .doc(group_id)
+      .set({status},{merge:true});
+ }
+ static addProperty(property){
+  console.log("new property", property);
+  const created_time = new Date().getTime();
+  property.created_time = created_time;
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("property")
+      .add(property)
+      .then((res) => {
+        resolve(res.id);
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+ }
+ static getAllGroupswithRenter(renter_id){
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .get()
+      .then(res => {
+        let groups = [];
+        if (res.size !== 0){
+          let all_groups = res.docs.map((obj) =>{
+            let group_data = obj.data();
+            group_data.id = obj.id;
+            return group_data;
+          });
+          all_groups.map(group=>{
+            if(group.leader_id===renter_id)
+              groups.push(group);
+            else if(group.tenants){
+              let tenants = group.tenants;
+              let istenant = tenants.filter(tenant=>tenant.renter_id===renter_id);
+              if(istenant.length>0)
+                groups.push(group);
+            }
+          });
+        }
+        resolve(groups); 
+      })
+      .catch(err=>reject(err));
+
+  });
+ }
+ static getProperty(property_id) {
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("property")
+      .doc(`${property_id}`)
+      .get()
+      .then((res) => {
+        resolve(res.data());
+      })
+      .catch((err) => {
+        reject(err);
+      });
+  });
+}
+
+//  static addPropertyWishtoRenter(firstname,renter_id, property,status) {
+//     console.log("new property", property);
+//     const created_time = new Date().getTime();
+//     let housemates = [];
+//     housemates.push({firstname,renter_id});
+
+//     property.created_time = created_time;
+//     property.createdby = renter_id;
+//     property.housemates = housemates;
+//     property.status = status;
+//     return new Promise((resolve, reject) => {
+//       firebase
+//         .firestore()
+//         .collection("Rental Community")
+//         .doc("data")
+//         .collection("property")
+//         .add(property)
+//         .then((res) => {
+//           property.id = res.id;
+//           resolve(property);
+//         })
+//         .catch((err) => {
+//           reject(err);
+//         });
+//     });
+//   }
+ static addHousemate(group_id, renter_id, firstname) {
+  let housemate = { renter_id, firstname };
+  return new Promise(async (resolve, reject) => {
+    let group = await Firebase.getGroup(group_id);
+    let tenants = group.tenants;
+    tenants.push(housemate);
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .doc(group_id)
+      .set({tenants},{merge:true})
+      .then(() => {
+        resolve(renter_id);
+      })
+      .catch((err) => reject(err));
+  });
+ }
+ static getHousemates(group_id) {
+   return new Promise((resolve, reject) => {
+     firebase
+        .firestore()
+        .collection("Rental Community")
+        .doc("data")
+        .collection("group")
+        .doc(group_id)
+        .get()
+        .then((res) => {
+          let group_data = res.data();
+          let tenants = group_data.tenants;
+          resolve(tenants);
+        })
+        .catch((err) => reject(err));
+    });
+  }
+  // static getAllRentersProperties(renter_id){
+  //   return new Promise((resolve, reject) => {
+  //     firebase
+  //       .firestore()
+  //       .collection("Rental Community")
+  //       .doc("data")
+  //       .collection("property")
+  //       .get()
+  //       .then(res => {
+  //         let properties = [];
+  //         if (res.size !== 0){
+  //           let all_properties = res.docs.map((obj) =>{
+  //             let property_data = obj.data();
+  //             property_data.id = obj.id;
+  //             return property_data;
+  //           });
+  //           all_properties.map(property=>{
+  //             if(property.createdby===renter_id)
+  //               properties.push(property);
+  //             else if(property.housemates){
+  //               let housemates = property.housemates;
+  //               let ishousemates = housemates.filter(housemate=>housemate.renter_id===renter_id);
+  //               if(ishousemates.length>0)
+  //                 properties.push(property);
+  //             }
+  //           });
+  //         }
+  //         resolve(properties); 
+  //       })
+  //       .catch(err=>reject(err));
+
+  //   });
+  // }
   /*
    * Payment Methods
    */

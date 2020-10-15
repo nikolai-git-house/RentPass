@@ -14,18 +14,36 @@ class NewProperty extends React.Component {
     };
   }
   async componentDidMount() {
-    const { uid, profile,properties } = this.props;
+    const { uid, profile,properties,groups } = this.props;
     if (!uid) this.props.history.push("/");
-    this.setState({properties});
+    this.setState({properties,groups});
   }
   componentDidUpdate(prevProps, prevState) {
-    const { properties } = this.props;
+    const { properties,groups } = this.props;
     if(prevState.properties!==properties)
-      this.setState({properties});
+      this.setState({properties,groups});
+  }
+  isRenterActive(){
+    const {groups} = this.state;
+    const {uid} = this.props;
+    let flag = false;
+    groups.map(group=>{
+      if(group.status==="active"){
+        if(group.leader_id===uid){
+          flag= true;
+        }
+        let tenants = group.tenants;
+        let istenant = tenants.filter(tenant=>tenant.renter_id===uid);
+        if(istenant.length>0){
+          flag = true;
+        }  
+      }
+    });
+    return flag;
   }
   addProperty = async property => {
-    const { uid } = this.props;
-    const {properties} = this.state;
+    const { uid,profile } = this.props;
+    let {groups} = this.state;
     this.setState({ adding: true });
     const {
       property_type,
@@ -39,11 +57,19 @@ class NewProperty extends React.Component {
       rental_type,
       month_price:parseInt(price),
       property_address:address,
-      status:properties.length?"pending":"active"
     }
-    let property_id = await Firebase.addPropertyWishtoRenter(uid,new_property);
+    
+    if(this.isRenterActive()){
+      let property_id = await Firebase.addProperty(new_property);
+      let group_id = await Firebase.createGroup(uid,profile.firstname,property_id,"pending");
+      console.log("group is created",group_id);
+    }
+    else{
+      let property_id = await Firebase.addProperty(new_property);
+      let group_id = await Firebase.createGroup(uid,profile.firstname,property_id,"active");
+      console.log("group is created",group_id);
+    }
     this.setState({adding:false});
-    console.log("property_id",property_id);
   };
   toggleModal = () => {
     const { addproperty_visible } = this.state;
@@ -52,23 +78,12 @@ class NewProperty extends React.Component {
   requestPropertyTest = () => {
     this.props.history.push("/referencing");
   };
-  Activate = (id)=>{
-    const {uid} = this.props;
-    const {properties} = this.state;
-    console.log("Activate this",id);
-    let active_properties = properties.filter(property=>property.status==="active");
-    if(!active_properties.length)
-      Firebase.updateRentersPropertyById(uid,id,{status:"active"});
-    else
-      alert("You can activate only one property at one moment.");
-  }
-  Deactivate = (id)=>{
-    const {uid} = this.props;
-    console.log("Deactivate this",id);
-    Firebase.updateRentersPropertyById(uid,id,{status:"pending"});
+  showHousemates = (property)=>{
+    this.props.history.push("/housemates",{property});
   }
   render() {
     const { addproperty_visible,adding,properties } = this.state;
+    const {uid} = this.props;
     return (
       <React.Fragment>
         <AddProperty
@@ -112,11 +127,11 @@ class NewProperty extends React.Component {
               return (
                 <PropertyThumbnail
                   property={item}
+                  uid={uid}
                   order={index}
                   key={index}
                   onRequestPropertyTest={() => this.requestPropertyTest(item)}
-                  Activate={this.Activate}
-                  Deactivate={this.Deactivate}
+                  showHousemates={()=>this.showHousemates(item)}
                 />
               );
             })}
@@ -150,7 +165,8 @@ function mapStateToProps(state) {
   return {
     uid: state.uid,
     profile: state.profile,
-    properties:state.properties
+    properties:state.properties,
+    groups:state.groups
   };
 }
 export default connect(mapStateToProps, mapDispatchToProps)(NewProperty);

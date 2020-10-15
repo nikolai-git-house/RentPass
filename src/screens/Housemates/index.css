@@ -8,9 +8,51 @@
     height: 200px;
     box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }
 
+#address-header {
+  width: 100%;
+  margin: 20px;
+  display: flex;
+  flex-direction: row;
+  align-items: center;
+  justify-content: flex-start; }
+  #address-header .big {
+    font-weight: 600;
+    font-size: 20px;
+    margin-right: 10px;
+    margin-bottom: 0px; }
+  #address-header .small {
+    font-weight: 300;
+    font-size: 17px;
+    margin-bottom: 0px; }
+  #address-header .btn {
+    margin-left: auto;
+    margin-right: 50px; }
+
 @media (max-width: 767px) {
   #housemates-container {
     margin-top: 20px;
     justify-content: center; }
     #housemates-container button {
-      height: auto; } }
+      height: auto; }
+  #address-header {
+    flex-direction: column;
+    justify-content: center;
+    margin: 0px; }
+    #address-header .big {
+      margin: 0px; }
+    #address-header .small {
+      margin: 0px; }
+    #address-header .btn {
+      margin: 0px;
+      margin-top: 20px; } }
+
+.btn-activated {
+  color: black;
+  background-color: #ff9900;
+  cursor: pointer;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }
+
+.btn-deactivated {
+  background-color: #d5fec6;
+  cursor: pointer;
+  box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2); }

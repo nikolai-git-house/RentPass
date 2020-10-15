@@ -35,7 +35,6 @@ class AppTemplate extends React.Component {
   };
   render() {
     const { showSideBar } = this.props;
-    console.log("showSidebar", this.props);
     return (
       <div id="page-container">
         <Header logout={this.logout} {...this.props} />

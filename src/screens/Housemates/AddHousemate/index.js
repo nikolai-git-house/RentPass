@@ -11,19 +11,17 @@ class AddHousemate extends React.Component {
     this.state = {
       phonenumber: "",
       firstname: "",
-      properties:[],
     };
   }
   componentDidMount(){
-    const {properties} = this.props;
-    let new_properties = properties.map(item=>{
-      let property_id = item.id;
-      let formatted_address = item.property_address.formatted_address;
-      let property_address = this.modifyAddress(formatted_address);
-      return {value:property_id,label:property_address}
-    });
-    console.log("new properties",new_properties);
-    this.setState({properties:new_properties});
+    // let new_properties = properties.map(item=>{
+    //   let property_id = item.id;
+    //   let formatted_address = item.property_address.formatted_address;
+    //   let property_address = this.modifyAddress(formatted_address);
+    //   return {value:property_id,label:property_address}
+    // });
+    // console.log("new properties",new_properties);
+    // this.setState({properties:new_properties});
   }
   componentDidUpdate(prevProps) {
     if (prevProps.showModal && !this.props.showModal) {
@@ -33,35 +31,35 @@ class AddHousemate extends React.Component {
       });
     }
   }
-  modifyAddress = formatted_address => {
-    let str = formatted_address.reduce((result, item) => {
-      if (item) return result + item + ",";
-      else return result;
-      }, "");
+  // modifyAddress = formatted_address => {
+  //   let str = formatted_address.reduce((result, item) => {
+  //     if (item) return result + item + ",";
+  //     else return result;
+  //     }, "");
       
-    return str.slice(0, -1);
-  };
+  //   return str.slice(0, -1);
+  // };
   
   onChange = (e) => {
     this.setState({ [e.target.name]: e.target.value });
   };
   addHousemate = () => {
     const { addHousemate,toggleModal } = this.props;
-    const { phonenumber, firstname,property } = this.state;
-    if(phonenumber&&firstname&&property){
-      addHousemate(firstname, phonenumber,property);
-      this.setState({ firstname: "", phonenumber: "",property:{} });
+    const { phonenumber, firstname } = this.state;
+    if(phonenumber&&firstname){
+      addHousemate(firstname, phonenumber);
+      this.setState({ firstname: "", phonenumber: "" });
       toggleModal();
     }
     else{
       alert("Please fill all fields.");
     }
   };
-  handleChangeProperty = property => {
-    this.setState({ property });
-  };
+  // handleChangeProperty = property => {
+  //   this.setState({ property });
+  // };
   render() {
-    const { firstname, phonenumber,property,properties } = this.state;
+    const { firstname, phonenumber } = this.state;
     const { showModal, toggleModal } = this.props;
     return (
       <Modal
@@ -119,16 +117,6 @@ class AddHousemate extends React.Component {
                 onChange={this.onChange}
               />
             </div>
-          </div>
-          <div className="form-group">
-            <Select
-              className="select-custom-class"
-              name="property"
-              value={property}
-              onChange={this.handleChangeProperty}
-              options={properties}
-              styles={Styles}
-            />
           </div>
         </div>
         <div className="modal-footer">

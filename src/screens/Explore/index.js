@@ -166,7 +166,7 @@ class Explore extends React.Component {
               <img src={token_img} />
               <span className="nav-main-link-name">Token Offers</span>
             </NavLink>
-            {/* <NavLink
+            <NavLink
               to={{
                 pathname: "/earn",
               }}
@@ -174,7 +174,7 @@ class Explore extends React.Component {
             >
               <img src={chip_png} />
               <span className="nav-main-link-name">Earn Tokens</span>
-            </NavLink> */}
+            </NavLink>
             <NavLink
               to={{
                 pathname: "/wallets",

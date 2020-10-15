@@ -210,7 +210,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Token Offers</span>
                 </NavLink>
               </li>
-              {/* <li className="nav-main-item">
+              <li className="nav-main-item">
                 <NavLink
                   to={{
                     pathname: "/earn",
@@ -220,7 +220,7 @@ class Header extends React.Component {
                   <img style={{ width: 12, marginRight: 10 }} src={chip_png} />
                   <span className="nav-main-link-name">Earn Tokens</span>
                 </NavLink>
-              </li> */}
+              </li>
               <li className="nav-main-item">
                 <NavLink
                   to={{

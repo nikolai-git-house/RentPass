@@ -32,7 +32,8 @@ class EarnTokens extends React.Component {
       this.setState({ retailers: res });
     });
     Firebase.getAllTokenEarnings((tokenEarnings) => {
-      this.setState({ tokenEarnings });
+      let new_tokenEarnings = tokenEarnings.filter(obj=>obj.brand==="Rental Community"||!obj.brand);
+      this.setState({ tokenEarnings:new_tokenEarnings });
     });
   }
 

@@ -38,6 +38,7 @@ class AppTemplate extends React.Component {
     return (
       <div id="page-container">
         <Header logout={this.logout} {...this.props} />
+        <div style={{height:70}}></div>
         <Switch>
           <Route exact path="/landing" component={Landing} />
           <Route exact path="/profile" component={Profile} />

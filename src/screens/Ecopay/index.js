@@ -243,7 +243,8 @@ class Ecopay extends React.Component {
     const { brand } = this.props;
     const territory = "UK";
     if (message.inputType === "selectbrand") {
-      const retailer = message.retailer;
+      const retailer = message.message;
+      console.log("retailer",retailer);
       this.setState({ selectedRetailer: retailer });
       this.addBotMessageGroup([
         {

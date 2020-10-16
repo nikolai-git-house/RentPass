@@ -2,6 +2,7 @@ import React, { Component } from "react";
 import ReactHtmlParser from "react-html-parser";
 import { animateScroll } from "react-scroll";
 import Loader from "./Loader";
+import Barcode from "react-barcode";
 
 const default_icon =
   "https://firebasestorage.googleapis.com/v0/b/aiconcierge.appspot.com/o/icons%2Fagency_logo.png?alt=media&token=3b61781e-1f2b-4136-b26d-2edbed2a6034";
@@ -30,10 +31,38 @@ class MessageItem extends Component {
       type === "bot" ? timeoutValue : 0
     );
   }
-
+  renderMessage(obj) {
+    const { logo } = this.props;
+    const { message } = obj;
+    if (obj.inputType === "selectbrand") {
+      return (
+        <div
+          className={`message ${logo === "ecosystem" ? "" : "notbolt"}`}
+          style={{ backgroundColor: "white" }}
+        >
+          <img src={message.ecopayLogo || message.logo} width={200} />
+        </div>
+      );
+    } else if (obj.inputType === "input" && obj.key === "barcode") {
+      return (
+        <div className={`message ${logo === "ecosystem" ? "" : "notbolt"}`}>
+          <Barcode value={message} width={1} />
+        </div>
+      );
+    } else {
+      return (
+        <div
+          className={`message ${logo === "ecosystem" ? "" : "notbolt"}`}
+          style={obj.style}
+        >
+          <span>{ReactHtmlParser(message)}</span>
+        </div>
+      );
+    }
+  }
   render() {
     const { firstChild, logo, icon } = this.props;
-    const { type, message, mark, end } = this.props.message;
+    const { type, message,src, mark, end } = this.props.message;
     const { loaded, user_img } = this.state;
     return (
       <div
@@ -62,8 +91,39 @@ class MessageItem extends Component {
             className="avatar"
           />
         )}
+        {src && (
+          <div
+            className={`message-item-wrapper ${
+              loaded ? "loaded" : ""
+            } ${type} ${firstChild ? "first-child" : ""}`}
+            style={{ width: "100%", height: "200px" }}
+          >
+            <Loader />
+            <div
+              className="message"
+              style={{
+                backgroundImage: `url(${src})`,
+                width: "100%",
+                height: "100%",
+                backgroundRepeat: "no-repeat",
+                backgroundPosition: "center",
+                backgroundSize: "cover",
+              }}
+            ></div>
+          </div>
+        )}
+        {message && (
+          <div
+            className={`message-item-wrapper ${
+              loaded ? "loaded" : ""
+            } ${type} ${firstChild ? "first-child" : ""}`}
+          >
+            <Loader />
 
-        <div
+            {this.renderMessage(this.props.message)}
+          </div>
+        )}
+        {/* <div
           className={`message-item-wrapper ${loaded ? "loaded" : ""} ${type} ${
             firstChild ? "first-child" : ""
           }`}
@@ -73,7 +133,7 @@ class MessageItem extends Component {
           <div className={`message ${logo === "ecosystem" ? "" : "notbolt"}`}>
             {ReactHtmlParser(message)}
           </div>
-        </div>
+        </div> */}
         {type === "user" && (
           <img
             src={user_img}

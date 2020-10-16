@@ -1,6 +1,7 @@
 #page-header {
   box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
-  z-index: 99; }
+  z-index: 99;
+  position: fixed !important; }
 
 .content-header {
   display: flex;

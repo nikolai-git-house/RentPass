@@ -30,10 +30,9 @@ class Housemates extends React.Component {
       let {group_id,property_address} = property;
       let housemates = await Firebase.getHousemates(group_id);
       let group_data = await Firebase.getGroup(group_id);
+      let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      this.setState({housemates,property,property_address,group_leader});
-      console.log("property",property);
-      console.log("housemates",housemates);
+      this.setState({housemates,property,property_address,group_leader,all_groups});
     }
   }
   async componentDidUpdate(prevProps,prevState){
@@ -46,10 +45,9 @@ class Housemates extends React.Component {
       let {group_id,property_address} = property;
       let housemates = await Firebase.getHousemates(group_id);
       let group_data = await Firebase.getGroup(group_id);
+      let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      console.log("property",property);
-      console.log("housemates",housemates);
-      this.setState({housemates,property,property_address,group_leader});
+      this.setState({housemates,property,property_address,group_leader,all_groups});
     }
   }
   getRentalText = rental_type => {
@@ -79,6 +77,24 @@ class Housemates extends React.Component {
     else
       return false;
   }
+  isRenterActivebyRenter_ID(renter_id){
+    console.log("renter_id",renter_id);
+    const {all_groups} = this.state;
+    let flag = false;
+    all_groups.map(group=>{
+      if(group.status==="active"){
+        if(group.leader_id===renter_id){
+          flag= true;
+        }
+        let tenants = group.tenants;
+        let istenant = tenants.filter(tenant=>tenant.renter_id===renter_id);
+        if(istenant.length>0){
+          flag = true;
+        }  
+      }
+    });
+    return flag;
+  }
   Deactivate = ()=>{
     const {property} = this.state;
     Firebase.updateGroupStatus(property.group_id,"pending");
@@ -103,8 +119,16 @@ class Housemates extends React.Component {
     let renter = await Firebase.getRenterbyPhonenumber(phone);
     if(renter){
       //if invited man is already a renter
-      await Firebase.addHousemate(property.group_id,renter.renter_id,firstname);
-     this.setState({adding:false});
+      let renter_id = renter.renter_id;
+      if(this.isRenterActivebyRenter_ID(renter_id)&&property.status==="active"){
+        alert("Sorry,he is active in other property.");
+        this.setState({adding:false});
+      }
+      else{
+        await Firebase.addHousemate(property.group_id,renter.renter_id,firstname);
+        this.setState({adding:false});
+      }
+      
     }
     else{
       Firebase.getEcoUserbyPhonenumber(phone).then(res=>{

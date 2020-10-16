@@ -138,11 +138,18 @@ class LogIn extends React.PureComponent {
       this.setState({ send_sms: false });
     } else {
       let profile = await Firebase.getRenterbyPhonenumber(phonenumber);
-      const { eco_id } = profile;
-      console.log("eco_id", eco_id);
-      let result = await Firebase.getEcoUserbyId(eco_id);
-      profile = Object.assign({}, profile, result);
-      this.start(profile);
+      
+      if(profile){
+        const { eco_id } = profile;
+        console.log("eco_id", eco_id);
+        let result = await Firebase.getEcoUserbyId(eco_id);
+        profile = Object.assign({}, profile, result);
+        this.start(profile);
+      }
+      else{
+        alert("You are not member. Please join to Ecosystem.");
+        this.props.history.push("/signup");
+      }
     }
   };
   Login = () => {

@@ -75,7 +75,7 @@ class Landing extends React.Component {
       let messages = [
         {
           type: "bot",
-          message: `Welcome to the ${brand.name} community ecosystem.`,
+          message: `Welcome to the ecosystem community.`,
           logo: brand.logo,
           icon: brand.icon,
           isLanding: true,

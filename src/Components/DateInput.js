@@ -166,7 +166,7 @@ export default class DateInput extends React.Component {
             }}
           />
           <div
-            className={`send-button ${this.isFull() ? "" : "disabled"}`}
+            className={`send ${this.isFull() ? "" : "disabled"}`}
             onClick={(e) => {
               if (this.handleTouchStart) {
                 setTimeout(() => {

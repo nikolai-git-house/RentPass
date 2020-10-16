@@ -27,6 +27,14 @@ class Header extends React.Component {
   }
   componentDidMount() {
     document.addEventListener("mousedown", this.handleClick, true);
+    this.setState({profile:this.props.profile});
+  }
+  componentDidUpdate(prevProps,prevState){
+    if(prevProps.profile!==this.props.profile){
+      console.log("profile has been changed");
+      let profile = this.props.profile;
+      this.setState({profile});
+    }
   }
   componentWillUnmount() {
     document.removeEventListener("mousedown", this.handleClick, true);
@@ -62,8 +70,8 @@ class Header extends React.Component {
     }
   };
   render() {
-    const { profile, brand, logout, history } = this.props;
-    const { menuVisible } = this.state;
+    const { brand, logout, history } = this.props;
+    const { menuVisible,profile} = this.state;
     let username = "";
     let logo = "";
     let tokens = 0;
@@ -210,7 +218,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Token Offers</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item">
+              {/* <li className="nav-main-item">
                 <NavLink
                   to={{
                     pathname: "/earn",
@@ -220,7 +228,7 @@ class Header extends React.Component {
                   <img style={{ width: 12, marginRight: 10 }} src={chip_png} />
                   <span className="nav-main-link-name">Earn Tokens</span>
                 </NavLink>
-              </li>
+              </li> */}
               <li className="nav-main-item">
                 <NavLink
                   to={{
@@ -260,6 +268,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">EcoShop</span>
                 </NavLink>
               </li>
+              
               <li className={`nav-main-item burger show`}>
                 <a className="nav-main-link" onClick={logout}>
                   <span className="nav-main-link-name">Sign Out</span>

@@ -211,10 +211,11 @@ class MessageInput extends Component {
     return (
       <SelectBrand
         addMessage={(message) => {
+          console.log("message",message);
           addMessage({
             type: "user",
-            retailer: message,
-            message: message.retailerName,
+            // retailer: message,
+            message: message,
             inputType: "selectbrand",
             isNext: true,
           });

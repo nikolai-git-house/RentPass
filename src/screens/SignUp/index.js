@@ -9,6 +9,7 @@ import {
   saveUID,
   saveProfile,
   saveProperties,
+  saveGroups
 } from "../../redux/actions";
 import {
   getBotMessageGroup,
@@ -229,25 +230,27 @@ class SignUp extends Component {
     });
   };
   start = async (profile) => {
-    this.unsubscribeProperties = Firebase.firestore()
+    let renter_id = profile.renter_id;
+    this.unsubscribeGroups = Firebase.firestore()
       .collection("Rental Community")
       .doc("data")
-      .collection("user")
-      .doc(profile.renter_id)
-      .collection("property")
-      .onSnapshot((snapshot) => {
-        let properties = [];
-        if (snapshot.size) {
-          snapshot.forEach((doc) => {
-            let property = doc.data();
-            property.id = doc.id;
-            properties.push(property);
-          });
-          console.log("properties in this user's wishlist", properties);
-        }
-        this.props.dispatch(saveProperties(properties));
-        localStorage.setItem("rentkey_users", JSON.stringify(properties));
-      });
+      .collection("group")
+      .onSnapshot(async (snapshot) => {
+        let linked_groups = await Firebase.getAllGroupswithRenter(renter_id);
+        this.props.dispatch(saveGroups(linked_groups));
+        let promises = linked_groups.map(async group=>{
+          let property_id = group.property_id;
+          let property = await Firebase.getProperty(property_id);
+          property.id = property_id;
+          property.status = group.status;
+          property.group_id = group.id;
+          return property;
+        });
+        Promise.all(promises).then(res=>{
+          console.log("properties",res);
+          this.props.dispatch(saveProperties(res));
+        })
+    });
     // let brand_Data = await Firebase.getBrandDataByName(brand);
     // console.log("brand_Data", brand_Data);
     // this.props.dispatch(saveBrand(brand_Data));
@@ -259,7 +262,12 @@ class SignUp extends Component {
     // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
     this.props.dispatch(saveProfile(profile));
     this.props.dispatch(saveUID(profile.renter_id));
-    this.props.history.push("/explore");
+
+    if (profile.tokens !== null && profile.tokens !== undefined) {
+      this.props.history.push("/explore");
+    } else {
+      this.props.history.push("/landing");
+    }
   };
   wantRenter = (profile)=>{
     console.log("this wants to be renter",profile);
@@ -272,7 +280,8 @@ class SignUp extends Component {
       })
     }else if(profile.renter_owner === "Renter"){
       Firebase.getRenterbyPhonenumber(profile.phonenumber).then(res=>{
-        profile.renter_id = res.renter_id;
+        profile = {...profile,...res};
+        console.log("this profile",profile);
         this.start(profile);
       })
     }

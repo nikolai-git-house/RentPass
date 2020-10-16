@@ -1452,6 +1452,29 @@ class Firebase {
 
   });
  }
+ static getAllGroups(){
+  return new Promise((resolve, reject) => {
+    firebase
+      .firestore()
+      .collection("Rental Community")
+      .doc("data")
+      .collection("group")
+      .get()
+      .then(res => {
+        let groups = [];
+        if (res.size !== 0){
+          groups = res.docs.map((obj) =>{
+            let group_data = obj.data();
+            group_data.id = obj.id;
+            return group_data;
+          });
+        }
+        resolve(groups); 
+      })
+      .catch(err=>reject(err));
+
+  });
+ }
  static getProperty(property_id) {
   return new Promise((resolve, reject) => {
     firebase

@@ -20,8 +20,10 @@ class NewProperty extends React.Component {
   }
   componentDidUpdate(prevProps, prevState) {
     const { properties,groups } = this.props;
-    if(prevState.properties!==properties)
+    if(prevState.properties!==properties){
+      console.log("properties in didupdate",properties);
       this.setState({properties,groups});
+    }
   }
   isRenterActive(){
     const {groups} = this.state;
@@ -148,7 +150,7 @@ class NewProperty extends React.Component {
               }}
               style={{ margin: 20 }}
             >
-              Add a wishlist property
+              {this.isRenterActive()?"Add a wishlist property":"Add your current property"}
             </button>
           )}
         </div>

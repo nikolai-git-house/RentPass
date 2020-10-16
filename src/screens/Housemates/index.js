@@ -1,11 +1,9 @@
 import React from "react";
 import { connect } from "react-redux";
-import ReactHtmlParser from "react-html-parser";
 import Housemate from "./Housemate";
 import AddHousemate from "./AddHousemate";
+import DeactivationModal from "./DeactivationModal";
 import TenantStatus from "../../Components/TenantStatus";
-import TenantThumbnail from "../../Components/TenantThumbnail";
-import { saveHousemates } from "../../redux/actions";
 import "./index.css";
 import { sendInvitation, clearZero } from "../../functions/Auth";
 import Firebase from "../../firebasehelper";
@@ -17,6 +15,7 @@ class Housemates extends React.Component {
       housemates: [],
       addModal: false,
       statusModal: false,
+      deactivationsModal:false,
       adding:false,
       property_address:{line_1:""},
       property:{status:"active"},
@@ -135,12 +134,13 @@ class Housemates extends React.Component {
       
   };
   toggleModal = type => {
-    const { addModal, statusModal } = this.state;
+    const { addModal, statusModal,deactivationsModal } = this.state;
     if (type === "add") this.setState({ addModal: !addModal });
     else if (type === "status") this.setState({ statusModal: !statusModal });
+    else if (type === "deactivation") this.setState({ deactivationsModal: !deactivationsModal });
   };
   render() {
-    const { addModal,adding,property,property_address,group_leader,statusModal,housemate } = this.state;
+    const { addModal,adding,property,property_address,group_leader,statusModal,housemate,deactivationsModal } = this.state;
     const { uid} = this.props;
     return (
       <React.Fragment>
@@ -149,7 +149,7 @@ class Housemates extends React.Component {
           <p className="small">{property_address.line_1+", "+property_address.county}</p>
           {group_leader===uid&&<button
             className={`btn ${property.status==="active"?"btn-activated":"btn-deactivated"}`}
-            onClick={property.status==="active"?this.Deactivate:this.Activate}
+            onClick={property.status==="active"?()=>this.toggleModal("deactivation"):this.Activate}
           >
           {property.status==="active"?"Deactivate Property":"Activate Property"}
         </button>}
@@ -166,6 +166,11 @@ class Housemates extends React.Component {
             housemate={housemate}
             active={property.status==="active"?true:false}
             toggleModal={() => this.toggleModal("status")}
+          />
+          <DeactivationModal
+            showModal={deactivationsModal}
+            toggleModal={() => this.toggleModal("deactivation")}
+            Deactivate={this.Deactivate}
           />
           {adding && (
               <div

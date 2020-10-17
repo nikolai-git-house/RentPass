@@ -1,4 +1,5 @@
 import React, { Component } from "react";
+import Firebase from "../../firebasehelper";
 import "./index.css";
 const standard_image=[require("../../assets/media/standard_property/1.png"),require("../../assets/media/standard_property/2.png"),
 require("../../assets/media/standard_property/3.png"),require("../../assets/media/standard_property/4.png")];
@@ -9,12 +10,29 @@ const avatar_pending_img = require("../../assets/media/logo/avatar_pending.png")
 class PropertyThumbnail extends React.Component {
   constructor(props) {
     super(props);
-    this.state = {};
+    this.state = {
+      property:this.props.property,
+      property_address:{line_1:""}
+    };
+  }
+  componentDidMount(){
+    const {brand,id} = this.state.property;
+    console.log("property profile",this.state.property);
+    if(brand){
+      Firebase.getPropertyById(id,brand).then(res=>{
+        const {property_address} = res;
+        this.setState({property_address});
+      })
+    }
+    else{
+      const {property_address} = this.state.property;
+      this.setState({property_address});
+    }
   }
   render() {
-    const { property,order,showHousemates } = this.props;
-    const {property_address,id } = property;
-    const { line_1} = property_address;
+    const {order,showHousemates } = this.props;
+    const {property_address,property } = this.state;
+    const {line_1} = property_address;
     return (
       <div className="property-thumb">
         <div className="property-pad" onClick={showHousemates} >

@@ -25,21 +25,32 @@ class Housemate extends React.Component {
   }
   componentDidMount() {
     const { profile } = this.props;
+    console.log("profile",profile);
     this.setState({ profile });
+    let {renter_id} = profile;
+    Firebase.getRenterById(renter_id).then(res=>{
+      let eco_id = res.eco_id;
+      Firebase.getEcoUserbyId(eco_id).then(res=>{
+        if(res.avatar_url)
+          this.setState({avatar_url:res.avatar_url});
+      })
+    })
   }
   componentWillReceiveProps(nextProps) {
     const { profile } = nextProps;
     this.setState({ profile });
   }
   render() {
+    const {avatar_url} = this.state;
     const { profile ,self,active,showProfile} = this.props;
     const { firstname } = profile;
     return (
       
         <div className="housemate-view" onClick={showProfile}>
           <img
-            src={active?avatar_complete_img:avatar_pending_img}
+            src={avatar_url?avatar_url:active?avatar_complete_img:avatar_pending_img}
             width="200"
+            height="200"
             alt="avatar"
           />
           <div className="info">

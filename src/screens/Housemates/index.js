@@ -27,12 +27,23 @@ class Housemates extends React.Component {
     if (!uid) this.props.history.push("/");
     else {
       const {property} = this.props.location.state;
-      let {group_id,property_address} = property;
+      let {group_id,brand,id} = property;
+      if(brand){
+        Firebase.getPropertyById(id,brand).then(res=>{
+          const {property_address} = res;
+          this.setState({property_address});
+        })
+      }
+      else{
+        const {property_address} = this.state.property;
+        this.setState({property_address});
+      }
+
       let housemates = await Firebase.getHousemates(group_id);
       let group_data = await Firebase.getGroup(group_id);
       let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      this.setState({housemates,property,property_address,group_leader,all_groups});
+      this.setState({housemates,property,group_leader,all_groups});
     }
   }
   async componentDidUpdate(prevProps,prevState){
@@ -42,12 +53,22 @@ class Housemates extends React.Component {
       // let property_id = property.id;
       // let myproperty = properties.filter(property=>property.id===property_id)
       // let {housemates} = myproperty[0];
-      let {group_id,property_address} = property;
+      let {group_id,brand,id} = property;
+      if(brand){
+        Firebase.getPropertyById(id,brand).then(res=>{
+          const {property_address} = res;
+          this.setState({property_address});
+        })
+      }
+      else{
+        const {property_address} = this.state.property;
+        this.setState({property_address});
+      }
       let housemates = await Firebase.getHousemates(group_id);
       let group_data = await Firebase.getGroup(group_id);
       let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      this.setState({housemates,property,property_address,group_leader,all_groups});
+      this.setState({housemates,property,group_leader,all_groups});
     }
   }
   getRentalText = rental_type => {

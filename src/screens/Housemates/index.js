@@ -17,7 +17,7 @@ class Housemates extends React.Component {
       statusModal: false,
       deactivationsModal:false,
       adding:false,
-      property_address:{line_1:""},
+      property_address:{line_1:"",county:""},
       property:{status:"active"},
       group_leader:""
     };
@@ -35,7 +35,8 @@ class Housemates extends React.Component {
         })
       }
       else{
-        const {property_address} = this.state.property;
+        const {property_address} = property;
+        console.log("property_address",property_address);
         this.setState({property_address});
       }
 
@@ -43,16 +44,12 @@ class Housemates extends React.Component {
       let group_data = await Firebase.getGroup(group_id);
       let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      this.setState({housemates,property,group_leader,all_groups});
+      this.setState({housemates,property,group_leader,all_groups,group_data});
     }
   }
   async componentDidUpdate(prevProps,prevState){
-    const {properties,uid} = this.props;
     if(prevState.adding!==this.state.adding){
       const {property} = this.props.location.state;
-      // let property_id = property.id;
-      // let myproperty = properties.filter(property=>property.id===property_id)
-      // let {housemates} = myproperty[0];
       let {group_id,brand,id} = property;
       if(brand){
         Firebase.getPropertyById(id,brand).then(res=>{
@@ -61,14 +58,14 @@ class Housemates extends React.Component {
         })
       }
       else{
-        const {property_address} = this.state.property;
+        const {property_address} = property;
         this.setState({property_address});
       }
       let housemates = await Firebase.getHousemates(group_id);
       let group_data = await Firebase.getGroup(group_id);
       let all_groups = await Firebase.getAllGroups();
       let group_leader = group_data.leader_id;
-      this.setState({housemates,property,group_leader,all_groups});
+      this.setState({housemates,property,group_leader,all_groups,group_data});
     }
   }
   getRentalText = rental_type => {
@@ -91,11 +88,33 @@ class Housemates extends React.Component {
     }
   };
   isRenterActive(){
-    const {groups,uid} = this.props;
-    let activeGroupsLeadedByMe = groups.filter(group=>group.leader_id===uid&&group.status==="active");
-    if(activeGroupsLeadedByMe.length>0)
+    const {uid} = this.props;
+    const {all_groups} = this.state;
+    console.log("uid",uid);
+    let activeGroupsContainMe = all_groups.filter(group=>group.tenants.filter(tenant=>tenant.renter_id===uid).length>0&&group.status==="active");
+    if(activeGroupsContainMe.length>0)
       return true;
     else
+      return false;
+  }
+  isAllRenterofGroup_Deactive(){
+    const {group_data} = this.state;
+    console.log("group_data",group_data);
+    let tenants = group_data.tenants;
+    let flag=true;
+    tenants.map(tenant=>{
+      if(this.isRenterActivebyRenter_ID(tenant.renter_id))
+        flag=false;
+    });
+    return flag;
+  }
+  isPropertyActive(property_id){
+    const {all_groups} = this.state;
+    console.log("all_groups",all_groups);
+    let activegroupwithpropertyid = all_groups.filter(group=>group.property_id===property_id&&group.status==="active");
+    if(activegroupwithpropertyid.length>0)
+      return true;
+    else 
       return false;
   }
   isRenterActivebyRenter_ID(renter_id){
@@ -123,8 +142,10 @@ class Housemates extends React.Component {
   }
   Activate = ()=>{
     const {property} = this.state;
-    if(this.isRenterActive())
-      alert("You can activate only one property at one moment.");
+    if(!this.isAllRenterofGroup_Deactive())
+      alert("Sorry, a member of your group is active in one property.");
+    else if(this.isPropertyActive(property.id))
+      alert("Sorry, this property is already active by other group.");
     else{
       Firebase.updateGroupStatus(property.group_id,"active");
       this.props.history.push("/property");

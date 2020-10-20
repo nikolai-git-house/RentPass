@@ -182,7 +182,7 @@ class Explore extends React.Component {
               className="explore-item-button"
             >
               <img src={wallet_png} />
-              <span className="nav-main-link-name">EcoWallet</span>
+              <span className="nav-main-link-name">Token Wallet</span>
             </NavLink>
             <NavLink
               to={{
@@ -191,7 +191,7 @@ class Explore extends React.Component {
               className="explore-item-button"
             >
               <img src={pay_png} />
-              <span className="nav-main-link-name">EcoPay</span>
+              <span className="nav-main-link-name">Token Pay</span>
             </NavLink>
             <NavLink
               to={{
@@ -200,7 +200,7 @@ class Explore extends React.Component {
               className="explore-item-button"
             >
               <img src={shopping_bag_png} />
-              <span className="nav-main-link-name">EcoShop</span>
+              <span className="nav-main-link-name">Marketplace</span>
             </NavLink>
           </div>
         </div>

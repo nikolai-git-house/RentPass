@@ -12,16 +12,17 @@ class PropertyThumbnail extends React.Component {
     super(props);
     this.state = {
       property:this.props.property,
-      property_address:{line_1:""}
+      property_address:{line_1:""},
+      image_url:""
     };
   }
   componentDidMount(){
     const {brand,id} = this.state.property;
-    console.log("property profile",this.state.property);
     if(brand){
       Firebase.getPropertyById(id,brand).then(res=>{
-        const {property_address} = res;
-        this.setState({property_address});
+        console.log("property profile",res);
+        const {property_address,url} = res;
+        this.setState({property_address,image_url:url});
       })
     }
     else{
@@ -30,15 +31,16 @@ class PropertyThumbnail extends React.Component {
     }
   }
   render() {
+    
     const {order,showHousemates } = this.props;
-    const {property_address,property } = this.state;
-    const {line_1} = property_address;
+    const {property_address,property,image_url } = this.state;
+    let line_1= property_address.line_1 || "";
     return (
       <div className="property-thumb">
         <div className="property-pad" onClick={showHousemates} >
           <img
             className="img-fluid options-item"
-            src={standard_image[order]}
+            src={image_url?image_url:standard_image[order]}
             alt=""
             width="100%"
           />

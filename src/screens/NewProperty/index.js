@@ -2,6 +2,7 @@ import React from "react";
 import { connect } from "react-redux";
 import Firebase from "../../firebasehelper";
 import AddProperty from "../../Components/AddProperty";
+import BugModal from "../../Components/BugModal";
 import PropertyThumbnail from "../../Components/PropertyThumbnail";
 import "./index.css";
 class NewProperty extends React.Component {
@@ -9,6 +10,7 @@ class NewProperty extends React.Component {
     super(props);
     this.state = {
       addproperty_visible: false,
+      bugModal_open:false,
       properties: [],
       adding:false
     };
@@ -73,9 +75,15 @@ class NewProperty extends React.Component {
     }
     this.setState({adding:false});
   };
-  toggleModal = () => {
-    const { addproperty_visible } = this.state;
-    this.setState({ addproperty_visible: !addproperty_visible });
+  toggleModal = (type) => {
+    if(type==="add_property"){
+      const { addproperty_visible } = this.state;
+      this.setState({ addproperty_visible: !addproperty_visible });
+    }
+    else if(type==="bug"){
+      const { bugModal_open } = this.state;
+      this.setState({ bugModal_open: !bugModal_open });
+    }
   };
   requestPropertyTest = () => {
     this.props.history.push("/referencing");
@@ -84,14 +92,19 @@ class NewProperty extends React.Component {
     this.props.history.push("/housemates",{property});
   }
   render() {
-    const { addproperty_visible,adding,properties } = this.state;
+    const { addproperty_visible,adding,properties,bugModal_open,bug_content } = this.state;
     const {uid} = this.props;
     return (
       <React.Fragment>
         <AddProperty
           addProperty={this.addProperty}
           showModal={addproperty_visible}
-          toggleModal={() => this.toggleModal()}
+          toggleModal={() => this.toggleModal("add_property")}
+        />
+        <BugModal
+          content={bug_content}
+          closeModal={()=>this.toggleModal("bug")}
+          modalIsOpen={bugModal_open}
         />
         {properties.length===0&&!adding&&
           <div id="comment-container">
@@ -100,7 +113,7 @@ class NewProperty extends React.Component {
               <button
                 type="button"
                 className="btn btn-green"
-                onClick={() => this.toggleModal()}
+                onClick={() => this.toggleModal("add_property")}
                 style={{ margin: 20 }}
               >
                 Add your current property
@@ -143,10 +156,12 @@ class NewProperty extends React.Component {
               type="button"
               className="btn btn-secondary"
               onClick={() => {
-                if(properties.length===4)
-                  alert("You cannot add properties more.");
+                if(properties.length===4){
+                  this.setState({bug_content:"You are limited to a maximum of three pending properties."});
+                  this.toggleModal("bug");
+                }
                 else
-                  this.toggleModal()
+                  this.toggleModal("add_property")
               }}
               style={{ margin: 20 }}
             >

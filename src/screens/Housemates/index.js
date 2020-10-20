@@ -4,6 +4,7 @@ import Housemate from "./Housemate";
 import AddHousemate from "./AddHousemate";
 import DeactivationModal from "./DeactivationModal";
 import TenantStatus from "../../Components/TenantStatus";
+import BugModal from "../../Components/BugModal";
 import "./index.css";
 import { sendInvitation, clearZero } from "../../functions/Auth";
 import Firebase from "../../firebasehelper";
@@ -102,11 +103,14 @@ class Housemates extends React.Component {
     console.log("group_data",group_data);
     let tenants = group_data.tenants;
     let flag=true;
+    let active_tenant = "";
     tenants.map(tenant=>{
-      if(this.isRenterActivebyRenter_ID(tenant.renter_id))
+      if(this.isRenterActivebyRenter_ID(tenant.renter_id)){
+        active_tenant = tenant.firstname;
         flag=false;
+      }
     });
-    return flag;
+    return {active_tenant,result:flag};
   }
   isPropertyActive(property_id){
     const {all_groups} = this.state;
@@ -118,7 +122,6 @@ class Housemates extends React.Component {
       return false;
   }
   isRenterActivebyRenter_ID(renter_id){
-    console.log("renter_id",renter_id);
     const {all_groups} = this.state;
     let flag = false;
     all_groups.map(group=>{
@@ -142,10 +145,14 @@ class Housemates extends React.Component {
   }
   Activate = ()=>{
     const {property} = this.state;
-    if(!this.isAllRenterofGroup_Deactive())
-      alert("Sorry, a member of your group is active in one property.");
-    else if(this.isPropertyActive(property.id))
-      alert("Sorry, this property is already active by other group.");
+    if(!this.isAllRenterofGroup_Deactive().result){
+      this.setState({bug_content:`${this.isAllRenterofGroup_Deactive().active_tenant} already has an active property.<br> We only allow one active property per user.`});
+      this.toggleModal("bug");
+    }
+    else if(this.isPropertyActive(property.id)){
+      this.setState({bug_content:`Sorry, this property is already active by other group.`});
+      this.toggleModal("bug");
+    }
     else{
       Firebase.updateGroupStatus(property.group_id,"active");
       this.props.history.push("/property");
@@ -156,17 +163,18 @@ class Housemates extends React.Component {
     const {property} = this.state;
     let phone = "+44" + clearZero(phonenumber);
     this.setState({adding:true});
-    let response = sendInvitation(phone, profile.firstname,firstname);
-    console.log("response", response);
     let renter = await Firebase.getRenterbyPhonenumber(phone);
     if(renter){
       //if invited man is already a renter
       let renter_id = renter.renter_id;
       if(this.isRenterActivebyRenter_ID(renter_id)&&property.status==="active"){
-        alert("Sorry,he is active in other property.");
+        this.setState({bug_content:`${firstname} already has an active property.<br> We only allow one active property per user.`});
+        this.toggleModal("bug");
         this.setState({adding:false});
       }
       else{
+        let response = sendInvitation(phone, profile.firstname,firstname);
+        console.log("response", response);
         await Firebase.addHousemate(property.group_id,renter.renter_id,firstname);
         this.setState({adding:false});
       }
@@ -200,13 +208,15 @@ class Housemates extends React.Component {
       
   };
   toggleModal = type => {
-    const { addModal, statusModal,deactivationsModal } = this.state;
+    const { addModal, statusModal,deactivationsModal,bugModal_open } = this.state;
     if (type === "add") this.setState({ addModal: !addModal });
     else if (type === "status") this.setState({ statusModal: !statusModal });
     else if (type === "deactivation") this.setState({ deactivationsModal: !deactivationsModal });
+    else if (type === "bug") this.setState({bugModal_open:!bugModal_open});
   };
   render() {
-    const { addModal,adding,property,property_address,group_leader,statusModal,housemate,deactivationsModal } = this.state;
+    const { addModal,adding,property,property_address,group_leader,
+      statusModal,housemate,deactivationsModal,bug_content,bugModal_open } = this.state;
     const { uid} = this.props;
     return (
       <React.Fragment>
@@ -237,6 +247,11 @@ class Housemates extends React.Component {
             showModal={deactivationsModal}
             toggleModal={() => this.toggleModal("deactivation")}
             Deactivate={this.Deactivate}
+          />
+           <BugModal
+            content={bug_content}
+            closeModal={()=>this.toggleModal("bug")}
+            modalIsOpen={bugModal_open}
           />
           {adding && (
               <div

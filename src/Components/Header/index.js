@@ -240,7 +240,7 @@ class Header extends React.Component {
                     style={{ width: 12, marginRight: 10 }}
                     src={wallet_png}
                   />
-                  <span className="nav-main-link-name">EcoWallet</span>
+                  <span className="nav-main-link-name">Token Wallet</span>
                 </NavLink>
               </li>
               <li className="nav-main-item">
@@ -251,7 +251,7 @@ class Header extends React.Component {
                   className="nav-main-link"
                 >
                   <img style={{ width: 12, marginRight: 10 }} src={pay_png} />
-                  <span className="nav-main-link-name">EcoPay</span>
+                  <span className="nav-main-link-name">Token Pay</span>
                 </NavLink>
               </li>
               <li className="nav-main-item">
@@ -265,7 +265,7 @@ class Header extends React.Component {
                     style={{ width: 12, marginRight: 10 }}
                     src={shopping_bag_png}
                   />
-                  <span className="nav-main-link-name">EcoShop</span>
+                  <span className="nav-main-link-name">Marketplace</span>
                 </NavLink>
               </li>
               

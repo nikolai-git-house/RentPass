@@ -47,12 +47,8 @@ class Housemate extends React.Component {
     return (
       
         <div className="housemate-view" onClick={showProfile}>
-          <img
-            src={avatar_url?avatar_url:active?avatar_complete_img:avatar_pending_img}
-            width="200"
-            height="200"
-            alt="avatar"
-          />
+          <div className="avatar_img" style={{width:200,height:200,backgroundImage:`url(${avatar_url?avatar_url:active?avatar_complete_img:avatar_pending_img})`}}>
+          </div>
           <div className="info">
             <p>{self?"Me":`${firstname}`}</p>
           </div>

@@ -5,6 +5,18 @@ import AddProperty from "../../Components/AddProperty";
 import BugModal from "../../Components/BugModal";
 import PropertyThumbnail from "../../Components/PropertyThumbnail";
 import "./index.css";
+const compare1 = (a,b)=>{
+  if(a.brand)
+    return 1;
+  else if(b.brand)
+    return -1;
+}
+const compare2 = (a,b)=>{
+  if(a.status==="active")
+    return -1;
+  else
+    return 1;
+}
 class NewProperty extends React.Component {
   constructor(props) {
     super(props);
@@ -138,7 +150,7 @@ class NewProperty extends React.Component {
           )}
           {!adding &&
             properties.length > 0 &&
-            properties.map((item, index) => {
+            properties.sort(compare1).sort(compare2).map((item, index) => {
               return (
                 <PropertyThumbnail
                   property={item}
@@ -156,7 +168,7 @@ class NewProperty extends React.Component {
               type="button"
               className="btn btn-secondary"
               onClick={() => {
-                if(properties.length===4){
+                if(properties.filter(property=>!property.brand).length>3){
                   this.setState({bug_content:"You are limited to a maximum of three pending properties."});
                   this.toggleModal("bug");
                 }

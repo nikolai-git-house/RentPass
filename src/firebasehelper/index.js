@@ -412,19 +412,6 @@ class Firebase {
         .set(data, { merge: true });
     });
   }
-  static updateRentersPropertyById(renter_id, property_id, data) {
-    return new Promise((resolve, reject) => {
-      firebase
-        .firestore()
-        .collection("Rental Community")
-        .doc("data")
-        .collection("user")
-        .doc(renter_id)
-        .collection("property")
-        .doc(property_id)
-        .set(data, { merge: true });
-    });
-  }
   static addPropertytoProfile(uid, property, property_id, url) {
     let current = new Date().getTime();
     const { property_address } = property;

@@ -69,10 +69,20 @@ class Profile extends React.Component {
       viewMode: "profile",
     };
   }
-  componentDidMount() {
+  async componentDidMount() {
     const { uid, profile } = this.props;
     if (!uid) this.props.history.push("/");
+    console.log("profile",profile);
     this.setState({ profile });
+    if(profile.request_reference){
+      let group_id = profile.request_reference;
+      let group_data = await Firebase.getGroup(group_id);
+      const {property_id} = group_data;
+      let property_data = await Firebase.getProperty(property_id);
+      let brand = property_data.brand;
+      this.setState({brand,group_id});
+      console.log("brand",brand);
+    }
   }
   componentWillReceiveProps(nextProps) {
     const { profile } = nextProps;
@@ -149,8 +159,9 @@ class Profile extends React.Component {
       });
     }
   };
+
   render() {
-    const { profile, img_content, viewMode, editfield, editValue } = this.state;
+    const { profile, img_content, viewMode, editfield, editValue,brand,group_id } = this.state;
     const { uid } = this.props;
     let {
       avatar_url,
@@ -160,6 +171,7 @@ class Profile extends React.Component {
       dob,
       profession,
       monthly_wages,
+      renter_id,
       super_skill,
     } = profile;
     if (!avatar_url) avatar_url = user_img;
@@ -167,7 +179,7 @@ class Profile extends React.Component {
     const territory = (phonenumber || "").startsWith("+1") ? "USA" : "UK";
     return (
       <div id="profile-container" className="row no-gutters">
-        {/* <div className="view-controls">
+        {brand&&<div className="view-controls">
           <button
             className={`btn btn-switch ${
               viewMode === "profile" ? "active" : ""
@@ -185,7 +197,7 @@ class Profile extends React.Component {
           >
             Referencing
           </button>
-        </div> */}
+        </div>}
         <div
           className={`row no-gutters ${
             this.state.viewMode !== "profile" ? "mobile-hide" : "mobile-show"
@@ -401,18 +413,21 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
-        {/* <div
-          className={`col-md-10 col-lg-10 col-xl-10 ${
+        {brand && <div
+          className={`col-md-12 col-lg-12 col-xl-12 ${
             this.state.viewMode === "profile" ? "mobile-hide" : ""
           }`}
           style={{ padding: 15, flex: 1, alignSelf: "center" }}
         >
           <iframe
-            src={`https://rentrobot.io/Rental Community?uid=${uid}`}
+            frameborder="0"
+            marginheight="1"
+            marginwidth="1"
+            src={`https://rentrobot.io/${brand}?uid=${renter_id}&group_id=${group_id}`}
             title="rent robot"
             className="rentbot-iframe"
           />
-        </div> */}
+        </div>}
       </div>
     );
   }

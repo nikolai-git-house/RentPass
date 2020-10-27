@@ -80,6 +80,7 @@ class Profile extends React.Component {
       const {property_id} = group_data;
       let property_data = await Firebase.getProperty(property_id);
       let brand = property_data.brand;
+      brand = brand.split(" ").join("")
       this.setState({brand,group_id});
       console.log("brand",brand);
     }

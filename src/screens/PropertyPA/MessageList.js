@@ -410,7 +410,7 @@ class MessageList extends Component {
         } else if (
           ticket_title === "Top 10" ||
           ticket_title === "Fashion" ||
-          ticket_title === "Food and Drink" ||
+          ticket_title === "Food & Drink" ||
           ticket_title === "Beauty & Wellbeing" ||
           ticket_title === "Home" ||
           ticket_title === "Entertainment" ||

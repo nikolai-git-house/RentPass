@@ -11,42 +11,66 @@ class FilterTab extends React.Component {
   constructor(props) {
     super(props);
     this.state = {
-      offers: []
+      offers: [],
     };
   }
   render() {
     const { filter_View } = this.props;
     return (
       <div className="filter_tab offer_type mb-0">
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Top 10")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Top 10")}
+        >
           <img src={imageTop10}></img>
           <p>Top 10</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Entertainment")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Entertainment")}
+        >
           <img src={imageEntertainment}></img>
           <p>Entertainment</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Food and Drink")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Food & Drink")}
+        >
           <img src={imageFood}></img>
-          <p>Food and Drink</p>
+          <p>Food & Drink</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Beauty & Wellbeing")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Beauty & Wellbeing")}
+        >
           <img src={imageBeauty}></img>
           <p>Beauty & Wellbeing</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Fashion")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Fashion")}
+        >
           <img src={imageFashion}></img>
           <p>Fashion</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Home")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Home")}
+        >
           <img src={imageHome}></img>
           <p>Home</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("Tech")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("Tech")}
+        >
           <img src={imageTech}></img>
           <p>Tech</p>
         </button>
-        <button className="btn btn-filter-with-img" onClick={() => filter_View("all")}>
+        <button
+          className="btn btn-filter-with-img"
+          onClick={() => filter_View("all")}
+        >
           <img src={imageAll}></img>
           <p>All</p>
         </button>

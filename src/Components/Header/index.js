@@ -254,7 +254,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Token Pay</span>
                 </NavLink>
               </li>
-              <li className="nav-main-item">
+              {/* <li className="nav-main-item">
                 <NavLink
                   to={{
                     pathname: "/shop",
@@ -267,7 +267,7 @@ class Header extends React.Component {
                   />
                   <span className="nav-main-link-name">Marketplace</span>
                 </NavLink>
-              </li>
+              </li> */}
               
               <li className={`nav-main-item burger show`}>
                 <a className="nav-main-link" onClick={logout}>

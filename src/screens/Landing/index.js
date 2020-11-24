@@ -144,13 +144,13 @@ class Landing extends React.Component {
 
   onClickGetStarted = async () => {
     const { brand, uid, dispatch,profile } = this.props;
-    profile.tokens = 200;
+    profile.tokens = 1000;
     await Firebase.updateUserData("Rental Community", uid, {
-      tokens: 200,
+      tokens: 1000,
     });
     await Firebase.saveTokenHistory("Rental Community", uid, {
       created: new Date(),
-      amount: -200,
+      amount: -1000,
       type: "started",
     });
     localStorage.setItem("profile", JSON.stringify(profile));

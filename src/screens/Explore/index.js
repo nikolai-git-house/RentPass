@@ -193,7 +193,7 @@ class Explore extends React.Component {
               <img src={pay_png} />
               <span className="nav-main-link-name">Token Pay</span>
             </NavLink>
-            <NavLink
+            {/* <NavLink
               to={{
                 pathname: "/shop",
               }}
@@ -201,7 +201,7 @@ class Explore extends React.Component {
             >
               <img src={shopping_bag_png} />
               <span className="nav-main-link-name">Marketplace</span>
-            </NavLink>
+            </NavLink> */}
           </div>
         </div>
         <ProfileModal />

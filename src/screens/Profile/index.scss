@@ -8,7 +8,9 @@ $pad_left: 10%;
   flex-direction: column;
   width: 100%;
   overflow: hidden;
-
+  .mobile-hide {
+    display: none;
+  }
   .row {
     width: 100%;
     align-items: flex-start;
@@ -18,7 +20,6 @@ $pad_left: 10%;
   .view-controls {
     flex-direction: row;
     margin: 0 auto;
-    display: none;
     margin-bottom: 10px;
     button {
       background-color: #ecedee;
@@ -58,16 +59,10 @@ $pad_left: 10%;
     top: 72px;
     flex-wrap: nowrap;
 
-    .view-controls {
-      display: block;
-    }
-
     .mobile-show {
       display: block;
     }
-    .mobile-hide {
-      display: none;
-    }
+    
   }
 }
 
@@ -327,7 +322,7 @@ $pad_left: 10%;
 }
 
 .rentbot-iframe {
-  height: 100%;
+  height: 100vh;
   width: 100%;
   border: 0;
 }

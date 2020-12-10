@@ -61,9 +61,9 @@
 }
 
 .btn-switch {
-	box-shadow: 0px 14px 18px 0 rgba(86, 125, 196, 0.22);
+	box-shadow: 0px 0px 4px 0px rgba(0,0,0,.2);
 	&:hover {
-		box-shadow: 0px 14px 24px 0 rgba(86, 125, 196, 0.34) !important;
+		box-shadow: 0px 0px 4px 0px rgba(0,0,0,.2) !important;
 	}
 	@media (max-width: 420px) {
 		font-size: 12px;

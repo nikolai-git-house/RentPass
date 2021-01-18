@@ -180,29 +180,8 @@ class Profile extends React.Component {
     const territory = (phonenumber || "").startsWith("+1") ? "USA" : "UK";
     return (
       <div id="profile-container" className="row no-gutters">
-        {brand&&<div className="view-controls">
-          <button
-            className={`btn btn-switch ${
-              viewMode === "profile" ? "active" : ""
-            }`}
-            onClick={() => this.setState({ viewMode: "profile" })}
-          >
-            Profile
-          </button>
-          <button
-            className={`btn btn-switch ${
-              viewMode !== "profile" ? "active" : ""
-            }`}
-            style={{ marginLeft: 5 }}
-            onClick={() => this.setState({ viewMode: "referencing" })}
-          >
-            Referencing
-          </button>
-        </div>}
         <div
-          className={`row no-gutters ${
-            this.state.viewMode !== "profile" ? "mobile-hide" : "mobile-show"
-          }`}
+          className={`row no-gutters`}
           style={{ background: "#fff", overflowY: "auto" }}
         >
           <div
@@ -414,21 +393,6 @@ class Profile extends React.Component {
             </div>
           </div>
         </div>
-        {brand && <div
-          className={`col-md-12 col-lg-12 col-xl-12 ${
-            this.state.viewMode === "profile" ? "mobile-hide" : ""
-          }`}
-          style={{ padding: 15, flex: 1, alignSelf: "center" }}
-        >
-          <iframe
-            frameborder="0"
-            marginheight="1"
-            marginwidth="1"
-            src={`https://rentrobot.io/${brand}?uid=${renter_id}&group_id=${group_id}`}
-            title="rent robot"
-            className="rentbot-iframe"
-          />
-        </div>}
       </div>
     );
   }

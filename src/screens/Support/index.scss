@@ -1,0 +1,17 @@
+#support-container {
+  margin-top: 80px;
+  margin-left: 20px;
+  margin-right: 20px;
+  margin-bottom: 10px;
+  .message-list-wrapper-container{
+    height: calc(100vh - 170px);
+    overflow-y: scroll;
+    padding-right: 5px;
+  }
+  .message-input{
+    position: absolute;
+    bottom: 15px;
+    left: 0px;
+    padding: 10px;
+  }
+}

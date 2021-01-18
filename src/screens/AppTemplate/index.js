@@ -18,6 +18,7 @@ import Wallets from "../Wallets";
 import Ecopay from "../Ecopay";
 import Header from "../../Components/Header";
 import Explore from "../Explore";
+import Friends from "../Friends";
 import PropertyPA from "../PropertyPA";
 import Landing from "../Landing";
 import { removeAll } from "../../redux/actions";
@@ -55,6 +56,7 @@ class AppTemplate extends React.Component {
           <Route path="/wallets" component={Wallets} />
           <Route path="/ecopay" component={Ecopay} />
           <Route path="/explore" component={Explore} />
+          <Route path="/friends" component={Friends} />
           {/* <Route path="/propertypa" component={PropertyPA} /> */}
         </Switch>
       </div>

@@ -749,7 +749,6 @@ body {
     display: flex;
     justify-content: center;
     align-items: center;
-    margin-right: 15px;
     border-radius: 4px; }
     body .btn-green p {
       margin-bottom: 0px; }

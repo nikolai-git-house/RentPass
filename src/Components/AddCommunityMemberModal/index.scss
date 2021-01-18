@@ -1,0 +1,26 @@
+.invite-user-phone-group {
+  display: flex;
+  align-items: center;
+
+  .form-group {
+    &.phone-appendix {
+      width: 100px;
+    }
+
+    &.phone-number {
+      flex: 1;
+      margin-left: 15px;
+
+      input::-webkit-outer-spin-button,
+      input::-webkit-inner-spin-button {
+        -webkit-appearance: none;
+        margin: 0;
+      }
+
+      /* Firefox */
+      input[type="number"] {
+        -moz-appearance: textfield;
+      }
+    }
+  }
+}

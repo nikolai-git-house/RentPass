@@ -79,29 +79,6 @@ class LogIn extends React.PureComponent {
           this.props.dispatch(saveProperties(res));
         })
     });
-    // this.unsubscribeProperties = Firebase.firestore()
-    //   .collection("Rental Community")
-    //   .doc("data")
-    //   .collection("property")
-    //   .onSnapshot(async (snapshot) => {
-    //     let linked_properties = await Firebase.getAllRentersProperties(renter_id);
-    //     let properties = [];
-    //     linked_properties.map(property=>{
-    //       if(property.status==="active")
-    //         properties.unshift(property);
-    //       else
-    //         properties.push(property);
-
-    //     });
-    //     this.props.dispatch(saveProperties(properties));
-    //   });
-
-    // let brand_Data = await Firebase.getBrandDataByName("Rental Community");
-    // console.log("brand_Data", brand_Data);
-    // this.props.dispatch(saveBrand(brand_Data));
-    // localStorage.setItem("rentkey_uid", result.id);
-    // localStorage.setItem("rentkey_profile", JSON.stringify(profile));
-    // localStorage.setItem("rentkey_brand_data", JSON.stringify(brand_Data));
     this.props.dispatch(saveProfile(profile));
     this.props.dispatch(saveUID(profile.renter_id));
 

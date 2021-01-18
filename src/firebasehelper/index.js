@@ -1719,7 +1719,25 @@ class Firebase {
         callback(res.docs.map((obj) => obj.data()));
       });
   };
+  static getPremierTokenHistory = (brand_name, uid, callback) => {
+    let fbInstance;
+    if (brand_name === "Ecosystem") {
+      fbInstance = firebase.firestore().collection("user");
+    } else {
+      fbInstance = firebase
+        .firestore()
+        .collection(brand_name)
+        .doc("data")
+        .collection("user");
+    }
 
+    fbInstance
+      .doc(`${uid}`)
+      .collection("premier_token_history")
+      .onSnapshot((res) => {
+        callback(res.docs.map((obj) => obj.data()));
+      });
+  };
   static updateUserData = (brand_name, uid, data) => {
     return new Promise((resolve, reject) => {
       let fbInstance;
@@ -1777,6 +1795,39 @@ class Firebase {
           reject(error);
         });
     });
+  };
+  static getUserDatafromUID = (brand_name, uid) => {
+    if (brand_name !== "Ecosystem") {
+      return new Promise((resolve, reject) => {
+        firebase
+          .firestore()
+          .collection(brand_name)
+          .doc("data")
+          .collection("user")
+          .doc(`${uid}`)
+          .get()
+          .then((res) => {
+            resolve(res.data());
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    } else {
+      return new Promise((resolve, reject) => {
+        firebase
+          .firestore()
+          .collection("user")
+          .doc(`${uid}`)
+          .get()
+          .then((res) => {
+            resolve(res.data());
+          })
+          .catch((err) => {
+            reject(err);
+          });
+      });
+    }
   };
 }
 Firebase.initialize();

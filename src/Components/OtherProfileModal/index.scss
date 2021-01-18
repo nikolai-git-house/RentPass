@@ -1,0 +1,148 @@
+.other-profile-content {
+  position: relative;
+  .row_item {
+    width: 100%;
+    display: flex;
+    flex-direction: row;
+    align-items: center;
+    justify-content: center;
+    margin: 10px;
+    p {
+      font-style: italic;
+      font-size: 19px;
+      margin: 0px 10px;
+    }
+  }
+
+  .other-profile-header {
+    display: flex;
+    align-items: center;
+    margin-bottom: 40px;
+    background-color: rgb(236, 237, 238);
+    width: 100%;
+    height: 70px;
+    border: none;
+    font-weight: 400;
+    padding: 10%;
+
+    img {
+      margin-right: 20px;
+      border-radius: 40px;
+    }
+    p {
+      margin: 0px !important;
+      line-height: 1.2;
+      font-size: 20px;
+    }
+  }
+
+  .other-personal-view {
+    width: 100%;
+    display: flex;
+    flex-direction: column;
+    justify-content: center;
+    padding: 15px 0px;
+    background-color: white;
+    border-radius: 20px;
+    margin-bottom: 20px;
+
+    .other-personal-row {
+      display: flex;
+      flex-direction: row;
+      align-items: center;
+      justify-content: flex-start;
+      width: 100%;
+      padding-left: 10%;
+      margin-bottom: 10px;
+
+      &:last-child {
+        margin-bottom: 0;
+      }
+
+      .row_item_value {
+        display: flex;
+        width: 100%;
+      }
+      p {
+        padding-left: 10px;
+        margin-bottom: 0px;
+      }
+      .switch_label {
+        font-size: 16px;
+      }
+      .user_profile_score_container {
+        flex: 1;
+        p {
+          font-style: normal;
+          padding: 0;
+        }
+        .score_label {
+          font-size: 12px;
+          margin-top: 10px;
+          text-align: center;
+        }
+        .user_profile_score {
+          margin: 0 auto;
+          width: 80px;
+          height: 80px;
+          border-radius: 40px;
+          border: 4px solid;
+          justify-content: center;
+          align-items: center;
+          display: flex;
+          position: relative;
+
+          i {
+            position: absolute;
+            bottom: -15px;
+            width: 30px;
+            height: 30px;
+            border-radius: 15px;
+            justify-content: center;
+            align-items: center;
+            display: flex;
+            color: white;
+            font-size: 12px;
+          }
+        }
+      }
+    }
+  }
+
+  .actions-container {
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    margin-bottom: 10px;
+
+    .btn_share_tokens {
+      cursor: pointer;
+      background-color: #f2fb79;
+      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+      border: none;
+      display: flex;
+      height: 30px;
+      width: 150px;
+      justify-content: center;
+      align-items: center;
+      border-radius: 8px;
+    }
+    .btn_green {
+      cursor: pointer;
+      background-color: #cdf8d6;
+      box-shadow: 0px 0px 4px 1px rgba(0, 0, 0, 0.2);
+      height: 30px;
+      width: 125px;
+      border: none;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      margin-right: 15px;
+      border-radius: 8px;
+    }
+  }
+}
+
+.other-profile-dialog-content {
+  background-color: rgb(243, 243, 243) !important;
+}

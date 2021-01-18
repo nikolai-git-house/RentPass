@@ -126,3 +126,17 @@ export const ticket_create_SMS = async (
     return err;
   }
 };
+export const inviteUserSMS = async (phoneNumber, brand, firstName) => {
+  try {
+    let response = await fetch(
+      `https://apricot-mole-2227.twil.io/invite-to-community?phoneNumber=${phoneNumber}&brand=${brand}&firstName=${firstName}`,
+      {
+        method: "GET"
+      }
+    );
+    let res = await response.json();
+    return res;
+  } catch (err) {
+    return err;
+  }
+};

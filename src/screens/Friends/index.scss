@@ -1,0 +1,74 @@
+#friends-page-container {
+  width: 100%;
+  #main-container{
+    margin: 10px;
+  }
+  .hidden-btn{
+    display: none;
+  }
+  .token-earning-container {
+    margin-top: 20px;
+    width: 100%;
+    background: #f4f5f9;
+    border: 1px solid #d9d9d9;
+    border-radius: 15px;
+    box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
+    display: flex;
+    align-items: center;
+    padding: 10px;
+
+    .token-wrapper {
+      position: relative;
+
+      img {
+        width: 60px;
+        height: 60px;
+      }
+
+      .token-count {
+        position: absolute;
+        top: 50%;
+        left: 50%;
+        transform: translate(-50%, -50%);
+        font-size: 12px;
+        padding-bottom: 0;
+        font-weight: 500;
+        margin-left: 0;
+      }
+    }
+
+    p {
+      margin-bottom: 0;
+      margin-left: 12px;
+      font-size: 14px;
+      line-height: 17px;
+    }
+  }
+
+  .friends-container {
+    .friend-item {
+      display: flex;
+      align-items: center;
+      margin-bottom: 20px;
+      background: #ffffff;
+      color: #000000;
+      margin: 12px 0;
+      padding: 10px;
+      border-radius: 15px;
+      box-shadow: -1.7px 4.7px 20px 0 rgba(21, 36, 57, 0.1);
+      .avatar_img{
+        width: 55px;
+        height: 55px;
+        background-position: center;
+        background-repeat: no-repeat;
+        background-size: cover;
+        border-radius: 30px;
+      }
+
+      p {
+        margin-bottom: 0px;
+        margin-left: 10px;
+      }
+    }
+  }
+}

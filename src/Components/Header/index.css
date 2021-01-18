@@ -27,7 +27,7 @@
     .content-header .heading .profile {
       display: none; }
     .content-header .heading a.nav-main-link {
-      font-size: 11px; }
+      font-size: 10px; }
     .content-header .heading .nav-main-item {
       margin: 5px; }
     .content-header .heading ul {
@@ -69,7 +69,7 @@
   .content-header ul {
     padding-left: 10px; }
   .content-header .heading a.nav-main-link {
-    font-size: 10px; }
+    font-size: 11px; }
     .content-header .heading a.nav-main-link img {
       width: 10px !important; } }
 

@@ -13,10 +13,13 @@ import wallet_png from "../../images/explore/wallet.jpg";
 import pay_png from "../../images/explore/pay.png";
 import shopping_bag_png from "../../images/explore/shopping-bag.png";
 import security_png from "../../images/explore/security.png";
+import referencing_png from "../../images/explore/referencing.png";
 import housemates_png from "../../images/explore/housemates.png";
 import property_png from "../../images/explore/property.png";
 import feeds_png from "../../images/explore/advertising.png";
 import polls_png from "../../images/explore/opinion.png";
+import support_png from "../../images/explore/support.png";
+import friend_png from "../../images/explore/eco-friendly.png";
 class Header extends React.Component {
   constructor(props) {
     super(props);
@@ -108,7 +111,7 @@ class Header extends React.Component {
               onClick={this.click}
               ref={this.outOfMenu}
             >
-              <li className="nav-main-item profile">
+              <li className="nav-main-item">
                 <NavLink
                   to={{
                     pathname: "/explore",
@@ -157,6 +160,18 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Properties</span>
                 </NavLink>
               </li>
+              <li className="nav-main-item" onClick={this.click}>
+                <NavLink
+                  to="/referencing"
+                  className={classnames("nav-main-link")}
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={referencing_png}
+                  />
+                  <span className="nav-main-link-name">Referencing</span>
+                </NavLink>
+              </li>
               {/* <li className="nav-main-item" onClick={this.click}>
                 <NavLink
                   to="#"
@@ -202,11 +217,21 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Tickets</span>
                 </NavLink>
               </li> */}
-              {/* <li className="nav-main-item" onClick={this.click}>
-                <NavLink to="/shop" className={classnames("nav-main-link")}>
-                  <span className="nav-main-link-name">Shop</span>
+              
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/wallets",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={wallet_png}
+                  />
+                  <span className="nav-main-link-name">Wallet</span>
                 </NavLink>
-              </li> */}
+              </li>
               <li className="nav-main-item">
                 <NavLink
                   to={{
@@ -215,7 +240,7 @@ class Header extends React.Component {
                   className="nav-main-link"
                 >
                   <img style={{ width: 12, marginRight: 10 }} src={token_img} />
-                  <span className="nav-main-link-name">Token Offers</span>
+                  <span className="nav-main-link-name">Offers</span>
                 </NavLink>
               </li>
               {/* <li className="nav-main-item">
@@ -229,20 +254,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Earn Tokens</span>
                 </NavLink>
               </li> */}
-              <li className="nav-main-item">
-                <NavLink
-                  to={{
-                    pathname: "/wallets",
-                  }}
-                  className="nav-main-link"
-                >
-                  <img
-                    style={{ width: 12, marginRight: 10 }}
-                    src={wallet_png}
-                  />
-                  <span className="nav-main-link-name">Token Wallet</span>
-                </NavLink>
-              </li>
+              
               <li className="nav-main-item">
                 <NavLink
                   to={{
@@ -254,7 +266,7 @@ class Header extends React.Component {
                   <span className="nav-main-link-name">Token Pay</span>
                 </NavLink>
               </li>
-              {/* <li className="nav-main-item">
+              <li className="nav-main-item">
                 <NavLink
                   to={{
                     pathname: "/shop",
@@ -267,8 +279,35 @@ class Header extends React.Component {
                   />
                   <span className="nav-main-link-name">Marketplace</span>
                 </NavLink>
-              </li> */}
-              
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/friends",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={friend_png}
+                  />
+                  <span className="nav-main-link-name">Friends</span>
+                </NavLink>
+              </li>
+              <li className="nav-main-item">
+                <NavLink
+                  to={{
+                    pathname: "/support",
+                  }}
+                  className="nav-main-link"
+                >
+                  <img
+                    style={{ width: 12, marginRight: 10 }}
+                    src={support_png}
+                  />
+                  <span className="nav-main-link-name">Support</span>
+                </NavLink>
+              </li>
               <li className={`nav-main-item burger show`}>
                 <a className="nav-main-link" onClick={logout}>
                   <span className="nav-main-link-name">Sign Out</span>

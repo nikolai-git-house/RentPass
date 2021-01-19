@@ -1,17 +1,16 @@
-import React, { Component } from "react";
+import React, { Component, Fragment } from "react";
 import ReactHtmlParser from "react-html-parser";
 import { animateScroll } from "react-scroll";
-import Loader from "./Loader";
 import Barcode from "react-barcode";
-
-const default_icon =
-  "https://firebasestorage.googleapis.com/v0/b/aiconcierge.appspot.com/o/icons%2Fagency_logo.png?alt=media&token=3b61781e-1f2b-4136-b26d-2edbed2a6034";
+import Loader from "./Loader";
+import classNames from "classnames";
+import loading_gif from "../assets/images/loading.gif";
 class MessageItem extends Component {
   constructor(props) {
     super(props);
     this.state = {
       loaded: false,
-      user_img: require("../images/livechat/user.png"),
+      user_img: props.userIcon||require("../images/livechat/user.png"),
     };
   }
 
@@ -31,6 +30,7 @@ class MessageItem extends Component {
       type === "bot" ? timeoutValue : 0
     );
   }
+
   renderMessage(obj) {
     const { logo } = this.props;
     const { message } = obj;
@@ -60,21 +60,27 @@ class MessageItem extends Component {
       );
     }
   }
+
   render() {
-    const { firstChild, logo, icon } = this.props;
-    const { type, message,src, mark, end } = this.props.message;
+    const { firstChild, icon, color, isLanding } = this.props;
+    const { type, message, src,loading } = this.props.message;
     const { loaded, user_img } = this.state;
     return (
       <div
+        className={classNames({ "landing-message-item": isLanding })}
         style={
           type === "bot"
             ? {
+                marginTop:20,
+                marginBottom:20,
                 display: "flex",
                 flexDirection: "row",
                 alignItems: "flex-start",
                 justifyContent: "flex-start",
               }
             : {
+                marginTop:20,
+                marginBottom:20,
                 width: "100%",
                 display: "flex",
                 flexDirection: "row",
@@ -84,19 +90,35 @@ class MessageItem extends Component {
         }
       >
         {type === "bot" && (
-          <img
-            src={icon || default_icon}
-            style={{ width: 40, height: 40 }}
+          isLanding?<div className="landing_icon" style={{backgroundColor:color}}>
+              <img
+                src={"https://firebasestorage.googleapis.com/v0/b/boltconcierge-2f0f9.appspot.com/o/brand_icon%2FRental%20Community?alt=media&token=2e96bade-f7f1-4dbd-afd9-6f7caa9d4dc8"}
+                style={{
+                  width: 20,
+                  height: 20,
+                }}
+                alt="concierge"
+            />
+          </div>
+          :<img
+            src={loading?loading_gif:"https://firebasestorage.googleapis.com/v0/b/boltconcierge-2f0f9.appspot.com/o/brand_icon%2FRental%20Community?alt=media&token=2e96bade-f7f1-4dbd-afd9-6f7caa9d4dc8"}
+            style={{
+              width: 40,
+              height: 40,
+              borderRadius: 20,
+              flex: "none",
+            }}
             alt="concierge"
             className="avatar"
           />
         )}
+
         {src && (
           <div
             className={`message-item-wrapper ${
               loaded ? "loaded" : ""
             } ${type} ${firstChild ? "first-child" : ""}`}
-            style={{ width: "100%", height: "200px" }}
+            style={{ width: "100%", height: "200px",marginTop:0,marginBottom:0 }}
           >
             <Loader />
             <div
@@ -117,30 +139,20 @@ class MessageItem extends Component {
             className={`message-item-wrapper ${
               loaded ? "loaded" : ""
             } ${type} ${firstChild ? "first-child" : ""}`}
+            style={{marginTop:0,marginBottom:0}}
           >
             <Loader />
 
             {this.renderMessage(this.props.message)}
           </div>
         )}
-        {/* <div
-          className={`message-item-wrapper ${loaded ? "loaded" : ""} ${type} ${
-            firstChild ? "first-child" : ""
-          }`}
-        >
-          <Loader />
 
-          <div className={`message ${logo === "ecosystem" ? "" : "notbolt"}`}>
-            {ReactHtmlParser(message)}
-          </div>
-        </div> */}
         {type === "user" && (
-          <img
-            src={user_img}
-            style={{ width: 40, height: 40 }}
-            alt="concierge"
+          <div
             className="avatar"
-          />
+            style={{backgroundImage:`url(${user_img})`}}
+            alt="concierge"
+        />
         )}
       </div>
     );

@@ -43,48 +43,6 @@ class Firebase {
   static firestore() {
     return firebase.firestore();
   }
-  // static async getAllUsers() {
-  //   const snapshot = await firebase
-  //     .firestore()
-  //     .collection("user")
-  //     .get();
-  //   return snapshot.docs.map(item => {
-  //     return { [item.id]: item.data() };
-  //   });
-  // }
-  // static getProfile = phonenumber => {
-  //   console.log("phonenumber", phonenumber);
-  //   return new Promise((resolve, reject) => {
-  //     firebase
-  //       .firestore()
-  //       .collection("landlord")
-  //       .where("phonenumber", "==", phonenumber)
-  //       .limit(1)
-  //       .get()
-  //       .then(res => {
-  //         if (res.size === 0) resolve(false);
-  //         else resolve(res.docs[0]);
-  //       })
-  //       .catch(err => {
-  //         reject(err);
-  //       });
-  //   });
-  // };
-  // static getProfileById = uid => {
-  //   return new Promise((resolve, reject) => {
-  //     firebase
-  //       .firestore()
-  //       .collection("user")
-  //       .doc(uid)
-  //       .get()
-  //       .then(res => {
-  //         resolve(res.data());
-  //       })
-  //       .catch(err => {
-  //         reject(err);
-  //       });
-  //   });
-  // };
   static getUserProfile = (phonenumber, brand) => {
     return new Promise((resolve, reject) => {
       firebase
@@ -848,6 +806,44 @@ class Firebase {
         callback(snapshot.val());
       });
   }
+  static getTicketsbyUID(id) {
+    let path = "livechat/" + id + "/tickets";
+    return new Promise((resolve, reject) => {
+      firebase
+        .database()
+        .ref(path)
+        .on("value", (snapshot) => {
+          let result = [];
+          result = snapshot.val();
+          if (result) {
+            resolve(Object.values(result));
+          } else {
+            resolve([]);
+          }
+        });
+    });
+  }
+  static createTicket = (uid, firstname, brand, ticket) => {
+    let data = {
+      uid: uid,
+      username: firstname,
+    };
+    if (brand !== "Ecosystem") data.brand = brand;
+    let path = "livechat/" + uid;
+    firebase.database().ref(path).update(data);
+    let ticket_id = "" + ticket.id;
+    let ticket_path = "livechat/" + uid + "/tickets/"+ticket_id;
+    return firebase
+      .database()
+      .ref(ticket_path)
+      .set({
+        ticket_id:ticket_id,
+        issue: ticket.issue,
+        title: ticket.title,
+        status: ticket.status,
+        time: ticket.time
+      });
+  };
   static async getTicketData(room_id, ticket_id, callback) {
     console.log("room_id", room_id);
     console.log("ticket_id", ticket_id);
@@ -894,14 +890,18 @@ class Firebase {
     let path = "livechat/" + room_id + "/tickets/" + child_id;
     return firebase.database().ref(path).update({ status: "Open" });
   }
-  static terminateChat(room_id, ticket_id) {
-    let ticket = "" + ticket_id;
-    let child_id = ticket.split(".").join("");
-    let path = "livechat/" + room_id + "/tickets/" + child_id;
-    return firebase
+  static terminateChat(uid, ticket_id, feeling, callback) {
+    let path = "livechat/" + uid + "/tickets/" + ticket_id;
+    firebase
       .database()
       .ref(path)
-      .update({ status: "Closed", content: null });
+      .update({ status: "Closed", feeling: feeling })
+      .then(() => {
+        callback("success");
+      })
+      .catch((err) => {
+        callback(err);
+      });
   }
   static addBrandUrl(imagename, url) {
     let path = "brands/";

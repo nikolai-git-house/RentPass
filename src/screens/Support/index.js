@@ -3,7 +3,6 @@ import { connect } from "react-redux";
 import { withRouter } from "react-router-dom";
 import "./index.css";
 import "../../Styles/Common.css";
-import Header from "../components/Header";
 import MessageItem from "../../Components/MessageItem";
 import MessageInput from "./MessageInput";
 import {
@@ -55,8 +54,7 @@ class Support extends React.Component {
   };
 
   async componentDidMount() {
-    const { uid } = await this.loadInfoFromUrl(this.props.name);
-    const {profile} = this.props;
+    const {profile,uid} = this.props;
     if (!uid) {
       this.props.history.push("/");
       return;
@@ -150,7 +148,7 @@ class Support extends React.Component {
     ticket.id = Math.floor(10000000000 + Math.random() * 90000000000);
     ticket.ticket_id = ticket.id;
     ticket.status = "Waiting";
-    Firebase.createTicket(uid,profile.firstname,brand.name,ticket);
+    Firebase.createTicket(uid,profile.firstname,"Rental Community",ticket);
     setTimeout(()=>{
       this.props.history.push("/tickets", { ticket: ticket });
     },5000);
@@ -170,8 +168,6 @@ class Support extends React.Component {
         <MessageItem
           message={message}
           key={i}
-          logo={brand && brand.logo}
-          icon={brand && brand.icon}
           userIcon={profile.avatar_url}
           timeoutValue={getTimeoutValue()}
         />
@@ -183,7 +179,6 @@ class Support extends React.Component {
     const { showInput } = this.state;
     return (
       <div id="page-container">
-         <Header signOut={this.signOut} screen="support" />
         <div
           id="support-container"
         >

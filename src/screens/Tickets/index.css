@@ -21,6 +21,22 @@
 .chatModal {
   display: none; }
 
+.main-content {
+  display: flex;
+  flex-direction: row;
+  justify-content: space-around;
+  align-items: flex-start;
+  margin-top: 70px;
+  margin-left: 0px;
+  margin-right: 0px;
+  overflow: hidden;
+  height: 100%;
+  width: 100%; }
+
+@media only screen and (min-width: 768px) {
+  .main-content {
+    position: fixed; } }
+
 @media only screen and (max-width: 768px) {
   .content {
     padding: 0 !important; }
@@ -55,3 +71,9 @@
     display: none; }
   .chat-container {
     padding: 0; } }
+
+* {
+  -ms-overflow-style: none; }
+
+::-webkit-scrollbar {
+  display: none; }

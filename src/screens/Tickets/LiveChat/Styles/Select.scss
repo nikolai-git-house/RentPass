@@ -1,0 +1,147 @@
+@import "Constants.scss";
+
+.message-select-container{
+	width: 100%;
+	border-top: 1px solid rgba(255, 255, 255, 0.4);
+	padding-top: 1em;
+	position: relative;
+	.select-category{
+		padding:10px;
+		color:#fff;
+		text-align: center;
+		font-weight: 500;
+	}
+	.select-wrapper{
+		height: 42vh;
+		position: relative;
+		display: flex;
+		flex-direction: column;
+		flex-wrap: nowrap;
+		overflow-x: hidden;
+		overflow-y: scroll;
+		-webkit-overflow-scrolling: touch;
+		-ms-overflow-style: -ms-autohiding-scrollbar;
+		//margin-bottom: 70px;
+		transition: margin-bottom $animationDuration;
+		&.popular{
+			height:32vh;
+		}
+		&::-webkit-scrollbar {
+			display: none;
+		}
+		&.active{
+			margin-bottom: 70px;
+		}
+		.option-wrapper{
+			background-color: $white;
+			border-radius: 8px;
+			overflow: hidden;
+			flex: 0;
+			opacity: 0;
+			max-height: 40vh;
+			position: absolute;
+			width: 100%;
+			transition: height 0.15s ease-in, top 0.15s ease-in;
+			display: none;
+			height: 3.4em;
+			&.display-all, &.active{
+				opacity: 1;
+				display: flex;
+				flex-direction: column;
+			}
+			&.display-all{
+				margin-bottom: 1em;
+				.option-values{
+					display: none;
+				}
+			}
+			&.active{
+				top: 0!important;
+				height: 40vh;
+				.option-values{
+					display: flex;
+				}
+				.option-header{
+					.chevron{
+						img{
+							transform: scaleY(-1);
+						}
+					}
+				}
+			}
+			.option-header{
+				padding: 1em;
+				display: flex;
+				align-items: center;
+				cursor: pointer;
+				.option-header-name{
+					flex: 1;
+					font-weight: 600;
+				}
+				.chevron{
+					img{
+						transition: transform 0.3s;
+						transform: scaleY(1);
+					}
+				}
+			}
+			.option-values{
+				padding-bottom: 0.5em;
+				flex: 1;
+				overflow-x: hidden;
+				overflow-y: scroll;
+				display: flex;
+				flex-direction: column;
+				flex-wrap: nowrap;
+				-webkit-overflow-scrolling: touch;
+				-ms-overflow-style: -ms-autohiding-scrollbar;
+				&::-webkit-scrollbar {
+					display: none;
+				}
+				.value{
+					flex: 0 0 auto;
+					padding: 0.5em 1em;
+					display: flex;
+					align-items: center;
+					&:first-child{
+						padding-top: 0;
+					}
+					.value-name{
+						flex: 1;
+					}
+					.check{
+						transition: transform 0.15s;
+						transform: scale(0);
+					}
+					&.checked{
+						color: $primary;
+						font-weight: 600;
+						.check{
+							transform: scale(1);
+						}
+					}
+				}
+			}
+			.values-overlay{
+				position: absolute;
+				left: 0;
+				right: 0;
+				bottom: 0;
+				height: 3em;
+				background: linear-gradient(rgba(255, 255, 255, 0.3), rgba(255, 255, 255, 1));
+				border-radius: 18px;
+				pointer-events: none;
+			}
+		}
+	}
+}
+.button-wrapper{
+	display: flex;
+	margin-top: 1em;
+	animation-name: fadeIn;
+	animation-duration: $inputAnimationDuration;
+	position: absolute;
+	width: 100%;
+	bottom: 0;
+	z-index: 100;
+}

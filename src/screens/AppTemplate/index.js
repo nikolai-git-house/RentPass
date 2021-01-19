@@ -19,6 +19,7 @@ import Ecopay from "../Ecopay";
 import Header from "../../Components/Header";
 import Explore from "../Explore";
 import Friends from "../Friends";
+import Support from "../Support";
 import PropertyPA from "../PropertyPA";
 import Landing from "../Landing";
 import { removeAll } from "../../redux/actions";
@@ -27,10 +28,8 @@ import "./index.css";
 class AppTemplate extends React.Component {
   logout = () => {
     console.log("logout");
-    localStorage.removeItem("rentkey_uid");
-    localStorage.removeItem("rentkey_profile");
-    localStorage.removeItem("rentkey_brand_data");
-    localStorage.removeItem("rentkey_users");
+    localStorage.removeItem("uid");
+    localStorage.removeItem("profile");
     this.props.dispatch(removeAll());
     this.props.history.push("/");
   };
@@ -49,7 +48,7 @@ class AppTemplate extends React.Component {
           <Route exact path="/property" component={NewProperty} />
           <Route exact path="/referencing" component={Referencing} />
           <Route exact path="/concierge" component={Concierge} />
-          {/* <Route exact path="/tickets" component={Tickets} /> */}
+          <Route exact path="/tickets" component={Tickets} />
           <Route exact path="/shop" component={Shop} />
           <Route path="/spend" component={Perks} />
           <Route path="/earn" component={EarnTokens} />
@@ -57,6 +56,7 @@ class AppTemplate extends React.Component {
           <Route path="/ecopay" component={Ecopay} />
           <Route path="/explore" component={Explore} />
           <Route path="/friends" component={Friends} />
+          <Route path="/support" component={Support} />
           {/* <Route path="/propertypa" component={PropertyPA} /> */}
         </Switch>
       </div>

@@ -28,21 +28,15 @@ class LogIn extends React.PureComponent {
     this.onChangeHandler.bind(this);
   }
   async componentDidMount() {
-    // let uid = localStorage.getItem("rentkey_uid");
-    // let profile = localStorage.getItem("rentkey_profile");
-    // let brand_data = localStorage.getItem("rentkey_brand_data");
-    // let users = localStorage.getItem("rentkey_users");
-    // if (uid) {
-    //   this.props.dispatch(saveUID(uid));
-    //   this.props.dispatch(saveProfile(JSON.parse(profile)));
-    //   this.props.dispatch(saveBrand(JSON.parse(brand_data)));
-    //   this.props.dispatch(saveUsers(JSON.parse(users)));
-    //   this.props.history.push("/explore");
-    //   console.log("uid", uid);
-    //   console.log("profile", profile);
-    //   console.log("brand_data", JSON.parse(brand_data));
-    //   console.log("users", JSON.parse(users));
-    // }
+    let uid = localStorage.getItem("uid");
+    let profile = localStorage.getItem("profile");
+    if (uid) {
+      this.props.dispatch(saveUID(uid));
+      this.props.dispatch(saveProfile(JSON.parse(profile)));
+      this.props.history.push("/explore");
+      console.log("uid", uid);
+      console.log("profile", profile);
+    }
   }
   componentWillUnmount() {
     //this.unsubscribeUsers();
@@ -81,7 +75,8 @@ class LogIn extends React.PureComponent {
     });
     this.props.dispatch(saveProfile(profile));
     this.props.dispatch(saveUID(profile.renter_id));
-
+    localStorage.setItem("profile",JSON.stringify(profile));
+    localStorage.setItem("uid",profile.renter_id);
     if (profile.tokens !== null && profile.tokens !== undefined) {
       this.props.history.push("/explore");
     } else {
